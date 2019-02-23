@@ -1,3 +1,3 @@
 #!/bin/bash
 
-protoc proto/dem.proto --go_out=plugins=grpc:.
+protoc proto/demRR.proto --go_out=plugins=grpc:.

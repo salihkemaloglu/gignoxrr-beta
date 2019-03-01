@@ -13,12 +13,21 @@ import (
 	"github.com/salihkemaloglu/DemRR-beta-001/proto"
 	"github.com/salihkemaloglu/DemRR-beta-001/middleware"
 	"github.com/salihkemaloglu/DemRR-beta-001/proxy"
+	repo "github.com/salihkemaloglu/DemRR-beta-001/repository"
+	db "github.com/salihkemaloglu/DemRR-beta-001/mongodb"
 )
 
 type server struct {
 }
-func (s *server) SayHello(ctx context.Context, in *demRR.HelloRequest) (*demRR.HelloResponse, error) {
-	fmt.Printf("RR service is working...Received rpc from client, message=%s\n", in.GetName())
+
+func (s *server) SayHello(ctx context.Context, req *demRR.HelloRequest) (*demRR.HelloResponse, error) {
+	fmt.Printf("RR service is working...Received rpc from client, message=%s\n", req.GetName())
+
+	data :=db.File{Name:req.GetName()}
+	var op repo.FileRepository =data
+	var items, _ = op.Insert()
+	fmt.Println("Received a message:", items)
+
 	return &demRR.HelloResponse{Message: "Hello RR service is working..."}, nil
 }
 func main(){
@@ -27,7 +36,8 @@ func main(){
 	opts := []grpc.ServerOption{}
 	grpcServer := grpc.NewServer(opts...)
 	demRR.RegisterDemServiceServer(grpcServer, &server{})
-
+	fmt.Println("Mongodb Service Started")
+	db.LoadConfiguration()
 	wrappedGrpc := grpcweb.WrapServer(grpcServer)
 
 	router := chi.NewRouter()

@@ -22,8 +22,562 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
+type User struct {
+	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name                 string   `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Surname              string   `protobuf:"bytes,3,opt,name=surname,proto3" json:"surname,omitempty"`
+	Email                string   `protobuf:"bytes,4,opt,name=email,proto3" json:"email,omitempty"`
+	Username             string   `protobuf:"bytes,5,opt,name=username,proto3" json:"username,omitempty"`
+	Password             string   `protobuf:"bytes,6,opt,name=password,proto3" json:"password,omitempty"`
+	CreatedDate          string   `protobuf:"bytes,7,opt,name=created_date,json=createdDate,proto3" json:"created_date,omitempty"`
+	UpdatedDate          string   `protobuf:"bytes,8,opt,name=updated_date,json=updatedDate,proto3" json:"updated_date,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *User) Reset()         { *m = User{} }
+func (m *User) String() string { return proto.CompactTextString(m) }
+func (*User) ProtoMessage()    {}
+func (*User) Descriptor() ([]byte, []int) {
+	return fileDescriptor_cbc60cd21e7c246b, []int{0}
+}
+
+func (m *User) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_User.Unmarshal(m, b)
+}
+func (m *User) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_User.Marshal(b, m, deterministic)
+}
+func (m *User) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_User.Merge(m, src)
+}
+func (m *User) XXX_Size() int {
+	return xxx_messageInfo_User.Size(m)
+}
+func (m *User) XXX_DiscardUnknown() {
+	xxx_messageInfo_User.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_User proto.InternalMessageInfo
+
+func (m *User) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+func (m *User) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *User) GetSurname() string {
+	if m != nil {
+		return m.Surname
+	}
+	return ""
+}
+
+func (m *User) GetEmail() string {
+	if m != nil {
+		return m.Email
+	}
+	return ""
+}
+
+func (m *User) GetUsername() string {
+	if m != nil {
+		return m.Username
+	}
+	return ""
+}
+
+func (m *User) GetPassword() string {
+	if m != nil {
+		return m.Password
+	}
+	return ""
+}
+
+func (m *User) GetCreatedDate() string {
+	if m != nil {
+		return m.CreatedDate
+	}
+	return ""
+}
+
+func (m *User) GetUpdatedDate() string {
+	if m != nil {
+		return m.UpdatedDate
+	}
+	return ""
+}
+
+type UserInformation struct {
+	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	UserId               string   `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	ImagePath            string   `protobuf:"bytes,3,opt,name=image_path,json=imagePath,proto3" json:"image_path,omitempty"`
+	Description          string   `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
+	TotalSpace           string   `protobuf:"bytes,5,opt,name=total_space,json=totalSpace,proto3" json:"total_space,omitempty"`
+	CreatedDate          string   `protobuf:"bytes,6,opt,name=created_date,json=createdDate,proto3" json:"created_date,omitempty"`
+	UpdatedDate          string   `protobuf:"bytes,7,opt,name=updated_date,json=updatedDate,proto3" json:"updated_date,omitempty"`
+	LanguageType         string   `protobuf:"bytes,8,opt,name=language_type,json=languageType,proto3" json:"language_type,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *UserInformation) Reset()         { *m = UserInformation{} }
+func (m *UserInformation) String() string { return proto.CompactTextString(m) }
+func (*UserInformation) ProtoMessage()    {}
+func (*UserInformation) Descriptor() ([]byte, []int) {
+	return fileDescriptor_cbc60cd21e7c246b, []int{1}
+}
+
+func (m *UserInformation) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UserInformation.Unmarshal(m, b)
+}
+func (m *UserInformation) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UserInformation.Marshal(b, m, deterministic)
+}
+func (m *UserInformation) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UserInformation.Merge(m, src)
+}
+func (m *UserInformation) XXX_Size() int {
+	return xxx_messageInfo_UserInformation.Size(m)
+}
+func (m *UserInformation) XXX_DiscardUnknown() {
+	xxx_messageInfo_UserInformation.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UserInformation proto.InternalMessageInfo
+
+func (m *UserInformation) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+func (m *UserInformation) GetUserId() string {
+	if m != nil {
+		return m.UserId
+	}
+	return ""
+}
+
+func (m *UserInformation) GetImagePath() string {
+	if m != nil {
+		return m.ImagePath
+	}
+	return ""
+}
+
+func (m *UserInformation) GetDescription() string {
+	if m != nil {
+		return m.Description
+	}
+	return ""
+}
+
+func (m *UserInformation) GetTotalSpace() string {
+	if m != nil {
+		return m.TotalSpace
+	}
+	return ""
+}
+
+func (m *UserInformation) GetCreatedDate() string {
+	if m != nil {
+		return m.CreatedDate
+	}
+	return ""
+}
+
+func (m *UserInformation) GetUpdatedDate() string {
+	if m != nil {
+		return m.UpdatedDate
+	}
+	return ""
+}
+
+func (m *UserInformation) GetLanguageType() string {
+	if m != nil {
+		return m.LanguageType
+	}
+	return ""
+}
+
+type Follow struct {
+	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	FollowerId           string   `protobuf:"bytes,2,opt,name=follower_id,json=followerId,proto3" json:"follower_id,omitempty"`
+	FollowedId           string   `protobuf:"bytes,3,opt,name=followed_id,json=followedId,proto3" json:"followed_id,omitempty"`
+	FollowDate           string   `protobuf:"bytes,4,opt,name=follow_date,json=followDate,proto3" json:"follow_date,omitempty"`
+	UnfollowDate         string   `protobuf:"bytes,5,opt,name=unfollow_date,json=unfollowDate,proto3" json:"unfollow_date,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Follow) Reset()         { *m = Follow{} }
+func (m *Follow) String() string { return proto.CompactTextString(m) }
+func (*Follow) ProtoMessage()    {}
+func (*Follow) Descriptor() ([]byte, []int) {
+	return fileDescriptor_cbc60cd21e7c246b, []int{2}
+}
+
+func (m *Follow) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Follow.Unmarshal(m, b)
+}
+func (m *Follow) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Follow.Marshal(b, m, deterministic)
+}
+func (m *Follow) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Follow.Merge(m, src)
+}
+func (m *Follow) XXX_Size() int {
+	return xxx_messageInfo_Follow.Size(m)
+}
+func (m *Follow) XXX_DiscardUnknown() {
+	xxx_messageInfo_Follow.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Follow proto.InternalMessageInfo
+
+func (m *Follow) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+func (m *Follow) GetFollowerId() string {
+	if m != nil {
+		return m.FollowerId
+	}
+	return ""
+}
+
+func (m *Follow) GetFollowedId() string {
+	if m != nil {
+		return m.FollowedId
+	}
+	return ""
+}
+
+func (m *Follow) GetFollowDate() string {
+	if m != nil {
+		return m.FollowDate
+	}
+	return ""
+}
+
+func (m *Follow) GetUnfollowDate() string {
+	if m != nil {
+		return m.UnfollowDate
+	}
+	return ""
+}
+
+type Directory struct {
+	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	UserId               string   `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Name                 string   `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	CreatedDate          string   `protobuf:"bytes,4,opt,name=created_date,json=createdDate,proto3" json:"created_date,omitempty"`
+	UpdatedDate          string   `protobuf:"bytes,5,opt,name=updated_date,json=updatedDate,proto3" json:"updated_date,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Directory) Reset()         { *m = Directory{} }
+func (m *Directory) String() string { return proto.CompactTextString(m) }
+func (*Directory) ProtoMessage()    {}
+func (*Directory) Descriptor() ([]byte, []int) {
+	return fileDescriptor_cbc60cd21e7c246b, []int{3}
+}
+
+func (m *Directory) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Directory.Unmarshal(m, b)
+}
+func (m *Directory) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Directory.Marshal(b, m, deterministic)
+}
+func (m *Directory) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Directory.Merge(m, src)
+}
+func (m *Directory) XXX_Size() int {
+	return xxx_messageInfo_Directory.Size(m)
+}
+func (m *Directory) XXX_DiscardUnknown() {
+	xxx_messageInfo_Directory.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Directory proto.InternalMessageInfo
+
+func (m *Directory) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+func (m *Directory) GetUserId() string {
+	if m != nil {
+		return m.UserId
+	}
+	return ""
+}
+
+func (m *Directory) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *Directory) GetCreatedDate() string {
+	if m != nil {
+		return m.CreatedDate
+	}
+	return ""
+}
+
+func (m *Directory) GetUpdatedDate() string {
+	if m != nil {
+		return m.UpdatedDate
+	}
+	return ""
+}
+
+type File struct {
+	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	UserId               string   `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	DirectoryId          string   `protobuf:"bytes,3,opt,name=directory_id,json=directoryId,proto3" json:"directory_id,omitempty"`
+	Name                 string   `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
+	Description          string   `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
+	CreatedDate          string   `protobuf:"bytes,6,opt,name=created_date,json=createdDate,proto3" json:"created_date,omitempty"`
+	UpdatedDate          string   `protobuf:"bytes,7,opt,name=updated_date,json=updatedDate,proto3" json:"updated_date,omitempty"`
+	FileHash             string   `protobuf:"bytes,8,opt,name=file_hash,json=fileHash,proto3" json:"file_hash,omitempty"`
+	IsBuried             bool     `protobuf:"varint,9,opt,name=is_buried,json=isBuried,proto3" json:"is_buried,omitempty"`
+	IsDirectoryFile      bool     `protobuf:"varint,10,opt,name=is_directory_file,json=isDirectoryFile,proto3" json:"is_directory_file,omitempty"`
+	IsStarred            bool     `protobuf:"varint,11,opt,name=is_starred,json=isStarred,proto3" json:"is_starred,omitempty"`
+	IsTrash              bool     `protobuf:"varint,12,opt,name=is_trash,json=isTrash,proto3" json:"is_trash,omitempty"`
+	IsDeleted            bool     `protobuf:"varint,13,opt,name=is_deleted,json=isDeleted,proto3" json:"is_deleted,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *File) Reset()         { *m = File{} }
+func (m *File) String() string { return proto.CompactTextString(m) }
+func (*File) ProtoMessage()    {}
+func (*File) Descriptor() ([]byte, []int) {
+	return fileDescriptor_cbc60cd21e7c246b, []int{4}
+}
+
+func (m *File) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_File.Unmarshal(m, b)
+}
+func (m *File) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_File.Marshal(b, m, deterministic)
+}
+func (m *File) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_File.Merge(m, src)
+}
+func (m *File) XXX_Size() int {
+	return xxx_messageInfo_File.Size(m)
+}
+func (m *File) XXX_DiscardUnknown() {
+	xxx_messageInfo_File.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_File proto.InternalMessageInfo
+
+func (m *File) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+func (m *File) GetUserId() string {
+	if m != nil {
+		return m.UserId
+	}
+	return ""
+}
+
+func (m *File) GetDirectoryId() string {
+	if m != nil {
+		return m.DirectoryId
+	}
+	return ""
+}
+
+func (m *File) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *File) GetDescription() string {
+	if m != nil {
+		return m.Description
+	}
+	return ""
+}
+
+func (m *File) GetCreatedDate() string {
+	if m != nil {
+		return m.CreatedDate
+	}
+	return ""
+}
+
+func (m *File) GetUpdatedDate() string {
+	if m != nil {
+		return m.UpdatedDate
+	}
+	return ""
+}
+
+func (m *File) GetFileHash() string {
+	if m != nil {
+		return m.FileHash
+	}
+	return ""
+}
+
+func (m *File) GetIsBuried() bool {
+	if m != nil {
+		return m.IsBuried
+	}
+	return false
+}
+
+func (m *File) GetIsDirectoryFile() bool {
+	if m != nil {
+		return m.IsDirectoryFile
+	}
+	return false
+}
+
+func (m *File) GetIsStarred() bool {
+	if m != nil {
+		return m.IsStarred
+	}
+	return false
+}
+
+func (m *File) GetIsTrash() bool {
+	if m != nil {
+		return m.IsTrash
+	}
+	return false
+}
+
+func (m *File) GetIsDeleted() bool {
+	if m != nil {
+		return m.IsDeleted
+	}
+	return false
+}
+
+type Buried struct {
+	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	FileName             string   `protobuf:"bytes,2,opt,name=file_name,json=fileName,proto3" json:"file_name,omitempty"`
+	FileHash             string   `protobuf:"bytes,3,opt,name=file_hash,json=fileHash,proto3" json:"file_hash,omitempty"`
+	PublicHash           string   `protobuf:"bytes,4,opt,name=public_hash,json=publicHash,proto3" json:"public_hash,omitempty"`
+	Description          string   `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
+	BuriedDate           string   `protobuf:"bytes,6,opt,name=buried_date,json=buriedDate,proto3" json:"buried_date,omitempty"`
+	DiggingDate          string   `protobuf:"bytes,7,opt,name=digging_date,json=diggingDate,proto3" json:"digging_date,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Buried) Reset()         { *m = Buried{} }
+func (m *Buried) String() string { return proto.CompactTextString(m) }
+func (*Buried) ProtoMessage()    {}
+func (*Buried) Descriptor() ([]byte, []int) {
+	return fileDescriptor_cbc60cd21e7c246b, []int{5}
+}
+
+func (m *Buried) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Buried.Unmarshal(m, b)
+}
+func (m *Buried) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Buried.Marshal(b, m, deterministic)
+}
+func (m *Buried) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Buried.Merge(m, src)
+}
+func (m *Buried) XXX_Size() int {
+	return xxx_messageInfo_Buried.Size(m)
+}
+func (m *Buried) XXX_DiscardUnknown() {
+	xxx_messageInfo_Buried.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Buried proto.InternalMessageInfo
+
+func (m *Buried) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+func (m *Buried) GetFileName() string {
+	if m != nil {
+		return m.FileName
+	}
+	return ""
+}
+
+func (m *Buried) GetFileHash() string {
+	if m != nil {
+		return m.FileHash
+	}
+	return ""
+}
+
+func (m *Buried) GetPublicHash() string {
+	if m != nil {
+		return m.PublicHash
+	}
+	return ""
+}
+
+func (m *Buried) GetDescription() string {
+	if m != nil {
+		return m.Description
+	}
+	return ""
+}
+
+func (m *Buried) GetBuriedDate() string {
+	if m != nil {
+		return m.BuriedDate
+	}
+	return ""
+}
+
+func (m *Buried) GetDiggingDate() string {
+	if m != nil {
+		return m.DiggingDate
+	}
+	return ""
+}
+
 type HelloRequest struct {
-	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Message              string   `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -33,7 +587,7 @@ func (m *HelloRequest) Reset()         { *m = HelloRequest{} }
 func (m *HelloRequest) String() string { return proto.CompactTextString(m) }
 func (*HelloRequest) ProtoMessage()    {}
 func (*HelloRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cbc60cd21e7c246b, []int{0}
+	return fileDescriptor_cbc60cd21e7c246b, []int{6}
 }
 
 func (m *HelloRequest) XXX_Unmarshal(b []byte) error {
@@ -54,9 +608,9 @@ func (m *HelloRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_HelloRequest proto.InternalMessageInfo
 
-func (m *HelloRequest) GetName() string {
+func (m *HelloRequest) GetMessage() string {
 	if m != nil {
-		return m.Name
+		return m.Message
 	}
 	return ""
 }
@@ -72,7 +626,7 @@ func (m *HelloResponse) Reset()         { *m = HelloResponse{} }
 func (m *HelloResponse) String() string { return proto.CompactTextString(m) }
 func (*HelloResponse) ProtoMessage()    {}
 func (*HelloResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cbc60cd21e7c246b, []int{1}
+	return fileDescriptor_cbc60cd21e7c246b, []int{7}
 }
 
 func (m *HelloResponse) XXX_Unmarshal(b []byte) error {
@@ -100,25 +654,154 @@ func (m *HelloResponse) GetMessage() string {
 	return ""
 }
 
+type CreateUserRequest struct {
+	User                 *User            `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	UserInformation      *UserInformation `protobuf:"bytes,2,opt,name=user_information,json=userInformation,proto3" json:"user_information,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
+}
+
+func (m *CreateUserRequest) Reset()         { *m = CreateUserRequest{} }
+func (m *CreateUserRequest) String() string { return proto.CompactTextString(m) }
+func (*CreateUserRequest) ProtoMessage()    {}
+func (*CreateUserRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_cbc60cd21e7c246b, []int{8}
+}
+
+func (m *CreateUserRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CreateUserRequest.Unmarshal(m, b)
+}
+func (m *CreateUserRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CreateUserRequest.Marshal(b, m, deterministic)
+}
+func (m *CreateUserRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateUserRequest.Merge(m, src)
+}
+func (m *CreateUserRequest) XXX_Size() int {
+	return xxx_messageInfo_CreateUserRequest.Size(m)
+}
+func (m *CreateUserRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateUserRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CreateUserRequest proto.InternalMessageInfo
+
+func (m *CreateUserRequest) GetUser() *User {
+	if m != nil {
+		return m.User
+	}
+	return nil
+}
+
+func (m *CreateUserRequest) GetUserInformation() *UserInformation {
+	if m != nil {
+		return m.UserInformation
+	}
+	return nil
+}
+
+type CreateUserResponse struct {
+	User                 *User    `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *CreateUserResponse) Reset()         { *m = CreateUserResponse{} }
+func (m *CreateUserResponse) String() string { return proto.CompactTextString(m) }
+func (*CreateUserResponse) ProtoMessage()    {}
+func (*CreateUserResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_cbc60cd21e7c246b, []int{9}
+}
+
+func (m *CreateUserResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CreateUserResponse.Unmarshal(m, b)
+}
+func (m *CreateUserResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CreateUserResponse.Marshal(b, m, deterministic)
+}
+func (m *CreateUserResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateUserResponse.Merge(m, src)
+}
+func (m *CreateUserResponse) XXX_Size() int {
+	return xxx_messageInfo_CreateUserResponse.Size(m)
+}
+func (m *CreateUserResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateUserResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CreateUserResponse proto.InternalMessageInfo
+
+func (m *CreateUserResponse) GetUser() *User {
+	if m != nil {
+		return m.User
+	}
+	return nil
+}
+
 func init() {
+	proto.RegisterType((*User)(nil), "dem.User")
+	proto.RegisterType((*UserInformation)(nil), "dem.UserInformation")
+	proto.RegisterType((*Follow)(nil), "dem.Follow")
+	proto.RegisterType((*Directory)(nil), "dem.Directory")
+	proto.RegisterType((*File)(nil), "dem.File")
+	proto.RegisterType((*Buried)(nil), "dem.Buried")
 	proto.RegisterType((*HelloRequest)(nil), "dem.HelloRequest")
 	proto.RegisterType((*HelloResponse)(nil), "dem.HelloResponse")
+	proto.RegisterType((*CreateUserRequest)(nil), "dem.CreateUserRequest")
+	proto.RegisterType((*CreateUserResponse)(nil), "dem.CreateUserResponse")
 }
 
 func init() { proto.RegisterFile("proto/demRR.proto", fileDescriptor_cbc60cd21e7c246b) }
 
 var fileDescriptor_cbc60cd21e7c246b = []byte{
-	// 153 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x2c, 0x28, 0xca, 0x2f,
-	0xc9, 0xd7, 0x4f, 0x49, 0xcd, 0x0d, 0x0a, 0xd2, 0x03, 0xb3, 0x85, 0x98, 0x53, 0x52, 0x73, 0x95,
-	0x94, 0xb8, 0x78, 0x3c, 0x52, 0x73, 0x72, 0xf2, 0x83, 0x52, 0x0b, 0x4b, 0x53, 0x8b, 0x4b, 0x84,
-	0x84, 0xb8, 0x58, 0xf2, 0x12, 0x73, 0x53, 0x25, 0x18, 0x15, 0x18, 0x35, 0x38, 0x83, 0xc0, 0x6c,
-	0x25, 0x4d, 0x2e, 0x5e, 0xa8, 0x9a, 0xe2, 0x82, 0xfc, 0xbc, 0xe2, 0x54, 0x21, 0x09, 0x2e, 0xf6,
-	0xdc, 0xd4, 0xe2, 0xe2, 0xc4, 0x74, 0x98, 0x3a, 0x18, 0xd7, 0xc8, 0x9e, 0x8b, 0xcb, 0x25, 0x35,
-	0x37, 0x38, 0xb5, 0xa8, 0x2c, 0x33, 0x39, 0x55, 0xc8, 0x90, 0x8b, 0x23, 0x38, 0xb1, 0x12, 0xac,
-	0x57, 0x48, 0x50, 0x2f, 0x25, 0x35, 0x57, 0x0f, 0xd9, 0x2e, 0x29, 0x21, 0x64, 0x21, 0x88, 0xd1,
-	0x4e, 0xec, 0x51, 0xac, 0x60, 0x37, 0x26, 0xb1, 0x81, 0x1d, 0x69, 0x0c, 0x08, 0x00, 0x00, 0xff,
-	0xff, 0xeb, 0x15, 0x75, 0x0a, 0xb9, 0x00, 0x00, 0x00,
+	// 718 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x95, 0x4f, 0x6f, 0xd3, 0x4c,
+	0x10, 0xc6, 0x95, 0xc4, 0xf9, 0x37, 0x4e, 0xdf, 0xbe, 0x59, 0x55, 0x6f, 0xfd, 0x16, 0x55, 0x69,
+	0xc3, 0xa5, 0x70, 0x28, 0xa2, 0x3d, 0x23, 0xa4, 0x12, 0x55, 0xed, 0x05, 0xa1, 0xa4, 0x5c, 0xb8,
+	0x58, 0xdb, 0xec, 0x34, 0x59, 0xc9, 0x8e, 0x8d, 0x77, 0x4d, 0x95, 0x0b, 0x57, 0x4e, 0xf0, 0x19,
+	0xf8, 0x58, 0xf0, 0x6d, 0xd0, 0x8e, 0xbd, 0xc9, 0x26, 0x96, 0xda, 0x1e, 0xb8, 0x65, 0x7e, 0xf3,
+	0xac, 0x3d, 0xcf, 0xcc, 0x64, 0x0d, 0xfd, 0x34, 0x4b, 0x74, 0xf2, 0x4a, 0x60, 0x3c, 0x1e, 0x9f,
+	0xd2, 0x6f, 0xd6, 0x10, 0x18, 0x0f, 0x7f, 0xd5, 0xc0, 0xfb, 0xa8, 0x30, 0x63, 0xff, 0x40, 0x5d,
+	0x8a, 0xa0, 0x76, 0x54, 0x3b, 0xe9, 0x8e, 0xeb, 0x52, 0x30, 0x06, 0xde, 0x82, 0xc7, 0x18, 0xd4,
+	0x89, 0xd0, 0x6f, 0x16, 0x40, 0x5b, 0xe5, 0x19, 0xe1, 0x06, 0x61, 0x1b, 0xb2, 0x3d, 0x68, 0x62,
+	0xcc, 0x65, 0x14, 0x78, 0xc4, 0x8b, 0x80, 0x1d, 0x40, 0x27, 0x57, 0x58, 0x1c, 0x68, 0x52, 0x62,
+	0x15, 0x9b, 0x5c, 0xca, 0x95, 0xba, 0x4f, 0x32, 0x11, 0xb4, 0x8a, 0x9c, 0x8d, 0xd9, 0x31, 0xf4,
+	0xa6, 0x19, 0x72, 0x8d, 0x22, 0x14, 0x5c, 0x63, 0xd0, 0xa6, 0xbc, 0x5f, 0xb2, 0x11, 0xd7, 0x68,
+	0x24, 0x79, 0x2a, 0xd6, 0x92, 0x4e, 0x21, 0x29, 0x99, 0x91, 0x0c, 0xbf, 0xd5, 0x61, 0xd7, 0x58,
+	0xbb, 0x5e, 0xdc, 0x25, 0x59, 0xcc, 0xb5, 0x4c, 0x16, 0x15, 0x97, 0xfb, 0xd0, 0x36, 0x15, 0x85,
+	0x52, 0x94, 0x46, 0x5b, 0x26, 0xbc, 0x16, 0xec, 0x10, 0x40, 0xc6, 0x7c, 0x86, 0x61, 0xca, 0xf5,
+	0xbc, 0x74, 0xdb, 0x25, 0xf2, 0x81, 0xeb, 0x39, 0x3b, 0x02, 0x5f, 0xa0, 0x9a, 0x66, 0x32, 0x35,
+	0x8f, 0x2d, 0x5d, 0xbb, 0x88, 0x0d, 0xc0, 0xd7, 0x89, 0xe6, 0x51, 0xa8, 0x52, 0x3e, 0xb5, 0xf6,
+	0x81, 0xd0, 0xc4, 0x90, 0x8a, 0xc9, 0xd6, 0xe3, 0x26, 0xdb, 0x15, 0x93, 0xec, 0x39, 0xec, 0x44,
+	0x7c, 0x31, 0xcb, 0x4d, 0xa9, 0x7a, 0x99, 0xda, 0x46, 0xf4, 0x2c, 0xbc, 0x59, 0xa6, 0x38, 0xfc,
+	0x59, 0x83, 0xd6, 0x65, 0x12, 0x45, 0xc9, 0x7d, 0xa5, 0x01, 0x03, 0xf0, 0xef, 0x28, 0xe3, 0x36,
+	0x01, 0x2c, 0xba, 0x76, 0x05, 0xc2, 0x08, 0x1a, 0x1b, 0x02, 0xe1, 0x0a, 0x8a, 0x1a, 0x3d, 0x57,
+	0x60, 0x4b, 0xcc, 0x17, 0xae, 0xa4, 0xe8, 0x45, 0xcf, 0x42, 0x1a, 0xd6, 0x8f, 0x1a, 0x74, 0x47,
+	0x32, 0xc3, 0xa9, 0x4e, 0xb2, 0xe5, 0xd3, 0xc7, 0x64, 0xb7, 0xb4, 0xe1, 0x6c, 0xe9, 0x76, 0x63,
+	0xbd, 0xc7, 0x1b, 0xdb, 0xac, 0x6e, 0xcf, 0xf7, 0x06, 0x78, 0x97, 0x32, 0xc2, 0xa7, 0xd7, 0x72,
+	0x0c, 0x3d, 0x61, 0x1d, 0xac, 0x5b, 0xe5, 0xaf, 0x98, 0x53, 0xae, 0xe7, 0x94, 0xbb, 0xb5, 0x4a,
+	0xcd, 0xea, 0x2a, 0xfd, 0x9d, 0x4d, 0x79, 0x06, 0xdd, 0x3b, 0x19, 0x61, 0x38, 0xe7, 0x6a, 0x5e,
+	0x6e, 0x49, 0xc7, 0x80, 0x2b, 0xae, 0xe6, 0x26, 0x29, 0x55, 0x78, 0x9b, 0x67, 0x12, 0x45, 0xd0,
+	0x3d, 0xaa, 0x9d, 0x74, 0xc6, 0x1d, 0xa9, 0x2e, 0x28, 0x66, 0x2f, 0xa1, 0x2f, 0x55, 0xb8, 0xf6,
+	0x66, 0x4e, 0x05, 0x40, 0xa2, 0x5d, 0xa9, 0x56, 0x53, 0xa3, 0x6e, 0x99, 0xff, 0x8d, 0x0a, 0x95,
+	0xe6, 0x59, 0x86, 0x22, 0xf0, 0x49, 0xd4, 0x95, 0x6a, 0x52, 0x00, 0xf6, 0x3f, 0x74, 0xa4, 0x0a,
+	0x75, 0x66, 0x6a, 0xe8, 0x51, 0xb2, 0x2d, 0xd5, 0x8d, 0x09, 0xcb, 0x93, 0x02, 0x23, 0xd4, 0x28,
+	0x82, 0x1d, 0x7b, 0x72, 0x54, 0x80, 0xe1, 0xef, 0x1a, 0xb4, 0xca, 0x7a, 0xb6, 0x27, 0x62, 0x9d,
+	0x39, 0xf7, 0x15, 0x39, 0x7b, 0x6f, 0xda, 0xbb, 0x61, 0xbb, 0xb1, 0x65, 0x7b, 0x00, 0x7e, 0x9a,
+	0xdf, 0x46, 0x72, 0x5a, 0xa4, 0xcb, 0xdd, 0x2d, 0x10, 0x09, 0x1e, 0x1f, 0xce, 0x00, 0xfc, 0xa2,
+	0x6d, 0xee, 0x6c, 0xa0, 0x40, 0x76, 0x34, 0x42, 0xce, 0x66, 0x72, 0x31, 0xdb, 0x18, 0x4d, 0xc9,
+	0x68, 0xd7, 0x4e, 0xa0, 0x77, 0x85, 0x51, 0x94, 0x8c, 0xf1, 0x73, 0x8e, 0x4a, 0x9b, 0x7b, 0x36,
+	0x46, 0xa5, 0xf8, 0x0c, 0x4b, 0x97, 0x36, 0x1c, 0xbe, 0x80, 0x9d, 0x52, 0xa9, 0xd2, 0x64, 0xa1,
+	0xf0, 0x01, 0xa9, 0x82, 0xfe, 0x3b, 0xda, 0x10, 0x73, 0x07, 0xda, 0x27, 0x1f, 0x82, 0x67, 0xb6,
+	0x95, 0xb4, 0xfe, 0x59, 0xf7, 0x54, 0x60, 0x7c, 0x4a, 0x79, 0xc2, 0xec, 0x2d, 0xfc, 0x5b, 0xec,
+	0xf6, 0xfa, 0xca, 0xa4, 0x86, 0xfa, 0x67, 0x7b, 0x2b, 0xa9, 0x73, 0x9d, 0x8e, 0x77, 0xf3, 0x4d,
+	0x30, 0x3c, 0x07, 0xe6, 0xbe, 0xb4, 0x2c, 0xf2, 0xe1, 0xb7, 0x9e, 0x7d, 0x05, 0x18, 0x61, 0x3c,
+	0xc1, 0xec, 0x8b, 0x9c, 0x22, 0x7b, 0x0d, 0x9d, 0x09, 0x5f, 0x92, 0x4b, 0xd6, 0x27, 0xa9, 0xdb,
+	0x9b, 0x03, 0xe6, 0xa2, 0xf2, 0xf9, 0x6f, 0x00, 0xd6, 0x6f, 0x65, 0xff, 0x91, 0xa2, 0xe2, 0xfd,
+	0x60, 0xbf, 0xc2, 0x8b, 0xe3, 0x17, 0xed, 0x4f, 0x4d, 0xfa, 0x2e, 0xde, 0xb6, 0xe8, 0xc3, 0x78,
+	0xfe, 0x27, 0x00, 0x00, 0xff, 0xff, 0x0a, 0x44, 0x70, 0x94, 0x2d, 0x07, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -134,6 +817,7 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type DemServiceClient interface {
 	SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error)
+	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 }
 
 type demServiceClient struct {
@@ -153,9 +837,19 @@ func (c *demServiceClient) SayHello(ctx context.Context, in *HelloRequest, opts 
 	return out, nil
 }
 
+func (c *demServiceClient) CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error) {
+	out := new(CreateUserResponse)
+	err := c.cc.Invoke(ctx, "/dem.DemService/CreateUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DemServiceServer is the server API for DemService service.
 type DemServiceServer interface {
 	SayHello(context.Context, *HelloRequest) (*HelloResponse, error)
+	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 }
 
 func RegisterDemServiceServer(s *grpc.Server, srv DemServiceServer) {
@@ -180,6 +874,24 @@ func _DemService_SayHello_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DemService_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DemServiceServer).CreateUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/dem.DemService/CreateUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DemServiceServer).CreateUser(ctx, req.(*CreateUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _DemService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "dem.DemService",
 	HandlerType: (*DemServiceServer)(nil),
@@ -187,6 +899,10 @@ var _DemService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SayHello",
 			Handler:    _DemService_SayHello_Handler,
+		},
+		{
+			MethodName: "CreateUser",
+			Handler:    _DemService_CreateUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

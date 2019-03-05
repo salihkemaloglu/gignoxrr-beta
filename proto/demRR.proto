@@ -5,16 +5,86 @@ package dem;
 option go_package = "demRR";
 
 
+message User {
+    string id=1;
+    string name=2;
+    string surname=3;
+    string email=4;
+    string username=5;
+    string password=6;
+    string created_date=7;
+    string updated_date=8;
+}
+
+message UserInformation {
+    string id=1;
+    string user_id=2;
+    string image_path=3;
+    string description=4;
+    string total_space=5;
+    string created_date=6;
+    string updated_date=7;
+    string language_type=8;
+}
+
+message Follow {
+    string id=1;
+    string follower_id=2;
+    string followed_id=3;
+    string follow_date=4;
+    string unfollow_date=5;
+}
+
+message Directory {
+    string id=1;
+    string user_id=2;
+    string name=3;
+    string created_date=4;
+    string updated_date=5;
+}
+
+message File {
+    string id=1;
+    string user_id=2;
+    string directory_id=3;
+    string name=4;
+    string description=5;
+    string created_date=6;
+    string updated_date=7;
+    string file_hash=8;
+    bool is_buried=9;
+    bool is_directory_file=10;
+    bool is_starred=11;
+    bool is_trash=12;
+    bool is_deleted=13;
+}
+
+message Buried {
+    string id=1;
+    string file_name=2;
+    string file_hash=3;
+    string public_hash=4;
+    string description=5;
+    string buried_date=6;
+    string digging_date=7;   
+}
 message HelloRequest {
-    string name = 1;
+    string message = 1;
 }
   
 message HelloResponse {
     string message = 1;
 }
 
+message CreateUserRequest {
+    User user=1;
+    UserInformation user_information=2; 
+}
+message CreateUserResponse{
+    User user=1;
+}
 service DemService{
 
     rpc SayHello (HelloRequest) returns (HelloResponse);
-
+    rpc CreateUser(CreateUserRequest) returns(CreateUserResponse);
 }

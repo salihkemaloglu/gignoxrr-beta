@@ -21,15 +21,34 @@ type server struct {
 }
 
 func (s *server) SayHello(ctx context.Context, req *demRR.HelloRequest) (*demRR.HelloResponse, error) {
-	fmt.Printf("RR service is working...Received rpc from client, message=%s\n", req.GetName())
+	fmt.Printf("RR service is working...Received rpc from client, message=%s\n", req.GetMessage())
 
-	data :=db.File{Name:req.GetName()}
+	data :=db.File{Name:req.GetMessage()}
 	var op repo.FileRepository =data
 	var items, _ = op.Insert()
 	fmt.Println("Received a message:", items)
 
 	return &demRR.HelloResponse{Message: "Hello RR service is working..."}, nil
 }
+
+func (s *server) CreateUser(ctx context.Context, req *demRR.CreateUserRequest) (*demRR.CreateUserResponse, error) {
+	
+	data :=req.GetUser();
+	info:=req.GetUserInformation();
+	// var op repo.FileRepository =data
+	// var items, _ = op.Insert()
+	fmt.Println("username:", data.GetUsername())
+	fmt.Println("password:", data.GetPassword())
+	fmt.Println("info:", info.GetDescription())
+	return &demRR.CreateUserResponse{
+		User:&demRR.User{
+			Id:       	"oid.Hex()",
+			Username:	data.GetUsername(),
+			Password:	data.GetPassword(), 	
+		},
+	}, nil
+}
+
 func main(){
 
 	fmt.Println("RR Service Started")

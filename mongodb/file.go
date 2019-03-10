@@ -20,3 +20,43 @@ type File struct {
 	IsTrash     	 bool          `bson:"istrash" json:"istrash"`
 	IsDeleted   	 bool          `bson:"isdeleted" json:"isdeleted"`
 }
+// Crud operaions for File
+func (r File) GetFile() (*File, error) {
+	err := db.C("file").FindId(r.ID).One(&r)
+	if err != nil {
+		return nil, err
+	}
+	return &r, err
+}
+func (r File) GetAllFiles() ([]File, error) {
+	var files []File
+	err := db.C("file").Find(bson.M{}).All(&files)
+	if err != nil {
+		return nil, err
+	}
+	return files, err
+}
+
+func (r File) Insert()  error {
+	r.ID = bson.NewObjectId()
+	err := db.C("file").Insert(&r)
+	if err!=nil{
+		return err
+	}
+	return nil
+}
+
+func (r File) Update() error {
+	err := db.C("file").Update(bson.M{"_id": r.ID}, &r)
+	if err!=nil {
+		return err
+	}
+	return nil
+}
+func (r File) Delete() error {
+	err := db.C("file").Remove(&r)
+	if err!=nil {
+		return err
+	}
+	return nil
+}

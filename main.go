@@ -42,6 +42,11 @@ func (s *server) Register(ctx context.Context, req *demRR.RegisterUserRequest) (
 	fmt.Println("username:", data.GetUsername())
 	fmt.Println("password:", data.GetPassword())
 	fmt.Println("info:", info.GetDescription())
+
+	user:=db.User{Username:data.GetUsername()}
+	var op repo.UserRepository=&user
+	var result=op.Insert()
+	fmt.Println(result)
 	return &demRR.RegisterUserResponse{
 		User:&demRR.User{
 			Id:       	"oid.Hex()",

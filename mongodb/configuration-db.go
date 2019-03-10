@@ -6,31 +6,17 @@ import (
 	"os"
 	"time"
 	mgo "gopkg.in/mgo.v2"
-	"gopkg.in/mgo.v2/bson"
 )
 
 var db *mgo.Database
-//User info
-type File struct {
-	ID          bson.ObjectId `bson:"_id" json:"id" `
-	Name 	 string       `bson:"name" json:"name"`
-}
-//Config db connection info struct
+
+// Config db connection struct
 type Config struct {
-	ConnectionUrl string `json:"connectionUrl"`
-	DatabaseName  string `json:"databaseName"`	
+	ConnectionUrl    string `json:"connectionUrl"`
+	DatabaseName     string `json:"databaseName"`	
 }
 
-func (r File) Insert()  (string,error) {
-	r.ID = bson.NewObjectId()
-	err := db.C("Files").Insert(&r)
-	if err!=nil{
-		return "false",err
-	}
-	return "true",nil
-}
-
-//Connect Establish a connection to database
+// Connect Establish a connection to database
 func Connect(connectionUrl string,databaseName string) {
 	info := &mgo.DialInfo{
 		Addrs:    []string{connectionUrl},

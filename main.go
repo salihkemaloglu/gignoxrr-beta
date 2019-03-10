@@ -30,9 +30,11 @@ func (s *server) SayHello(ctx context.Context, req *demRR.HelloRequest) (*demRR.
 
 	return &demRR.HelloResponse{Message: "Hello RR service is working..."}, nil
 }
-
-func (s *server) CreateUser(ctx context.Context, req *demRR.CreateUserRequest) (*demRR.CreateUserResponse, error) {
-	
+func (s *server) Login(ctx context.Context, req *demRR.LoginUserRequest) (*demRR.LoginUserResponse, error) {
+	return nil,nil
+}
+func (s *server) Register(ctx context.Context, req *demRR.RegisterUserRequest) (*demRR.RegisterUserResponse, error) {
+	db.UserInformation
 	data :=req.GetUser();
 	info:=req.GetUserInformation();
 	// var op repo.FileRepository =data
@@ -40,7 +42,7 @@ func (s *server) CreateUser(ctx context.Context, req *demRR.CreateUserRequest) (
 	fmt.Println("username:", data.GetUsername())
 	fmt.Println("password:", data.GetPassword())
 	fmt.Println("info:", info.GetDescription())
-	return &demRR.CreateUserResponse{
+	return &demRR.RegisterUserResponse{
 		User:&demRR.User{
 			Id:       	"oid.Hex()",
 			Username:	data.GetUsername(),
@@ -48,7 +50,36 @@ func (s *server) CreateUser(ctx context.Context, req *demRR.CreateUserRequest) (
 		},
 	}, nil
 }
-
+func (s *server) UpdateUser(ctx context.Context, req *demRR.UpdateUserRequest) (*demRR.UpdateUserResponse, error) {
+	return nil,nil
+}
+func (s *server) DeleteUser(ctx context.Context, req *demRR.DeleteUserRequest) (*demRR.DeleteUserResponse, error) {
+	return nil,nil
+}
+func (s *server) GetFile(ctx context.Context, req *demRR.GetFileRequest) (*demRR.GetFileResponse, error) {
+	return nil,nil
+}
+func (s *server) GetAllFiles(req *demRR.GetAllFilesRequest, stream demRR.DemService_GetAllFilesServer)error {
+	data := &blogItem{}
+	stream.Send(&demRR.GetAllFilesResponse{File: dataToBlogPb(data)})
+	return nil
+}
+func (s *server) UpdateFile(ctx context.Context, req *demRR.UpdateFileRequest) (*demRR.UpdateFileResponse, error) {
+	return nil,nil
+}
+func (s *server) DeleteFile(ctx context.Context, req *demRR.DeleteFileRequest) (*demRR.DeleteFileResponse, error) {
+	return nil,nil
+}
+type blogItem struct {
+	AuthorID string             `bson:"author_id"`
+	Content  string             `bson:"content"`
+	Title    string             `bson:"title"`
+}
+func dataToBlogPb(data *blogItem) *demRR.File {
+	return &demRR.File{
+		Name: data.AuthorID,
+	}
+}
 func main(){
 
 	fmt.Println("RR Service Started")

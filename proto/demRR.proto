@@ -4,7 +4,7 @@ package dem;
 
 option go_package = "demRR";
 
-
+//#Database modal structs
 message User {
     string id=1;
     string name=2;
@@ -35,10 +35,10 @@ message Follow {
     string unfollow_date=5;
 }
 
-message Directory {
+message Folder {
     string id=1;
-    string user_id=2;
-    string name=3;
+    string name=2;
+    string user_id=3;
     string created_date=4;
     string updated_date=5;
 }
@@ -46,14 +46,14 @@ message Directory {
 message File {
     string id=1;
     string user_id=2;
-    string directory_id=3;
+    string folder_id=3;
     string name=4;
     string description=5;
     string created_date=6;
     string updated_date=7;
     string file_hash=8;
     bool is_buried=9;
-    bool is_directory_file=10;
+    bool is_folder_file=10;
     bool is_starred=11;
     bool is_trash=12;
     bool is_deleted=13;
@@ -61,13 +61,17 @@ message File {
 
 message Buried {
     string id=1;
-    string file_name=2;
-    string file_hash=3;
-    string public_hash=4;
-    string description=5;
-    string buried_date=6;
-    string digging_date=7;   
+    string user_id=2;
+    string file_name=3;
+    string file_hash=4;
+    string public_hash=5;
+    string description=6;
+    string buried_date=7;
+    string digging_date=8;   
 }
+
+
+//Check is service working ?
 message HelloRequest {
     string message = 1;
 }
@@ -75,16 +79,78 @@ message HelloRequest {
 message HelloResponse {
     string message = 1;
 }
-
-message CreateUserRequest {
+//Only for use login 
+message UserLogin {
+    string username=1;
+    string password=2;
+    string token=3;
+}
+//User methods start
+message RegisterUserRequest {
     User user=1;
     UserInformation user_information=2; 
 }
-message CreateUserResponse{
+message RegisterUserResponse {
     User user=1;
 }
-service DemService{
 
+message LoginUserRequest {
+    UserLogin user=1;
+}
+message LoginUserResponse {
+    UserLogin user=1;
+}
+message UpdateUserRequest {
+    User user=1;
+}
+message UpdateUserResponse {
+    User user=1;
+}
+message DeleteUserRequest {
+    string user_id=1;
+}
+message DeleteUserResponse {
+    string user_id=1;
+}
+//User methods finish
+message UpdateFileRequest {
+    File file=1;
+}
+message UpdateFileResponse {
+    File file=1;
+}
+message GetFileRequest {
+    string file_id=1;
+    string file_hash=2;
+}
+message GetFileResponse {
+    File file=1;
+}
+message GetAllFilesRequest {
+    File file=1;
+}
+message GetAllFilesResponse {
+    File file=1;
+}
+message DeleteFileRequest {
+    string file_id=1;
+    string file_hash=2;
+}
+message DeleteFileResponse {
+    string file_id=1;
+    string file_hash=2;
+}
+service DemService{
+    //Check service
     rpc SayHello (HelloRequest) returns (HelloResponse);
-    rpc CreateUser(CreateUserRequest) returns(CreateUserResponse);
+    //User methods
+    rpc Login (LoginUserRequest) returns (LoginUserResponse);
+    rpc Register (RegisterUserRequest) returns (RegisterUserResponse);
+    rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse);
+    rpc DeleteUser  (DeleteUserRequest) returns (DeleteUserResponse);
+    //File methods
+    rpc GetFile (GetFileRequest) returns (GetFileResponse);
+    rpc GetAllFiles (GetAllFilesRequest) returns (stream GetAllFilesResponse);
+    rpc UpdateFile (UpdateFileRequest) returns (UpdateFileResponse);
+    rpc DeleteFile (DeleteFileRequest) returns (DeleteFileResponse);
 }

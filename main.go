@@ -25,7 +25,7 @@ func (s *server) SayHello(ctx context.Context, req *demRR.HelloRequest) (*demRR.
 
 	data :=db.File{Name:req.GetMessage()}
 	var op repo.FileRepository =data
-	var items, _ = op.Insert()
+	var items= op.Insert()
 	fmt.Println("Received a message:", items)
 
 	return &demRR.HelloResponse{Message: "Hello RR service is working..."}, nil
@@ -34,7 +34,7 @@ func (s *server) Login(ctx context.Context, req *demRR.LoginUserRequest) (*demRR
 	return nil,nil
 }
 func (s *server) Register(ctx context.Context, req *demRR.RegisterUserRequest) (*demRR.RegisterUserResponse, error) {
-	db.UserInformation
+
 	data :=req.GetUser();
 	info:=req.GetUserInformation();
 	// var op repo.FileRepository =data

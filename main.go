@@ -36,12 +36,11 @@ func (s *server) Login(ctx context.Context, req *demRR.LoginUserRequest) (*demRR
 func (s *server) Register(ctx context.Context, req *demRR.RegisterUserRequest) (*demRR.RegisterUserResponse, error) {
 
 	data :=req.GetUser();
-	info:=req.GetUserInformation();
 	// var op repo.FileRepository =data
 	// var items, _ = op.Insert()
 	fmt.Println("username:", data.GetUsername())
 	fmt.Println("password:", data.GetPassword())
-	fmt.Println("info:", info.GetDescription())
+
 
 	user:=db.User{Username:data.GetUsername()}
 	var op repo.UserRepository=&user
@@ -64,7 +63,7 @@ func (s *server) DeleteUser(ctx context.Context, req *demRR.DeleteUserRequest) (
 func (s *server) GetFile(ctx context.Context, req *demRR.GetFileRequest) (*demRR.GetFileResponse, error) {
 	return nil,nil
 }
-func (s *server) GetAllFiles(req *demRR.GetAllFilesRequest, stream demRR.DemService_GetAllFilesServer)error {
+func (s *server) GetAllFiles(req *demRR.GetAllFilesRequest, stream demRR.DemRRService_GetAllFilesServer)error {
 	data := &blogItem{}
 	stream.Send(&demRR.GetAllFilesResponse{File: dataToBlogPb(data)})
 	return nil
@@ -90,7 +89,7 @@ func main(){
 	fmt.Println("RR Service Started")
 	opts := []grpc.ServerOption{}
 	grpcServer := grpc.NewServer(opts...)
-	demRR.RegisterDemServiceServer(grpcServer, &server{})
+	demRR.RegisterDemRRServiceServer(grpcServer, &server{})
 	fmt.Println("Mongodb Service Started")
 	db.LoadConfiguration()
 	wrappedGrpc := grpcweb.WrapServer(grpcServer)

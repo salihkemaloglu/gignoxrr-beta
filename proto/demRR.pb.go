@@ -30,8 +30,12 @@ type User struct {
 	Email                string   `protobuf:"bytes,4,opt,name=email,proto3" json:"email,omitempty"`
 	Username             string   `protobuf:"bytes,5,opt,name=username,proto3" json:"username,omitempty"`
 	Password             string   `protobuf:"bytes,6,opt,name=password,proto3" json:"password,omitempty"`
-	CreatedDate          string   `protobuf:"bytes,7,opt,name=created_date,json=createdDate,proto3" json:"created_date,omitempty"`
-	UpdatedDate          string   `protobuf:"bytes,8,opt,name=updated_date,json=updatedDate,proto3" json:"updated_date,omitempty"`
+	Description          string   `protobuf:"bytes,7,opt,name=description,proto3" json:"description,omitempty"`
+	ImagePath            string   `protobuf:"bytes,8,opt,name=image_path,json=imagePath,proto3" json:"image_path,omitempty"`
+	TotalSpace           string   `protobuf:"bytes,9,opt,name=total_space,json=totalSpace,proto3" json:"total_space,omitempty"`
+	CreatedDate          string   `protobuf:"bytes,10,opt,name=created_date,json=createdDate,proto3" json:"created_date,omitempty"`
+	UpdatedDate          string   `protobuf:"bytes,11,opt,name=updated_date,json=updatedDate,proto3" json:"updated_date,omitempty"`
+	LanguageType         string   `protobuf:"bytes,12,opt,name=language_type,json=languageType,proto3" json:"language_type,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -104,6 +108,27 @@ func (m *User) GetPassword() string {
 	return ""
 }
 
+func (m *User) GetDescription() string {
+	if m != nil {
+		return m.Description
+	}
+	return ""
+}
+
+func (m *User) GetImagePath() string {
+	if m != nil {
+		return m.ImagePath
+	}
+	return ""
+}
+
+func (m *User) GetTotalSpace() string {
+	if m != nil {
+		return m.TotalSpace
+	}
+	return ""
+}
+
 func (m *User) GetCreatedDate() string {
 	if m != nil {
 		return m.CreatedDate
@@ -118,95 +143,7 @@ func (m *User) GetUpdatedDate() string {
 	return ""
 }
 
-type UserInformation struct {
-	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	UserId               string   `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	ImagePath            string   `protobuf:"bytes,3,opt,name=image_path,json=imagePath,proto3" json:"image_path,omitempty"`
-	Description          string   `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
-	TotalSpace           string   `protobuf:"bytes,5,opt,name=total_space,json=totalSpace,proto3" json:"total_space,omitempty"`
-	CreatedDate          string   `protobuf:"bytes,6,opt,name=created_date,json=createdDate,proto3" json:"created_date,omitempty"`
-	UpdatedDate          string   `protobuf:"bytes,7,opt,name=updated_date,json=updatedDate,proto3" json:"updated_date,omitempty"`
-	LanguageType         string   `protobuf:"bytes,8,opt,name=language_type,json=languageType,proto3" json:"language_type,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *UserInformation) Reset()         { *m = UserInformation{} }
-func (m *UserInformation) String() string { return proto.CompactTextString(m) }
-func (*UserInformation) ProtoMessage()    {}
-func (*UserInformation) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cbc60cd21e7c246b, []int{1}
-}
-
-func (m *UserInformation) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_UserInformation.Unmarshal(m, b)
-}
-func (m *UserInformation) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_UserInformation.Marshal(b, m, deterministic)
-}
-func (m *UserInformation) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_UserInformation.Merge(m, src)
-}
-func (m *UserInformation) XXX_Size() int {
-	return xxx_messageInfo_UserInformation.Size(m)
-}
-func (m *UserInformation) XXX_DiscardUnknown() {
-	xxx_messageInfo_UserInformation.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_UserInformation proto.InternalMessageInfo
-
-func (m *UserInformation) GetId() string {
-	if m != nil {
-		return m.Id
-	}
-	return ""
-}
-
-func (m *UserInformation) GetUserId() string {
-	if m != nil {
-		return m.UserId
-	}
-	return ""
-}
-
-func (m *UserInformation) GetImagePath() string {
-	if m != nil {
-		return m.ImagePath
-	}
-	return ""
-}
-
-func (m *UserInformation) GetDescription() string {
-	if m != nil {
-		return m.Description
-	}
-	return ""
-}
-
-func (m *UserInformation) GetTotalSpace() string {
-	if m != nil {
-		return m.TotalSpace
-	}
-	return ""
-}
-
-func (m *UserInformation) GetCreatedDate() string {
-	if m != nil {
-		return m.CreatedDate
-	}
-	return ""
-}
-
-func (m *UserInformation) GetUpdatedDate() string {
-	if m != nil {
-		return m.UpdatedDate
-	}
-	return ""
-}
-
-func (m *UserInformation) GetLanguageType() string {
+func (m *User) GetLanguageType() string {
 	if m != nil {
 		return m.LanguageType
 	}
@@ -228,7 +165,7 @@ func (m *Follow) Reset()         { *m = Follow{} }
 func (m *Follow) String() string { return proto.CompactTextString(m) }
 func (*Follow) ProtoMessage()    {}
 func (*Follow) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cbc60cd21e7c246b, []int{2}
+	return fileDescriptor_cbc60cd21e7c246b, []int{1}
 }
 
 func (m *Follow) XXX_Unmarshal(b []byte) error {
@@ -299,7 +236,7 @@ func (m *Folder) Reset()         { *m = Folder{} }
 func (m *Folder) String() string { return proto.CompactTextString(m) }
 func (*Folder) ProtoMessage()    {}
 func (*Folder) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cbc60cd21e7c246b, []int{3}
+	return fileDescriptor_cbc60cd21e7c246b, []int{2}
 }
 
 func (m *Folder) XXX_Unmarshal(b []byte) error {
@@ -378,7 +315,7 @@ func (m *File) Reset()         { *m = File{} }
 func (m *File) String() string { return proto.CompactTextString(m) }
 func (*File) ProtoMessage()    {}
 func (*File) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cbc60cd21e7c246b, []int{4}
+	return fileDescriptor_cbc60cd21e7c246b, []int{3}
 }
 
 func (m *File) XXX_Unmarshal(b []byte) error {
@@ -508,7 +445,7 @@ func (m *Buried) Reset()         { *m = Buried{} }
 func (m *Buried) String() string { return proto.CompactTextString(m) }
 func (*Buried) ProtoMessage()    {}
 func (*Buried) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cbc60cd21e7c246b, []int{5}
+	return fileDescriptor_cbc60cd21e7c246b, []int{4}
 }
 
 func (m *Buried) XXX_Unmarshal(b []byte) error {
@@ -597,7 +534,7 @@ func (m *HelloRequest) Reset()         { *m = HelloRequest{} }
 func (m *HelloRequest) String() string { return proto.CompactTextString(m) }
 func (*HelloRequest) ProtoMessage()    {}
 func (*HelloRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cbc60cd21e7c246b, []int{6}
+	return fileDescriptor_cbc60cd21e7c246b, []int{5}
 }
 
 func (m *HelloRequest) XXX_Unmarshal(b []byte) error {
@@ -636,7 +573,7 @@ func (m *HelloResponse) Reset()         { *m = HelloResponse{} }
 func (m *HelloResponse) String() string { return proto.CompactTextString(m) }
 func (*HelloResponse) ProtoMessage()    {}
 func (*HelloResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cbc60cd21e7c246b, []int{7}
+	return fileDescriptor_cbc60cd21e7c246b, []int{6}
 }
 
 func (m *HelloResponse) XXX_Unmarshal(b []byte) error {
@@ -678,7 +615,7 @@ func (m *UserLogin) Reset()         { *m = UserLogin{} }
 func (m *UserLogin) String() string { return proto.CompactTextString(m) }
 func (*UserLogin) ProtoMessage()    {}
 func (*UserLogin) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cbc60cd21e7c246b, []int{8}
+	return fileDescriptor_cbc60cd21e7c246b, []int{7}
 }
 
 func (m *UserLogin) XXX_Unmarshal(b []byte) error {
@@ -722,18 +659,17 @@ func (m *UserLogin) GetToken() string {
 
 //User methods start
 type RegisterUserRequest struct {
-	User                 *User            `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
-	UserInformation      *UserInformation `protobuf:"bytes,2,opt,name=user_information,json=userInformation,proto3" json:"user_information,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
-	XXX_unrecognized     []byte           `json:"-"`
-	XXX_sizecache        int32            `json:"-"`
+	User                 *User    `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
 func (m *RegisterUserRequest) Reset()         { *m = RegisterUserRequest{} }
 func (m *RegisterUserRequest) String() string { return proto.CompactTextString(m) }
 func (*RegisterUserRequest) ProtoMessage()    {}
 func (*RegisterUserRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cbc60cd21e7c246b, []int{9}
+	return fileDescriptor_cbc60cd21e7c246b, []int{8}
 }
 
 func (m *RegisterUserRequest) XXX_Unmarshal(b []byte) error {
@@ -761,13 +697,6 @@ func (m *RegisterUserRequest) GetUser() *User {
 	return nil
 }
 
-func (m *RegisterUserRequest) GetUserInformation() *UserInformation {
-	if m != nil {
-		return m.UserInformation
-	}
-	return nil
-}
-
 type RegisterUserResponse struct {
 	User                 *User    `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -779,7 +708,7 @@ func (m *RegisterUserResponse) Reset()         { *m = RegisterUserResponse{} }
 func (m *RegisterUserResponse) String() string { return proto.CompactTextString(m) }
 func (*RegisterUserResponse) ProtoMessage()    {}
 func (*RegisterUserResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cbc60cd21e7c246b, []int{10}
+	return fileDescriptor_cbc60cd21e7c246b, []int{9}
 }
 
 func (m *RegisterUserResponse) XXX_Unmarshal(b []byte) error {
@@ -818,7 +747,7 @@ func (m *LoginUserRequest) Reset()         { *m = LoginUserRequest{} }
 func (m *LoginUserRequest) String() string { return proto.CompactTextString(m) }
 func (*LoginUserRequest) ProtoMessage()    {}
 func (*LoginUserRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cbc60cd21e7c246b, []int{11}
+	return fileDescriptor_cbc60cd21e7c246b, []int{10}
 }
 
 func (m *LoginUserRequest) XXX_Unmarshal(b []byte) error {
@@ -857,7 +786,7 @@ func (m *LoginUserResponse) Reset()         { *m = LoginUserResponse{} }
 func (m *LoginUserResponse) String() string { return proto.CompactTextString(m) }
 func (*LoginUserResponse) ProtoMessage()    {}
 func (*LoginUserResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cbc60cd21e7c246b, []int{12}
+	return fileDescriptor_cbc60cd21e7c246b, []int{11}
 }
 
 func (m *LoginUserResponse) XXX_Unmarshal(b []byte) error {
@@ -896,7 +825,7 @@ func (m *UpdateUserRequest) Reset()         { *m = UpdateUserRequest{} }
 func (m *UpdateUserRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateUserRequest) ProtoMessage()    {}
 func (*UpdateUserRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cbc60cd21e7c246b, []int{13}
+	return fileDescriptor_cbc60cd21e7c246b, []int{12}
 }
 
 func (m *UpdateUserRequest) XXX_Unmarshal(b []byte) error {
@@ -935,7 +864,7 @@ func (m *UpdateUserResponse) Reset()         { *m = UpdateUserResponse{} }
 func (m *UpdateUserResponse) String() string { return proto.CompactTextString(m) }
 func (*UpdateUserResponse) ProtoMessage()    {}
 func (*UpdateUserResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cbc60cd21e7c246b, []int{14}
+	return fileDescriptor_cbc60cd21e7c246b, []int{13}
 }
 
 func (m *UpdateUserResponse) XXX_Unmarshal(b []byte) error {
@@ -974,7 +903,7 @@ func (m *DeleteUserRequest) Reset()         { *m = DeleteUserRequest{} }
 func (m *DeleteUserRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteUserRequest) ProtoMessage()    {}
 func (*DeleteUserRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cbc60cd21e7c246b, []int{15}
+	return fileDescriptor_cbc60cd21e7c246b, []int{14}
 }
 
 func (m *DeleteUserRequest) XXX_Unmarshal(b []byte) error {
@@ -1013,7 +942,7 @@ func (m *DeleteUserResponse) Reset()         { *m = DeleteUserResponse{} }
 func (m *DeleteUserResponse) String() string { return proto.CompactTextString(m) }
 func (*DeleteUserResponse) ProtoMessage()    {}
 func (*DeleteUserResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cbc60cd21e7c246b, []int{16}
+	return fileDescriptor_cbc60cd21e7c246b, []int{15}
 }
 
 func (m *DeleteUserResponse) XXX_Unmarshal(b []byte) error {
@@ -1053,7 +982,7 @@ func (m *UpdateFileRequest) Reset()         { *m = UpdateFileRequest{} }
 func (m *UpdateFileRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateFileRequest) ProtoMessage()    {}
 func (*UpdateFileRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cbc60cd21e7c246b, []int{17}
+	return fileDescriptor_cbc60cd21e7c246b, []int{16}
 }
 
 func (m *UpdateFileRequest) XXX_Unmarshal(b []byte) error {
@@ -1092,7 +1021,7 @@ func (m *UpdateFileResponse) Reset()         { *m = UpdateFileResponse{} }
 func (m *UpdateFileResponse) String() string { return proto.CompactTextString(m) }
 func (*UpdateFileResponse) ProtoMessage()    {}
 func (*UpdateFileResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cbc60cd21e7c246b, []int{18}
+	return fileDescriptor_cbc60cd21e7c246b, []int{17}
 }
 
 func (m *UpdateFileResponse) XXX_Unmarshal(b []byte) error {
@@ -1132,7 +1061,7 @@ func (m *GetFileRequest) Reset()         { *m = GetFileRequest{} }
 func (m *GetFileRequest) String() string { return proto.CompactTextString(m) }
 func (*GetFileRequest) ProtoMessage()    {}
 func (*GetFileRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cbc60cd21e7c246b, []int{19}
+	return fileDescriptor_cbc60cd21e7c246b, []int{18}
 }
 
 func (m *GetFileRequest) XXX_Unmarshal(b []byte) error {
@@ -1178,7 +1107,7 @@ func (m *GetFileResponse) Reset()         { *m = GetFileResponse{} }
 func (m *GetFileResponse) String() string { return proto.CompactTextString(m) }
 func (*GetFileResponse) ProtoMessage()    {}
 func (*GetFileResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cbc60cd21e7c246b, []int{20}
+	return fileDescriptor_cbc60cd21e7c246b, []int{19}
 }
 
 func (m *GetFileResponse) XXX_Unmarshal(b []byte) error {
@@ -1217,7 +1146,7 @@ func (m *GetAllFilesRequest) Reset()         { *m = GetAllFilesRequest{} }
 func (m *GetAllFilesRequest) String() string { return proto.CompactTextString(m) }
 func (*GetAllFilesRequest) ProtoMessage()    {}
 func (*GetAllFilesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cbc60cd21e7c246b, []int{21}
+	return fileDescriptor_cbc60cd21e7c246b, []int{20}
 }
 
 func (m *GetAllFilesRequest) XXX_Unmarshal(b []byte) error {
@@ -1256,7 +1185,7 @@ func (m *GetAllFilesResponse) Reset()         { *m = GetAllFilesResponse{} }
 func (m *GetAllFilesResponse) String() string { return proto.CompactTextString(m) }
 func (*GetAllFilesResponse) ProtoMessage()    {}
 func (*GetAllFilesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cbc60cd21e7c246b, []int{22}
+	return fileDescriptor_cbc60cd21e7c246b, []int{21}
 }
 
 func (m *GetAllFilesResponse) XXX_Unmarshal(b []byte) error {
@@ -1296,7 +1225,7 @@ func (m *DeleteFileRequest) Reset()         { *m = DeleteFileRequest{} }
 func (m *DeleteFileRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteFileRequest) ProtoMessage()    {}
 func (*DeleteFileRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cbc60cd21e7c246b, []int{23}
+	return fileDescriptor_cbc60cd21e7c246b, []int{22}
 }
 
 func (m *DeleteFileRequest) XXX_Unmarshal(b []byte) error {
@@ -1343,7 +1272,7 @@ func (m *DeleteFileResponse) Reset()         { *m = DeleteFileResponse{} }
 func (m *DeleteFileResponse) String() string { return proto.CompactTextString(m) }
 func (*DeleteFileResponse) ProtoMessage()    {}
 func (*DeleteFileResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_cbc60cd21e7c246b, []int{24}
+	return fileDescriptor_cbc60cd21e7c246b, []int{23}
 }
 
 func (m *DeleteFileResponse) XXX_Unmarshal(b []byte) error {
@@ -1380,7 +1309,6 @@ func (m *DeleteFileResponse) GetFileHash() string {
 
 func init() {
 	proto.RegisterType((*User)(nil), "dem.User")
-	proto.RegisterType((*UserInformation)(nil), "dem.UserInformation")
 	proto.RegisterType((*Follow)(nil), "dem.Follow")
 	proto.RegisterType((*Folder)(nil), "dem.Folder")
 	proto.RegisterType((*File)(nil), "dem.File")
@@ -1409,70 +1337,68 @@ func init() {
 func init() { proto.RegisterFile("proto/demRR.proto", fileDescriptor_cbc60cd21e7c246b) }
 
 var fileDescriptor_cbc60cd21e7c246b = []byte{
-	// 999 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x57, 0xdd, 0x6e, 0xe3, 0x44,
-	0x14, 0x56, 0x52, 0xe7, 0xef, 0x24, 0x6d, 0x37, 0xd3, 0x40, 0xbc, 0x41, 0xab, 0x16, 0xc3, 0x45,
-	0x91, 0xa0, 0x2c, 0xed, 0xb2, 0x5c, 0xa1, 0x15, 0x55, 0xd5, 0xdd, 0x20, 0x84, 0x50, 0xba, 0x7b,
-	0x01, 0x37, 0xd1, 0x34, 0x33, 0x4d, 0x46, 0x38, 0xb6, 0xf1, 0x8c, 0x59, 0xf5, 0x92, 0x2b, 0x2e,
-	0x78, 0x09, 0x9e, 0x80, 0xe7, 0xe1, 0x39, 0x78, 0x02, 0x34, 0x67, 0xc6, 0xf1, 0xd8, 0x2e, 0xdd,
-	0x00, 0x7b, 0x97, 0xf9, 0xce, 0x77, 0x7c, 0xce, 0x77, 0xfe, 0xa4, 0xc0, 0x30, 0x49, 0x63, 0x15,
-	0x7f, 0xca, 0xf8, 0x7a, 0x36, 0x3b, 0xc1, 0xdf, 0x64, 0x87, 0xf1, 0x75, 0xf0, 0x67, 0x03, 0xbc,
-	0x57, 0x92, 0xa7, 0x64, 0x0f, 0x9a, 0x82, 0xf9, 0x8d, 0xa3, 0xc6, 0x71, 0x6f, 0xd6, 0x14, 0x8c,
-	0x10, 0xf0, 0x22, 0xba, 0xe6, 0x7e, 0x13, 0x11, 0xfc, 0x4d, 0x7c, 0xe8, 0xc8, 0x2c, 0x45, 0x78,
-	0x07, 0xe1, 0xfc, 0x49, 0x46, 0xd0, 0xe2, 0x6b, 0x2a, 0x42, 0xdf, 0x43, 0xdc, 0x3c, 0xc8, 0x04,
-	0xba, 0x99, 0xe4, 0xc6, 0xa1, 0x85, 0x86, 0xcd, 0x5b, 0xdb, 0x12, 0x2a, 0xe5, 0xeb, 0x38, 0x65,
-	0x7e, 0xdb, 0xd8, 0xf2, 0x37, 0x79, 0x1f, 0x06, 0x8b, 0x94, 0x53, 0xc5, 0xd9, 0x9c, 0x51, 0xc5,
-	0xfd, 0x0e, 0xda, 0xfb, 0x16, 0xbb, 0xa0, 0x8a, 0x6b, 0x4a, 0x96, 0xb0, 0x82, 0xd2, 0x35, 0x14,
-	0x8b, 0x69, 0x4a, 0xf0, 0x6b, 0x13, 0xf6, 0xb5, 0xb4, 0x69, 0x74, 0x13, 0xa7, 0x6b, 0xaa, 0x44,
-	0x1c, 0xd5, 0x54, 0x8e, 0xa1, 0xa3, 0x33, 0x9a, 0x0b, 0x66, 0x85, 0xb6, 0xf5, 0x73, 0xca, 0xc8,
-	0x23, 0x00, 0xb1, 0xa6, 0x4b, 0x3e, 0x4f, 0xa8, 0x5a, 0x59, 0xb5, 0x3d, 0x44, 0xbe, 0xa3, 0x6a,
-	0x45, 0x8e, 0xa0, 0xcf, 0xb8, 0x5c, 0xa4, 0x22, 0xd1, 0x9f, 0xb5, 0xaa, 0x5d, 0x88, 0x1c, 0x42,
-	0x5f, 0xc5, 0x8a, 0x86, 0x73, 0x99, 0xd0, 0x45, 0x2e, 0x1f, 0x10, 0xba, 0xd2, 0x48, 0x4d, 0x64,
-	0xfb, 0xcd, 0x22, 0x3b, 0x35, 0x91, 0xe4, 0x03, 0xd8, 0x0d, 0x69, 0xb4, 0xcc, 0x74, 0xaa, 0xea,
-	0x36, 0xc9, 0x0b, 0x31, 0xc8, 0xc1, 0x97, 0xb7, 0x09, 0x0f, 0x7e, 0x6f, 0x40, 0xfb, 0x32, 0x0e,
-	0xc3, 0xf8, 0x75, 0xad, 0x00, 0x87, 0xd0, 0xbf, 0x41, 0x8b, 0x5b, 0x04, 0xc8, 0xa1, 0xa9, 0x4b,
-	0x60, 0x9a, 0xb0, 0x53, 0x22, 0x30, 0x97, 0x60, 0x72, 0xf4, 0x5c, 0x42, 0x9e, 0x62, 0x16, 0xb9,
-	0x14, 0x53, 0x8b, 0x41, 0x0e, 0x62, 0xb3, 0x7e, 0x33, 0x29, 0xb2, 0x2d, 0x27, 0xd1, 0xe9, 0xdb,
-	0x4e, 0xa9, 0x6f, 0xd5, 0xaa, 0x7a, 0x6f, 0xae, 0x6a, 0xab, 0x3e, 0x3a, 0xbf, 0xec, 0x80, 0x77,
-	0x29, 0x42, 0xbe, 0xfd, 0xbc, 0xbc, 0x07, 0xbd, 0x1b, 0x4c, 0xbf, 0x48, 0xa9, 0x6b, 0x80, 0x69,
-	0xa1, 0xc0, 0x73, 0x14, 0x54, 0x26, 0xa8, 0x55, 0x9f, 0xa0, 0xb7, 0x33, 0x20, 0x3a, 0x31, 0x11,
-	0xf2, 0xf9, 0x8a, 0xca, 0x95, 0x1d, 0x8e, 0xae, 0x06, 0x5e, 0x50, 0xb9, 0xd2, 0x46, 0x21, 0xe7,
-	0xd7, 0x59, 0x2a, 0x38, 0xf3, 0x7b, 0x47, 0x8d, 0xe3, 0xee, 0xac, 0x2b, 0xe4, 0x39, 0xbe, 0xc9,
-	0x87, 0xb0, 0x27, 0xe4, 0xdc, 0xaa, 0xd2, 0x2e, 0x3e, 0x20, 0x63, 0x20, 0xa4, 0xe9, 0x14, 0x56,
-	0x48, 0x2f, 0x8a, 0x9c, 0x4b, 0x45, 0xd3, 0x94, 0x33, 0xbf, 0x8f, 0x8c, 0x9e, 0x90, 0x57, 0x06,
-	0x20, 0x0f, 0xa1, 0x2b, 0xe4, 0x5c, 0xa5, 0x3a, 0xfa, 0x00, 0x8d, 0x1d, 0x21, 0x5f, 0xea, 0xa7,
-	0xf5, 0x64, 0x3c, 0xe4, 0x8a, 0x33, 0x7f, 0x37, 0xf7, 0xbc, 0x30, 0x40, 0xf0, 0x57, 0x03, 0xda,
-	0x36, 0x93, 0x7f, 0xd5, 0x05, 0x2d, 0xd6, 0x39, 0x51, 0x28, 0xf6, 0x5b, 0x5d, 0xf1, 0x52, 0x25,
-	0xbc, 0x4a, 0x25, 0x0e, 0xa1, 0x9f, 0x64, 0xd7, 0xa1, 0x58, 0x18, 0xb3, 0x5d, 0x57, 0x03, 0x21,
-	0xa1, 0xd2, 0xaf, 0xf6, 0x9d, 0x1b, 0x6f, 0x2a, 0xe9, 0xf6, 0x02, 0x0c, 0x94, 0x77, 0x8b, 0x89,
-	0xe5, 0x52, 0x44, 0xcb, 0xd2, 0xcd, 0xb2, 0x18, 0x0e, 0xde, 0x31, 0x0c, 0x5e, 0xf0, 0x30, 0x8c,
-	0x67, 0xfc, 0xa7, 0x8c, 0x4b, 0xa5, 0x2f, 0xee, 0x9a, 0x4b, 0x49, 0x97, 0xdc, 0xca, 0xcf, 0x9f,
-	0xc1, 0x47, 0xb0, 0x6b, 0x99, 0x32, 0x89, 0x23, 0xc9, 0xef, 0xa1, 0x7e, 0x0f, 0x3d, 0x7d, 0x07,
-	0xbf, 0x89, 0x97, 0x22, 0x2a, 0xdd, 0xe4, 0xc6, 0x3d, 0x37, 0xb9, 0x59, 0xb9, 0xc9, 0x23, 0x68,
-	0xa9, 0xf8, 0x47, 0x1e, 0xd9, 0xb2, 0x9a, 0x47, 0x90, 0xc1, 0xc1, 0x8c, 0x2f, 0x85, 0x54, 0x3c,
-	0xd5, 0x21, 0xf2, 0xb4, 0x1f, 0x81, 0xa7, 0x3f, 0x8a, 0x01, 0xfa, 0xa7, 0xbd, 0x13, 0xc6, 0xd7,
-	0x27, 0x68, 0x47, 0x98, 0x3c, 0x83, 0x07, 0xa6, 0x7f, 0xc5, 0x65, 0xc6, 0x78, 0xfd, 0xd3, 0xd1,
-	0x86, 0xea, 0x5c, 0xed, 0xd9, 0x7e, 0x56, 0x06, 0x82, 0xcf, 0x61, 0x54, 0x0e, 0x6b, 0x6b, 0x70,
-	0x7f, 0xdc, 0xe0, 0x29, 0x3c, 0xc0, 0x22, 0xb8, 0xa9, 0x06, 0x25, 0x97, 0xbd, 0x8d, 0x0b, 0x12,
-	0xad, 0xdf, 0x17, 0x30, 0x74, 0xfc, 0x6c, 0xac, 0x6d, 0x1c, 0x4f, 0x61, 0xf8, 0x0a, 0x77, 0x71,
-	0xfb, 0xe2, 0x04, 0x67, 0x40, 0x5c, 0x9f, 0xed, 0x94, 0x7d, 0x0c, 0x43, 0xb3, 0x37, 0x6e, 0x20,
-	0x67, 0x4d, 0x1a, 0xee, 0x9a, 0x04, 0x9f, 0x00, 0x71, 0xd9, 0x36, 0xc4, 0x3f, 0xd2, 0x37, 0x2a,
-	0xf4, 0xc2, 0x3b, 0x2a, 0xf0, 0x26, 0xb8, 0x09, 0xa1, 0x1d, 0xe1, 0x42, 0x85, 0xf1, 0x29, 0x54,
-	0xdc, 0xe7, 0x74, 0x09, 0x7b, 0xcf, 0xb9, 0x72, 0xa3, 0x8c, 0xa1, 0x83, 0x3b, 0x5b, 0xe4, 0xa4,
-	0x9f, 0xce, 0xa6, 0xe3, 0xb6, 0x36, 0xcb, 0xcb, 0x1c, 0x3c, 0x86, 0xfd, 0xcd, 0x77, 0xb6, 0x8b,
-	0x7c, 0x06, 0xe4, 0x39, 0x57, 0x5f, 0x85, 0xa1, 0xc6, 0xe4, 0x96, 0x1a, 0x9f, 0xc0, 0x41, 0xc9,
-	0x69, 0xbb, 0x50, 0xd3, 0xbc, 0x55, 0xff, 0x5f, 0xe7, 0xd7, 0x79, 0x1f, 0x4b, 0x52, 0xff, 0xd3,
-	0xb7, 0x4e, 0xff, 0xf0, 0x00, 0x2e, 0xf8, 0xfa, 0x8a, 0xa7, 0x3f, 0x8b, 0x05, 0x27, 0x9f, 0x41,
-	0xf7, 0x8a, 0xde, 0xe2, 0x85, 0x21, 0x43, 0x94, 0xe0, 0xde, 0xa5, 0x09, 0x71, 0x21, 0x1b, 0xf7,
-	0x29, 0xb4, 0xcc, 0x89, 0x79, 0x07, 0x8d, 0xd5, 0x4d, 0x9b, 0xbc, 0x5b, 0x85, 0xad, 0xdf, 0x33,
-	0xe8, 0xe6, 0xcb, 0x4c, 0x7c, 0xe4, 0xdc, 0x71, 0x52, 0x26, 0x0f, 0xef, 0xb0, 0xd8, 0x0f, 0x7c,
-	0x09, 0x50, 0x6c, 0x0c, 0x31, 0x61, 0x6a, 0x6b, 0x37, 0x19, 0xd7, 0xf0, 0xc2, 0xbd, 0xd8, 0x06,
-	0xeb, 0x5e, 0x5b, 0x26, 0xeb, 0x7e, 0xc7, 0xda, 0x3c, 0x81, 0x8e, 0x1d, 0x36, 0x72, 0x80, 0x9c,
-	0xf2, 0x08, 0x4f, 0x46, 0x65, 0xd0, 0x7a, 0x9d, 0x43, 0xdf, 0x99, 0x1d, 0x32, 0xce, 0x49, 0x95,
-	0x11, 0x9c, 0xf8, 0x75, 0x83, 0xf9, 0xc2, 0xe3, 0x46, 0xa1, 0x1b, 0x83, 0xbb, 0xba, 0xdd, 0xf8,
-	0xe3, 0x1a, 0x5e, 0xd5, 0xed, 0xb8, 0xd7, 0x26, 0xb3, 0xa4, 0xdb, 0x75, 0x3f, 0xef, 0xfc, 0xd0,
-	0xc2, 0x7f, 0x13, 0xd7, 0x6d, 0xfc, 0x3b, 0x71, 0xf6, 0x77, 0x00, 0x00, 0x00, 0xff, 0xff, 0x91,
-	0xdb, 0xae, 0xa0, 0x63, 0x0c, 0x00, 0x00,
+	// 964 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x56, 0xc1, 0x6e, 0x23, 0x45,
+	0x10, 0x95, 0x9d, 0xb1, 0x3d, 0x2e, 0x3b, 0x01, 0x77, 0x02, 0x9e, 0x35, 0x5a, 0x65, 0x19, 0x38,
+	0x2c, 0x12, 0x84, 0x25, 0x09, 0xcb, 0x09, 0x21, 0xa2, 0x28, 0xbb, 0x41, 0x08, 0x21, 0x67, 0xf7,
+	0x00, 0x17, 0xab, 0xe3, 0xae, 0x75, 0x5a, 0x8c, 0x3d, 0xc3, 0x74, 0x9b, 0x55, 0x8e, 0x9c, 0xf9,
+	0x09, 0x3e, 0x81, 0x3f, 0xe2, 0x1f, 0xf8, 0x02, 0xd4, 0xd5, 0x3d, 0x99, 0x9e, 0x99, 0x90, 0x78,
+	0xd9, 0x9b, 0xfb, 0xd5, 0x7b, 0x53, 0xf5, 0xba, 0xaa, 0x5a, 0x86, 0x51, 0x96, 0xa7, 0x3a, 0xfd,
+	0x5c, 0xe0, 0x72, 0x3a, 0x3d, 0xa0, 0xdf, 0x6c, 0x4b, 0xe0, 0x32, 0xfe, 0xbb, 0x0d, 0xc1, 0x4b,
+	0x85, 0x39, 0xdb, 0x81, 0xb6, 0x14, 0x51, 0xeb, 0x51, 0xeb, 0x71, 0x7f, 0xda, 0x96, 0x82, 0x31,
+	0x08, 0x56, 0x7c, 0x89, 0x51, 0x9b, 0x10, 0xfa, 0xcd, 0x22, 0xe8, 0xa9, 0x75, 0x4e, 0xf0, 0x16,
+	0xc1, 0xc5, 0x91, 0xed, 0x41, 0x07, 0x97, 0x5c, 0x26, 0x51, 0x40, 0xb8, 0x3d, 0xb0, 0x09, 0x84,
+	0x6b, 0x85, 0x56, 0xd0, 0xa1, 0xc0, 0xcd, 0xd9, 0xc4, 0x32, 0xae, 0xd4, 0xeb, 0x34, 0x17, 0x51,
+	0xd7, 0xc6, 0x8a, 0x33, 0x7b, 0x04, 0x03, 0x81, 0x6a, 0x9e, 0xcb, 0x4c, 0xcb, 0x74, 0x15, 0xf5,
+	0x28, 0xec, 0x43, 0xec, 0x21, 0x80, 0x5c, 0xf2, 0x05, 0xce, 0x32, 0xae, 0xaf, 0xa2, 0x90, 0x08,
+	0x7d, 0x42, 0x7e, 0xe4, 0xfa, 0x8a, 0xed, 0xc3, 0x40, 0xa7, 0x9a, 0x27, 0x33, 0x95, 0xf1, 0x39,
+	0x46, 0x7d, 0x8a, 0x03, 0x41, 0x17, 0x06, 0x61, 0x1f, 0xc2, 0x70, 0x9e, 0x23, 0xd7, 0x28, 0x66,
+	0x82, 0x6b, 0x8c, 0xc0, 0xa6, 0x70, 0xd8, 0x29, 0xd7, 0x44, 0x59, 0x67, 0xa2, 0xa4, 0x0c, 0x2c,
+	0xc5, 0x61, 0x44, 0xf9, 0x08, 0xb6, 0x13, 0xbe, 0x5a, 0xac, 0x4d, 0x21, 0xfa, 0x3a, 0xc3, 0x68,
+	0x48, 0x9c, 0x61, 0x01, 0xbe, 0xb8, 0xce, 0x30, 0xfe, 0xb3, 0x05, 0xdd, 0xb3, 0x34, 0x49, 0xd2,
+	0xd7, 0x8d, 0x3b, 0xde, 0x87, 0xc1, 0x2b, 0x8a, 0x60, 0x3e, 0x93, 0xc2, 0x5d, 0x35, 0x14, 0xd0,
+	0xb9, 0x4f, 0x10, 0x86, 0xb0, 0x55, 0x21, 0x08, 0x9f, 0x60, 0x6b, 0x0c, 0x7c, 0x42, 0x51, 0xe2,
+	0x7a, 0xe5, 0x53, 0x6c, 0x1f, 0x86, 0x05, 0x68, 0x48, 0xf1, 0x1f, 0xb6, 0x44, 0xb1, 0xe1, 0x18,
+	0x8c, 0xa1, 0x67, 0xda, 0x58, 0x56, 0xd4, 0x35, 0xc7, 0x73, 0xd1, 0xb8, 0xd5, 0xe0, 0xfe, 0x5b,
+	0xed, 0x34, 0x6e, 0x35, 0xfe, 0x7d, 0x0b, 0x82, 0x33, 0x99, 0x60, 0xa3, 0x16, 0x2f, 0x6f, 0xbb,
+	0x92, 0xf7, 0x03, 0xe8, 0xbf, 0xa2, 0xf2, 0xcb, 0x92, 0x42, 0x0b, 0x9c, 0x97, 0x0e, 0x02, 0xcf,
+	0x41, 0x6d, 0xc0, 0x3a, 0xcd, 0x01, 0xab, 0x5b, 0xe9, 0xde, 0x6f, 0xa5, 0xd7, 0x1c, 0x10, 0x53,
+	0x98, 0x4c, 0x70, 0x76, 0xc5, 0x55, 0x31, 0xa5, 0xa1, 0x01, 0x9e, 0x73, 0x75, 0x65, 0x82, 0x52,
+	0xcd, 0x2e, 0xd7, 0xb9, 0x44, 0x41, 0x23, 0x1a, 0x4e, 0x43, 0xa9, 0x4e, 0xe8, 0xcc, 0x3e, 0x86,
+	0x1d, 0xa9, 0x66, 0xce, 0x95, 0x91, 0xd0, 0x88, 0x86, 0xd3, 0xa1, 0x54, 0xb6, 0x53, 0x74, 0x43,
+	0x66, 0x0d, 0xd4, 0x4c, 0x69, 0x9e, 0xe7, 0x28, 0x68, 0x42, 0xc3, 0x69, 0x5f, 0xaa, 0x0b, 0x0b,
+	0xb0, 0x07, 0x10, 0x4a, 0x35, 0xd3, 0xb9, 0xc9, 0x3e, 0xa4, 0x60, 0x4f, 0xaa, 0x17, 0xe6, 0xe8,
+	0x94, 0x02, 0x13, 0xd4, 0x28, 0xa2, 0xed, 0x42, 0x79, 0x6a, 0x81, 0xf8, 0x9f, 0x16, 0x74, 0x5d,
+	0x25, 0x6f, 0xd4, 0x05, 0x63, 0xd6, 0x7b, 0x1f, 0xc8, 0xec, 0x0f, 0xe6, 0xc6, 0x2b, 0x37, 0x11,
+	0xd4, 0x6e, 0x62, 0x1f, 0x06, 0xd9, 0xfa, 0x32, 0x91, 0x73, 0x1b, 0xb6, 0xed, 0x00, 0x0b, 0x11,
+	0xa1, 0xd6, 0xaf, 0x6e, 0xb3, 0x5f, 0xfb, 0x30, 0xb0, 0x37, 0xe9, 0xf7, 0x02, 0x2c, 0x54, 0x74,
+	0x4b, 0xc8, 0xc5, 0x42, 0xae, 0x16, 0x96, 0x11, 0xba, 0x6f, 0x58, 0x8c, 0x06, 0xef, 0x31, 0x0c,
+	0x9f, 0x63, 0x92, 0xa4, 0x53, 0xfc, 0x75, 0x8d, 0x4a, 0x9b, 0xe7, 0x6e, 0x89, 0x4a, 0xf1, 0x05,
+	0x3a, 0xfb, 0xc5, 0x31, 0xfe, 0x04, 0xb6, 0x1d, 0x53, 0x65, 0xe9, 0x4a, 0xe1, 0x1d, 0xd4, 0x9f,
+	0xa0, 0x6f, 0xde, 0xd7, 0xef, 0xd3, 0x85, 0x5c, 0x55, 0x1e, 0xc4, 0xd6, 0x1d, 0x0f, 0x62, 0xbb,
+	0xf6, 0x20, 0xee, 0x41, 0x47, 0xa7, 0xbf, 0xe0, 0xca, 0x5d, 0xab, 0x3d, 0xc4, 0xc7, 0xb0, 0x3b,
+	0xc5, 0x85, 0x54, 0x1a, 0x73, 0x93, 0xa2, 0x28, 0xfb, 0x21, 0x04, 0xe6, 0xa3, 0x94, 0x60, 0x70,
+	0xd8, 0x3f, 0x10, 0xb8, 0x3c, 0xa0, 0x38, 0xc1, 0xf1, 0x97, 0xb0, 0x57, 0x55, 0x39, 0x0b, 0xf7,
+	0xc8, 0x9e, 0xc2, 0xbb, 0xe4, 0xc1, 0xcf, 0x14, 0x57, 0x24, 0x3b, 0x37, 0x12, 0x22, 0x3a, 0xdd,
+	0x57, 0x30, 0xf2, 0x74, 0x2e, 0xd7, 0x26, 0xc2, 0x43, 0x18, 0xbd, 0xa4, 0x55, 0x7a, 0x03, 0x6f,
+	0x47, 0xc0, 0x7c, 0xcd, 0x66, 0xce, 0x3e, 0x85, 0x91, 0x1d, 0x7b, 0x3f, 0x91, 0x37, 0xe5, 0x2d,
+	0x7f, 0xca, 0xe3, 0xcf, 0x80, 0xf9, 0x6c, 0x97, 0xe2, 0x3f, 0xe9, 0x37, 0x2e, 0xcc, 0xbe, 0x7a,
+	0x2e, 0x68, 0xa5, 0xfd, 0x82, 0x28, 0x4e, 0x70, 0xe9, 0xc2, 0x6a, 0x4a, 0x17, 0x77, 0x89, 0xce,
+	0x60, 0xe7, 0x19, 0x6a, 0x3f, 0xcb, 0x18, 0x7a, 0xb4, 0x72, 0x65, 0x4d, 0xe6, 0xe8, 0x2d, 0x2a,
+	0x2d, 0x5b, 0xbb, 0xba, 0x8b, 0xf1, 0x13, 0x78, 0xe7, 0xe6, 0x3b, 0x9b, 0x65, 0x3e, 0x02, 0xf6,
+	0x0c, 0xf5, 0xb7, 0x49, 0x62, 0x30, 0xb5, 0xa1, 0xc7, 0x63, 0xd8, 0xad, 0x88, 0x36, 0x4b, 0x75,
+	0x5e, 0xb4, 0xea, 0xed, 0x7d, 0x7e, 0x57, 0xf4, 0xb1, 0x62, 0xf5, 0x7f, 0x7d, 0xeb, 0xf0, 0xaf,
+	0x00, 0x86, 0xa7, 0xe6, 0x9f, 0xd5, 0x05, 0xe6, 0xbf, 0xc9, 0x39, 0xb2, 0x2f, 0x20, 0xbc, 0xe0,
+	0xd7, 0xf4, 0x44, 0xb0, 0x11, 0x99, 0xf0, 0x1f, 0x96, 0x09, 0xf3, 0x21, 0x97, 0xf9, 0x29, 0x74,
+	0xec, 0x1b, 0xf1, 0x1e, 0x05, 0xeb, 0xbb, 0x36, 0x79, 0xbf, 0x0e, 0x3b, 0xdd, 0x37, 0x10, 0x16,
+	0xeb, 0xcc, 0x22, 0xe2, 0xdc, 0xf2, 0x26, 0x4c, 0x1e, 0xdc, 0x12, 0x71, 0x1f, 0xf8, 0x1a, 0xa0,
+	0xdc, 0x19, 0x66, 0xd3, 0x34, 0x16, 0x6f, 0x32, 0x6e, 0xe0, 0xa5, 0xbc, 0xdc, 0x07, 0x27, 0x6f,
+	0xac, 0x93, 0x93, 0xdf, 0xb2, 0x38, 0xc7, 0xd0, 0x73, 0xe3, 0xc6, 0x76, 0x89, 0x53, 0x1d, 0xe2,
+	0xc9, 0x5e, 0x15, 0x74, 0xaa, 0x13, 0x18, 0x78, 0xd3, 0xc3, 0xc6, 0x05, 0xa9, 0x36, 0x84, 0x93,
+	0xa8, 0x19, 0xb0, 0x5f, 0x78, 0xd2, 0x2a, 0x7d, 0x53, 0x72, 0xdf, 0xb7, 0x9f, 0x7f, 0xdc, 0xc0,
+	0xeb, 0xbe, 0x3d, 0x79, 0x63, 0x36, 0x2b, 0xbe, 0x7d, 0xf9, 0x49, 0xef, 0xe7, 0x0e, 0xfd, 0x17,
+	0xbf, 0xec, 0xd2, 0x9f, 0xf1, 0xa3, 0x7f, 0x03, 0x00, 0x00, 0xff, 0xff, 0x5a, 0xdb, 0x49, 0xbe,
+	0xa1, 0x0b, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -1483,10 +1409,10 @@ var _ grpc.ClientConn
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion4
 
-// DemServiceClient is the client API for DemService service.
+// DemRRServiceClient is the client API for DemRRService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type DemServiceClient interface {
+type DemRRServiceClient interface {
 	//Check service
 	SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error)
 	//User methods
@@ -1496,79 +1422,79 @@ type DemServiceClient interface {
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error)
 	//File methods
 	GetFile(ctx context.Context, in *GetFileRequest, opts ...grpc.CallOption) (*GetFileResponse, error)
-	GetAllFiles(ctx context.Context, in *GetAllFilesRequest, opts ...grpc.CallOption) (DemService_GetAllFilesClient, error)
+	GetAllFiles(ctx context.Context, in *GetAllFilesRequest, opts ...grpc.CallOption) (DemRRService_GetAllFilesClient, error)
 	UpdateFile(ctx context.Context, in *UpdateFileRequest, opts ...grpc.CallOption) (*UpdateFileResponse, error)
 	DeleteFile(ctx context.Context, in *DeleteFileRequest, opts ...grpc.CallOption) (*DeleteFileResponse, error)
 }
 
-type demServiceClient struct {
+type demRRServiceClient struct {
 	cc *grpc.ClientConn
 }
 
-func NewDemServiceClient(cc *grpc.ClientConn) DemServiceClient {
-	return &demServiceClient{cc}
+func NewDemRRServiceClient(cc *grpc.ClientConn) DemRRServiceClient {
+	return &demRRServiceClient{cc}
 }
 
-func (c *demServiceClient) SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error) {
+func (c *demRRServiceClient) SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error) {
 	out := new(HelloResponse)
-	err := c.cc.Invoke(ctx, "/dem.DemService/SayHello", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/dem.DemRRService/SayHello", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *demServiceClient) Login(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error) {
+func (c *demRRServiceClient) Login(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error) {
 	out := new(LoginUserResponse)
-	err := c.cc.Invoke(ctx, "/dem.DemService/Login", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/dem.DemRRService/Login", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *demServiceClient) Register(ctx context.Context, in *RegisterUserRequest, opts ...grpc.CallOption) (*RegisterUserResponse, error) {
+func (c *demRRServiceClient) Register(ctx context.Context, in *RegisterUserRequest, opts ...grpc.CallOption) (*RegisterUserResponse, error) {
 	out := new(RegisterUserResponse)
-	err := c.cc.Invoke(ctx, "/dem.DemService/Register", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/dem.DemRRService/Register", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *demServiceClient) UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error) {
+func (c *demRRServiceClient) UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error) {
 	out := new(UpdateUserResponse)
-	err := c.cc.Invoke(ctx, "/dem.DemService/UpdateUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/dem.DemRRService/UpdateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *demServiceClient) DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error) {
+func (c *demRRServiceClient) DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error) {
 	out := new(DeleteUserResponse)
-	err := c.cc.Invoke(ctx, "/dem.DemService/DeleteUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/dem.DemRRService/DeleteUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *demServiceClient) GetFile(ctx context.Context, in *GetFileRequest, opts ...grpc.CallOption) (*GetFileResponse, error) {
+func (c *demRRServiceClient) GetFile(ctx context.Context, in *GetFileRequest, opts ...grpc.CallOption) (*GetFileResponse, error) {
 	out := new(GetFileResponse)
-	err := c.cc.Invoke(ctx, "/dem.DemService/GetFile", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/dem.DemRRService/GetFile", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *demServiceClient) GetAllFiles(ctx context.Context, in *GetAllFilesRequest, opts ...grpc.CallOption) (DemService_GetAllFilesClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_DemService_serviceDesc.Streams[0], "/dem.DemService/GetAllFiles", opts...)
+func (c *demRRServiceClient) GetAllFiles(ctx context.Context, in *GetAllFilesRequest, opts ...grpc.CallOption) (DemRRService_GetAllFilesClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_DemRRService_serviceDesc.Streams[0], "/dem.DemRRService/GetAllFiles", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &demServiceGetAllFilesClient{stream}
+	x := &demRRServiceGetAllFilesClient{stream}
 	if err := x.ClientStream.SendMsg(in); err != nil {
 		return nil, err
 	}
@@ -1578,16 +1504,16 @@ func (c *demServiceClient) GetAllFiles(ctx context.Context, in *GetAllFilesReque
 	return x, nil
 }
 
-type DemService_GetAllFilesClient interface {
+type DemRRService_GetAllFilesClient interface {
 	Recv() (*GetAllFilesResponse, error)
 	grpc.ClientStream
 }
 
-type demServiceGetAllFilesClient struct {
+type demRRServiceGetAllFilesClient struct {
 	grpc.ClientStream
 }
 
-func (x *demServiceGetAllFilesClient) Recv() (*GetAllFilesResponse, error) {
+func (x *demRRServiceGetAllFilesClient) Recv() (*GetAllFilesResponse, error) {
 	m := new(GetAllFilesResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
@@ -1595,26 +1521,26 @@ func (x *demServiceGetAllFilesClient) Recv() (*GetAllFilesResponse, error) {
 	return m, nil
 }
 
-func (c *demServiceClient) UpdateFile(ctx context.Context, in *UpdateFileRequest, opts ...grpc.CallOption) (*UpdateFileResponse, error) {
+func (c *demRRServiceClient) UpdateFile(ctx context.Context, in *UpdateFileRequest, opts ...grpc.CallOption) (*UpdateFileResponse, error) {
 	out := new(UpdateFileResponse)
-	err := c.cc.Invoke(ctx, "/dem.DemService/UpdateFile", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/dem.DemRRService/UpdateFile", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *demServiceClient) DeleteFile(ctx context.Context, in *DeleteFileRequest, opts ...grpc.CallOption) (*DeleteFileResponse, error) {
+func (c *demRRServiceClient) DeleteFile(ctx context.Context, in *DeleteFileRequest, opts ...grpc.CallOption) (*DeleteFileResponse, error) {
 	out := new(DeleteFileResponse)
-	err := c.cc.Invoke(ctx, "/dem.DemService/DeleteFile", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/dem.DemRRService/DeleteFile", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// DemServiceServer is the server API for DemService service.
-type DemServiceServer interface {
+// DemRRServiceServer is the server API for DemRRService service.
+type DemRRServiceServer interface {
 	//Check service
 	SayHello(context.Context, *HelloRequest) (*HelloResponse, error)
 	//User methods
@@ -1624,221 +1550,221 @@ type DemServiceServer interface {
 	DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error)
 	//File methods
 	GetFile(context.Context, *GetFileRequest) (*GetFileResponse, error)
-	GetAllFiles(*GetAllFilesRequest, DemService_GetAllFilesServer) error
+	GetAllFiles(*GetAllFilesRequest, DemRRService_GetAllFilesServer) error
 	UpdateFile(context.Context, *UpdateFileRequest) (*UpdateFileResponse, error)
 	DeleteFile(context.Context, *DeleteFileRequest) (*DeleteFileResponse, error)
 }
 
-func RegisterDemServiceServer(s *grpc.Server, srv DemServiceServer) {
-	s.RegisterService(&_DemService_serviceDesc, srv)
+func RegisterDemRRServiceServer(s *grpc.Server, srv DemRRServiceServer) {
+	s.RegisterService(&_DemRRService_serviceDesc, srv)
 }
 
-func _DemService_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _DemRRService_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(HelloRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DemServiceServer).SayHello(ctx, in)
+		return srv.(DemRRServiceServer).SayHello(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/dem.DemService/SayHello",
+		FullMethod: "/dem.DemRRService/SayHello",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DemServiceServer).SayHello(ctx, req.(*HelloRequest))
+		return srv.(DemRRServiceServer).SayHello(ctx, req.(*HelloRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _DemService_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _DemRRService_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(LoginUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DemServiceServer).Login(ctx, in)
+		return srv.(DemRRServiceServer).Login(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/dem.DemService/Login",
+		FullMethod: "/dem.DemRRService/Login",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DemServiceServer).Login(ctx, req.(*LoginUserRequest))
+		return srv.(DemRRServiceServer).Login(ctx, req.(*LoginUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _DemService_Register_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _DemRRService_Register_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RegisterUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DemServiceServer).Register(ctx, in)
+		return srv.(DemRRServiceServer).Register(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/dem.DemService/Register",
+		FullMethod: "/dem.DemRRService/Register",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DemServiceServer).Register(ctx, req.(*RegisterUserRequest))
+		return srv.(DemRRServiceServer).Register(ctx, req.(*RegisterUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _DemService_UpdateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _DemRRService_UpdateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DemServiceServer).UpdateUser(ctx, in)
+		return srv.(DemRRServiceServer).UpdateUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/dem.DemService/UpdateUser",
+		FullMethod: "/dem.DemRRService/UpdateUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DemServiceServer).UpdateUser(ctx, req.(*UpdateUserRequest))
+		return srv.(DemRRServiceServer).UpdateUser(ctx, req.(*UpdateUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _DemService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _DemRRService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DemServiceServer).DeleteUser(ctx, in)
+		return srv.(DemRRServiceServer).DeleteUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/dem.DemService/DeleteUser",
+		FullMethod: "/dem.DemRRService/DeleteUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DemServiceServer).DeleteUser(ctx, req.(*DeleteUserRequest))
+		return srv.(DemRRServiceServer).DeleteUser(ctx, req.(*DeleteUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _DemService_GetFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _DemRRService_GetFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetFileRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DemServiceServer).GetFile(ctx, in)
+		return srv.(DemRRServiceServer).GetFile(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/dem.DemService/GetFile",
+		FullMethod: "/dem.DemRRService/GetFile",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DemServiceServer).GetFile(ctx, req.(*GetFileRequest))
+		return srv.(DemRRServiceServer).GetFile(ctx, req.(*GetFileRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _DemService_GetAllFiles_Handler(srv interface{}, stream grpc.ServerStream) error {
+func _DemRRService_GetAllFiles_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(GetAllFilesRequest)
 	if err := stream.RecvMsg(m); err != nil {
 		return err
 	}
-	return srv.(DemServiceServer).GetAllFiles(m, &demServiceGetAllFilesServer{stream})
+	return srv.(DemRRServiceServer).GetAllFiles(m, &demRRServiceGetAllFilesServer{stream})
 }
 
-type DemService_GetAllFilesServer interface {
+type DemRRService_GetAllFilesServer interface {
 	Send(*GetAllFilesResponse) error
 	grpc.ServerStream
 }
 
-type demServiceGetAllFilesServer struct {
+type demRRServiceGetAllFilesServer struct {
 	grpc.ServerStream
 }
 
-func (x *demServiceGetAllFilesServer) Send(m *GetAllFilesResponse) error {
+func (x *demRRServiceGetAllFilesServer) Send(m *GetAllFilesResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func _DemService_UpdateFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _DemRRService_UpdateFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateFileRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DemServiceServer).UpdateFile(ctx, in)
+		return srv.(DemRRServiceServer).UpdateFile(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/dem.DemService/UpdateFile",
+		FullMethod: "/dem.DemRRService/UpdateFile",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DemServiceServer).UpdateFile(ctx, req.(*UpdateFileRequest))
+		return srv.(DemRRServiceServer).UpdateFile(ctx, req.(*UpdateFileRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _DemService_DeleteFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _DemRRService_DeleteFile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteFileRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DemServiceServer).DeleteFile(ctx, in)
+		return srv.(DemRRServiceServer).DeleteFile(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/dem.DemService/DeleteFile",
+		FullMethod: "/dem.DemRRService/DeleteFile",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DemServiceServer).DeleteFile(ctx, req.(*DeleteFileRequest))
+		return srv.(DemRRServiceServer).DeleteFile(ctx, req.(*DeleteFileRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-var _DemService_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "dem.DemService",
-	HandlerType: (*DemServiceServer)(nil),
+var _DemRRService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "dem.DemRRService",
+	HandlerType: (*DemRRServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "SayHello",
-			Handler:    _DemService_SayHello_Handler,
+			Handler:    _DemRRService_SayHello_Handler,
 		},
 		{
 			MethodName: "Login",
-			Handler:    _DemService_Login_Handler,
+			Handler:    _DemRRService_Login_Handler,
 		},
 		{
 			MethodName: "Register",
-			Handler:    _DemService_Register_Handler,
+			Handler:    _DemRRService_Register_Handler,
 		},
 		{
 			MethodName: "UpdateUser",
-			Handler:    _DemService_UpdateUser_Handler,
+			Handler:    _DemRRService_UpdateUser_Handler,
 		},
 		{
 			MethodName: "DeleteUser",
-			Handler:    _DemService_DeleteUser_Handler,
+			Handler:    _DemRRService_DeleteUser_Handler,
 		},
 		{
 			MethodName: "GetFile",
-			Handler:    _DemService_GetFile_Handler,
+			Handler:    _DemRRService_GetFile_Handler,
 		},
 		{
 			MethodName: "UpdateFile",
-			Handler:    _DemService_UpdateFile_Handler,
+			Handler:    _DemRRService_UpdateFile_Handler,
 		},
 		{
 			MethodName: "DeleteFile",
-			Handler:    _DemService_DeleteFile_Handler,
+			Handler:    _DemRRService_DeleteFile_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
 			StreamName:    "GetAllFiles",
-			Handler:       _DemService_GetAllFiles_Handler,
+			Handler:       _DemRRService_GetAllFiles_Handler,
 			ServerStreams: true,
 		},
 	},

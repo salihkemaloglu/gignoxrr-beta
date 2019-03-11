@@ -12,19 +12,13 @@ message User {
     string email=4;
     string username=5;
     string password=6;
-    string created_date=7;
-    string updated_date=8;
-}
-
-message UserInformation {
-    string id=1;
-    string user_id=2;
-    string image_path=3;
-    string description=4;
-    string total_space=5;
-    string created_date=6;
-    string updated_date=7;
-    string language_type=8;
+    string description=7;
+    string image_path=8;
+    string total_space=9;
+    string created_date=10;
+    string updated_date=11;
+    string language_type=12;
+   
 }
 
 message Follow {
@@ -88,7 +82,6 @@ message UserLogin {
 //User methods start
 message RegisterUserRequest {
     User user=1;
-    UserInformation user_information=2; 
 }
 message RegisterUserResponse {
     User user=1;
@@ -140,7 +133,7 @@ message DeleteFileResponse {
     string file_id=1;
     string file_hash=2;
 }
-service DemService{
+service DemRRService{
     //Check service
     rpc SayHello (HelloRequest) returns (HelloResponse);
     //User methods

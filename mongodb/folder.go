@@ -5,7 +5,7 @@ import (
 )
 
 type Folder struct {
-	ID           	 bson.ObjectId `bson:"_id" json:"id" `
+	Id           	 bson.ObjectId `bson:"_id" json:"id" `
 	Name 	   	 	 string        `bson:"name" json:"name"`
 	UserId 	    	 string        `bson:"userid" json:"userid"`
 	CreatedDate 	 string        `bson:"createddate" json:"createddate"`
@@ -13,7 +13,7 @@ type Folder struct {
 }
 // Crud operaions for Folder
 func (r Folder) GetFolder() (*Folder, error) {
-	err := db.C("folder").FindId(r.ID).One(&r)
+	err := db.C("Folder").FindId(r.Id).One(&r)
 	if err != nil {
 		return nil, err
 	}
@@ -21,7 +21,7 @@ func (r Folder) GetFolder() (*Folder, error) {
 }
 func (r Folder) GetAllFolders() ([]Folder, error) {
 	var folders []Folder
-	err := db.C("folder").Find(bson.M{}).All(&folders)
+	err := db.C("Folder").Find(bson.M{}).All(&folders)
 	if err != nil {
 		return nil, err
 	}
@@ -29,8 +29,8 @@ func (r Folder) GetAllFolders() ([]Folder, error) {
 }
 
 func (r Folder) Insert()  error {
-	r.ID = bson.NewObjectId()
-	err := db.C("folder").Insert(&r)
+	r.Id = bson.NewObjectId()
+	err := db.C("Folder").Insert(&r)
 	if err!=nil{
 		return err
 	}
@@ -38,14 +38,14 @@ func (r Folder) Insert()  error {
 }
 
 func (r Folder) Update() error {
-	err := db.C("folder").Update(bson.M{"_id": r.ID}, &r)
+	err := db.C("Folder").Update(bson.M{"_id": r.Id}, &r)
 	if err!=nil {
 		return err
 	}
 	return nil
 }
 func (r Folder) Delete() error {
-	err := db.C("folder").Remove(&r)
+	err := db.C("Folder").Remove(&r)
 	if err!=nil {
 		return err
 	}

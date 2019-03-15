@@ -5,7 +5,7 @@ import (
 )
 
 type Follow struct {
-	ID          	 bson.ObjectId `bson:"_id" json:"id" `
+	Id          	 bson.ObjectId `bson:"_id" json:"id" `
 	FollowerId 		 string        `bson:"followerid" json:"followerid"`
 	FollowedId 		 string        `bson:"followedid" json:"followedid"`
 	FollowedDate 	 string        `bson:"followedate" json:"followedate"`

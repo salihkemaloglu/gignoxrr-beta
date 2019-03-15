@@ -5,7 +5,7 @@ import (
 )
 
 type Buried struct {
-	ID          	 bson.ObjectId `bson:"_id" json:"id" `
+	Id          	 bson.ObjectId `bson:"_id" json:"id" `
 	UserId 	    	 string        `bson:"userid" json:"userid"`
 	FileName 		 string        `bson:"filename" json:"filename"`
 	FileHash 		 string        `bson:"filehash" json:"filehash"`

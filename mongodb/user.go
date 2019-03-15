@@ -6,7 +6,7 @@ import (
 
 // Mongodb User database structs
 type User struct {
-	ID          	 bson.ObjectId `bson:"_id" json:"id" `
+	Id          	 bson.ObjectId `bson:"_id" json:"id" `
 	Name 	 		 string        `bson:"name" json:"name"`
 	Surname 		 string        `bson:"surname" json:"surname"`
 	Email 	    	 string        `bson:"email" json:"email"`
@@ -21,22 +21,24 @@ type User struct {
 }
 
 // Crud operaions for User
-func (r User) Login() (bool, error) {
-	err := db.C("user").Find(bson.M{"username": r.Username, "password": r.Password}).One(&r)
+func (r User) Login() error {
+	err := db.C("User").Find(bson.M{"username": r.Username, "password": r.Password}).One(&r)
 	if err != nil {
-		return false,err
+		return err
 	}
-	return true,nil
+	return nil
 }
+
 func (r User) GetUser() (*User, error) {
-	err := db.C("user").FindId(r.ID).One(&r)
+	err := db.C("User").FindId(r.Id).One(&r)
 	if err != nil {
 		return nil, err
 	}
 	return &r, err
 }
+
 func (r User) Insert()  error {
-	r.ID = bson.NewObjectId()
+	r.Id = bson.NewObjectId()
 	err := db.C("User").Insert(&r)
 	if err!=nil{
 		return err
@@ -45,16 +47,26 @@ func (r User) Insert()  error {
 }
 
 func (r User) Update() error {
-	err := db.C("user").Update(bson.M{"_id": r.ID}, &r)
+	err := db.C("User").Update(bson.M{"_id": r.Id}, &r)
 	if err!=nil {
 		return err
 	}
 	return nil
 }
+
 func (r User) Delete() error {
-	err := db.C("user").Remove(&r)
+	err := db.C("User").Remove(&r)
 	if err!=nil {
 		return err
 	}
 	return nil
 }
+//CheckUser user login
+func (r User) CheckUser() error {
+	err := db.C("User").Find(bson.M{"username": r.Username}).One(&r)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+

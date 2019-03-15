@@ -5,8 +5,9 @@ import (
 )
 
 type UserRepository interface {
-	Login()(bool,error)
+	Login() error
 	GetUser()(*db.User,error)
+	CheckUser() error
 	Insert() error
 	Update() error
 	Delete() error

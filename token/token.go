@@ -9,7 +9,7 @@ import (
 )
 
 //CreateTokenEndpoint user token creation
-func CreateTokenEndpoint(user db.User) string {
+func CreateTokenEndpoint(user db.User) (string,error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS512, jwt.MapClaims{
 		"username": user.Username,
 		"password": user.Password,
@@ -17,9 +17,9 @@ func CreateTokenEndpoint(user db.User) string {
 	})
 	tokenString, err := token.SignedString([]byte("secret"))
 	if err != nil {
-		return ""
+		return "",err
 	}
-	return tokenString
+	return tokenString,nil
 }
 
 //ValidateMiddleware token validation

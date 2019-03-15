@@ -6,7 +6,7 @@ import (
 )
 
 type File struct {
-	ID          	 bson.ObjectId `bson:"_id" json:"id" `
+	Id          	 bson.ObjectId `bson:"_id" json:"id" `
 	UserId 	    	 string        `bson:"userid" json:"userid"`
 	FolderId 		 string        `bson:"folderid" json:"folderid"`
 	Name 	 		 string        `bson:"name" json:"name"`
@@ -22,7 +22,7 @@ type File struct {
 }
 // Crud operaions for File
 func (r File) GetFile() (*File, error) {
-	err := db.C("file").FindId(r.ID).One(&r)
+	err := db.C("File").FindId(r.Id).One(&r)
 	if err != nil {
 		return nil, err
 	}
@@ -30,7 +30,7 @@ func (r File) GetFile() (*File, error) {
 }
 func (r File) GetAllFiles() ([]File, error) {
 	var files []File
-	err := db.C("file").Find(bson.M{}).All(&files)
+	err := db.C("File").Find(bson.M{}).All(&files)
 	if err != nil {
 		return nil, err
 	}
@@ -38,8 +38,8 @@ func (r File) GetAllFiles() ([]File, error) {
 }
 
 func (r File) Insert()  error {
-	r.ID = bson.NewObjectId()
-	err := db.C("file").Insert(&r)
+	r.Id = bson.NewObjectId()
+	err := db.C("File").Insert(&r)
 	if err!=nil{
 		return err
 	}
@@ -47,14 +47,14 @@ func (r File) Insert()  error {
 }
 
 func (r File) Update() error {
-	err := db.C("file").Update(bson.M{"_id": r.ID}, &r)
+	err := db.C("File").Update(bson.M{"_id": r.Id}, &r)
 	if err!=nil {
 		return err
 	}
 	return nil
 }
 func (r File) Delete() error {
-	err := db.C("file").Remove(&r)
+	err := db.C("File").Remove(&r)
 	if err!=nil {
 		return err
 	}

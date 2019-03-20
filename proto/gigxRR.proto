@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package dem;
+package gigx;
 
-option go_package = "demRR";
+option go_package = "gigxRR";
 
 //#Database modal structs
 message User {
@@ -133,7 +133,7 @@ message DeleteFileResponse {
     string file_id=1;
     string file_hash=2;
 }
-service DemRRService{
+service GigxRRService{
     //Check service
     rpc SayHello (HelloRequest) returns (HelloResponse);
     //User methods

@@ -1,7 +1,7 @@
 package repository
 
 import (
-	db "github.com/salihkemaloglu/DemRR-beta-001/mongodb"
+	db "github.com/salihkemaloglu/gignox-rr-beta-001/mongodb"
 )
 
 type UserRepository interface {

@@ -2,7 +2,7 @@ package validation
 
 import (
 	"strings"
-	db "github.com/salihkemaloglu/DemRR-beta-001/mongodb"
+	db "github.com/salihkemaloglu/gignox-rr-beta-001/mongodb"
 )
 
 func UserRegisterFieldValidation(user db.User) string{

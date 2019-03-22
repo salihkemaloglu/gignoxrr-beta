@@ -5,7 +5,7 @@ FROM golang:1.8
 RUN go get gopkg.in/mgo.v2/bson
 RUN go get github.com/rs/cors
 RUN go get github.com/go-chi/chi
-RUN go get google.golang.org/grpc
+RUN go get -u google.golang.org/grpc
 # RUN go get google.golang.org/grpc/codes
 # RUN go get google.golang.org/grpc/status
 # RUN go get google.golang.org/grpc/grpclog
@@ -17,7 +17,7 @@ RUN go get github.com/dgrijalva/jwt-go
 ENV PATH /go/bin:$PATH
 
 # cd into the api code directory
-WORKDIR /go/src/github.com/salihkemaloglu/go-docker
+WORKDIR /go/src/github.com/salihkemaloglu/gignox-rr-beta-001
 
 # create ssh directory
 RUN mkdir ~/.ssh

@@ -2,13 +2,27 @@ FROM golang:1.8
 
 # expose default port
 # EXPOSE 8000
-RUN go get gopkg.in/mgo.v2/bson
-RUN go get github.com/rs/cors
-RUN go get github.com/go-chi/chi
+# install protobuf from source
+RUN apt-get update && \
+    apt-get -y install git unzip build-essential autoconf libtool
+RUN git clone https://github.com/google/protobuf.git && \
+    cd protobuf && \
+    ./autogen.sh && \
+    ./configure && \
+    make && \
+    make install && \
+    ldconfig && \
+    make clean && \
+    cd .. && \
+    rm -r protobuf
 # Get the source from GitHub
 RUN go get google.golang.org/grpc
 # Install protoc-gen-go
-RUN go get github.com/golang/protobuf/protoc-gen-go
+RUN go get github.com/golang/protobuf/protoc-gen-go    
+RUN go get gopkg.in/mgo.v2/bson
+RUN go get github.com/rs/cors
+RUN go get github.com/go-chi/chi
+
 # RUN go get google.golang.org/grpc/codes
 # RUN go get google.golang.org/grpc/status
 # RUN go get google.golang.org/grpc/grpclog

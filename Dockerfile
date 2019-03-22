@@ -5,7 +5,10 @@ FROM golang:1.8
 RUN go get gopkg.in/mgo.v2/bson
 RUN go get github.com/rs/cors
 RUN go get github.com/go-chi/chi
-RUN go get -u google.golang.org/grpc
+# Get the source from GitHub
+RUN go get google.golang.org/grpc
+# Install protoc-gen-go
+RUN go get github.com/golang/protobuf/protoc-gen-go
 # RUN go get google.golang.org/grpc/codes
 # RUN go get google.golang.org/grpc/status
 # RUN go get google.golang.org/grpc/grpclog

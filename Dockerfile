@@ -45,6 +45,6 @@ ADD . /go/src/github.com/salihkemaloglu/gignox-rr-beta-001
 RUN go install github.com/salihkemaloglu/gignox-rr-beta-001
 
 # expose default port
- EXPOSE 8902
+ EXPOSE 8902 443
 # start application
 CMD ["go","run","main.go"] 

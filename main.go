@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/spf13/pflag"
 	
 	"fmt"
 	"context"
@@ -126,16 +127,35 @@ func (s *server) UpdateFile(ctx context.Context, req *gigxRR.UpdateFileRequest) 
 func (s *server) DeleteFile(ctx context.Context, req *gigxRR.DeleteFileRequest) (*gigxRR.DeleteFileResponse, error) {
 	return nil,nil
 }
+var (
+	
+	flagAllowAllOrigins = pflag.Bool("allow_all_origins", true, "allow requests from any origin.")
+	flagAllowedOrigins  = pflag.StringSlice("allowed_origins", nil, "comma-separated list of origin URLs which are allowed to make cross-origin requests.")
 
+	// useWebsockets = pflag.Bool("use_websockets", false, "whether to use beta websocket transport layer")
+
+	// flagHttpMaxWriteTimeout = pflag.Duration("server_http_max_write_timeout", 10*time.Second, "HTTP server config, max write duration.")
+	// flagHttpMaxReadTimeout  = pflag.Duration("server_http_max_read_timeout", 10*time.Second, "HTTP server config, max read duration.")
+)
 func main(){
-
+	pflag.Parse()
 	fmt.Println("RR Service Started")
 	opts := []grpc.ServerOption{}
 	grpcServer := grpc.NewServer(opts...)
 	gigxRR.RegisterGigxRRServiceServer(grpcServer, &server{})
+
 	fmt.Println("Mongodb Service Started")
 	db.LoadConfiguration()
-	wrappedGrpc := grpcweb.WrapServer(grpcServer)
+	allowedOrigins := makeAllowedOrigins(*flagAllowedOrigins)
+	
+	options := []grpcweb.Option{
+		grpcweb.WithCorsForRegisteredEndpointsOnly(false),
+		grpcweb.WithOriginFunc(makeHttpOriginFunc(allowedOrigins)),
+	}
+
+	wrappedGrpc := grpcweb.WrapServer(grpcServer, options...)
+
+
 
 	router := chi.NewRouter()
 	router.Use(
@@ -157,4 +177,29 @@ func main(){
 	if err := http.ListenAndServe(":8902", router); err != nil {
 		grpclog.Fatalf("failed starting http2 server: %v", err)
 	}
+}
+func makeHttpOriginFunc(allowedOrigins *allowedOrigins) func(origin string) bool {
+	if *flagAllowAllOrigins {
+		return func(origin string) bool {
+			return true
+		}
+	}
+	return allowedOrigins.IsAllowed
+}
+func makeAllowedOrigins(origins []string) *allowedOrigins {
+	o := map[string]struct{}{}
+	for _, allowedOrigin := range origins {
+		o[allowedOrigin] = struct{}{}
+	}
+	return &allowedOrigins{
+		origins: o,
+	}
+}
+
+type allowedOrigins struct {
+	origins map[string]struct{}
+}
+func (a *allowedOrigins) IsAllowed(origin string) bool {
+	_, ok := a.origins[origin]
+	return ok
 }

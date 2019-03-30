@@ -2,8 +2,6 @@ FROM golang:1.9
 
 
 RUN go get gopkg.in/mgo.v2/bson
-RUN go get github.com/rs/cors
-RUN go get github.com/go-chi/chi
 RUN go get github.com/spf13/pflag
 RUN go get golang.org/x/net/http2									
 RUN go get golang.org/x/text/secure/bidirule	
@@ -17,11 +15,6 @@ RUN go get google.golang.org/grpc/status
 RUN go get google.golang.org/genproto/googleapis/rpc/status	
 RUN go get golang.org/x/sys/unix		
 RUN go get github.com/improbable-eng/grpc-web/go/grpcweb 
-# RUN go get google.golang.org/grpc/codes
-# RUN go get google.golang.org/grpc/status
-# RUN go get google.golang.org/grpc/grpclog
-# RUN go get github.com/go-chi/chi/middleware
-# RUN go get github.com/improbable-eng/grpc-web/go/grpcweb
 RUN go get github.com/dgrijalva/jwt-go
 
 # set environment path

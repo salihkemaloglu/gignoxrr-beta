@@ -7,17 +7,12 @@ import (
 	"context"
 	"net/http"
 	"encoding/hex"
-	"github.com/rs/cors"
-	"github.com/go-chi/chi"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/grpc/grpclog"
-	chiMiddleware "github.com/go-chi/chi/middleware"
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	"github.com/salihkemaloglu/gignox-rr-beta-001/proto"
-	"github.com/salihkemaloglu/gignox-rr-beta-001/proxy"
-	"github.com/salihkemaloglu/gignox-rr-beta-001/middleware"
 	db "github.com/salihkemaloglu/gignox-rr-beta-001/mongodb"
 	val "github.com/salihkemaloglu/gignox-rr-beta-001/validation"
 	repo "github.com/salihkemaloglu/gignox-rr-beta-001/repository"
@@ -133,13 +128,22 @@ var (
 	flagAllowedOrigins  = pflag.StringSlice("allowed_origins", nil, "comma-separated list of origin URLs which are allowed to make cross-origin requests.")
 
 	// useWebsockets = pflag.Bool("use_websockets", false, "whether to use beta websocket transport layer")
-
+	enableTls       = pflag.Bool("enable_tls", true, "Use TLS - required for HTTP2.")
+	tlsCertFilePath = pflag.String("tls_cert_file", "ssl/server.crt", "Path to the CRT/PEM file.")
+	tlsKeyFilePath  = pflag.String("tls_key_file", "ssl/server.pem", "Path to the private key file.")
 	// flagHttpMaxWriteTimeout = pflag.Duration("server_http_max_write_timeout", 10*time.Second, "HTTP server config, max write duration.")
 	// flagHttpMaxReadTimeout  = pflag.Duration("server_http_max_read_timeout", 10*time.Second, "HTTP server config, max read duration.")
 )
 func main(){
 	pflag.Parse()
+
+	port :=8902
+	if *enableTls {
+		port = 8903
+	}
+
 	fmt.Println("RR Service Started")
+
 	opts := []grpc.ServerOption{}
 	grpcServer := grpc.NewServer(opts...)
 	gigxRR.RegisterGigxRRServiceServer(grpcServer, &server{})
@@ -155,27 +159,26 @@ func main(){
 
 	wrappedGrpc := grpcweb.WrapServer(grpcServer, options...)
 
+	handler := func(resp http.ResponseWriter, req *http.Request) {
+		wrappedGrpc.ServeHTTP(resp, req)
+	}
+
+	httpServer := http.Server{
+		Addr:    fmt.Sprintf(":%v", port),
+		Handler: http.HandlerFunc(handler),
+	}
+
+	grpclog.Printf("Starting server. http port: %d, with TLS: %v", port, *enableTls)
 
 
-	router := chi.NewRouter()
-	router.Use(
-		chiMiddleware.Logger,
-		chiMiddleware.Recoverer,
-		middleware. NewGrpcWebMiddleware(wrappedGrpc).Handler,// Must come before general CORS handling
-		cors.New(cors.Options{
-			AllowedOrigins:   []string{"*"},
-			AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-			AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
-			ExposedHeaders:   []string{"Link"},
-			AllowCredentials: true,
-			MaxAge:           300, // Maximum value not ignored by any of major browsers
-		}).Handler,
-	)
-
-	router.Get("/article-proxy", proxy.Article)
-
-	if err := http.ListenAndServe(":8902", router); err != nil {
-		grpclog.Fatalf("failed starting http2 server: %v", err)
+	if *enableTls {
+		if err := httpServer.ListenAndServeTLS(*tlsCertFilePath, *tlsKeyFilePath); err != nil {
+			grpclog.Fatalf("failed starting http2 server: %v", err)
+		}
+	} else {
+		if err := httpServer.ListenAndServe(); err != nil {
+			grpclog.Fatalf("failed starting http server: %v", err)
+		}
 	}
 }
 func makeHttpOriginFunc(allowedOrigins *allowedOrigins) func(origin string) bool {

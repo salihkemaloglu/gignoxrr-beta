@@ -1,6 +1,8 @@
 package main
 
 import (
+	"crypto/tls"
+	"golang.org/x/crypto/acme/autocert"
 	"github.com/spf13/pflag"
 	
 	"fmt"
@@ -129,8 +131,8 @@ var (
 
 	// useWebsockets = pflag.Bool("use_websockets", false, "whether to use beta websocket transport layer")
 	enableTls       = pflag.Bool("enable_tls", true, "Use TLS - required for HTTP2.")
-	tlsCertFilePath = pflag.String("tls_cert_file", "ssl/server.crt", "Path to the CRT/PEM file.")
-	tlsKeyFilePath  = pflag.String("tls_key_file", "ssl/server.key", "Path to the private key file.")
+	tlsCertFilePath = pflag.String("tls_cert_file", "ssl/fullchain.pem", "Path to the CRT/PEM file.")
+	tlsKeyFilePath  = pflag.String("tls_key_file", "ssl/privkey.pem", "Path to the private key file.")
 	// flagHttpMaxWriteTimeout = pflag.Duration("server_http_max_write_timeout", 10*time.Second, "HTTP server config, max write duration.")
 	// flagHttpMaxReadTimeout  = pflag.Duration("server_http_max_read_timeout", 10*time.Second, "HTTP server config, max read duration.")
 )
@@ -159,6 +161,12 @@ func main(){
 
 	wrappedGrpc := grpcweb.WrapServer(grpcServer, options...)
 
+	certManager := autocert.Manager{
+        Prompt:     autocert.AcceptTOS,
+        HostPolicy: autocert.HostWhitelist("gignox.com"), //Your domain here
+        Cache:      autocert.DirCache("certs"),          //Folder for storing certificates
+    }
+
 	handler := func(resp http.ResponseWriter, req *http.Request) {
 		wrappedGrpc.ServeHTTP(resp, req)
 	}
@@ -166,6 +174,9 @@ func main(){
 	httpServer := http.Server{
 		Addr:    fmt.Sprintf(":%v", port),
 		Handler: http.HandlerFunc(handler),
+		TLSConfig: &tls.Config{
+            GetCertificate: certManager.GetCertificate,
+        },
 	}
 
 	grpclog.Printf("Starting server. http port: %d, with TLS: %v", port, *enableTls)
@@ -173,7 +184,7 @@ func main(){
 
 	if *enableTls {
 		fmt.Printf("server started as  https and listen to port: %v \n",port)
-		if err := httpServer.ListenAndServeTLS(*tlsCertFilePath, *tlsKeyFilePath); err != nil {
+		if err := httpServer.ListenAndServeTLS("", ""); err != nil {
 			grpclog.Fatalf("failed starting http2 server: %v", err)
 		}
 	} else {

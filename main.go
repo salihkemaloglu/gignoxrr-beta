@@ -172,10 +172,12 @@ func main(){
 
 
 	if *enableTls {
+		fmt.Printf("server started as  https and listen to port: %v \n",port)
 		if err := httpServer.ListenAndServeTLS(*tlsCertFilePath, *tlsKeyFilePath); err != nil {
 			grpclog.Fatalf("failed starting http2 server: %v", err)
 		}
 	} else {
+		fmt.Printf("server started as http and listen to port: %v \n",port)
 		if err := httpServer.ListenAndServe(); err != nil {
 			grpclog.Fatalf("failed starting http server: %v", err)
 		}

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"crypto/tls"
-	"golang.org/x/crypto/acme/autocert"
+	// "crypto/tls"
+	// "golang.org/x/crypto/acme/autocert"
 	"github.com/spf13/pflag"
 	
 	"fmt"
@@ -130,7 +130,7 @@ var (
 	flagAllowedOrigins  = pflag.StringSlice("allowed_origins", nil, "comma-separated list of origin URLs which are allowed to make cross-origin requests.")
 
 	// useWebsockets = pflag.Bool("use_websockets", false, "whether to use beta websocket transport layer")
-	enableTls       = pflag.Bool("enable_tls", true, "Use TLS - required for HTTP2.")
+	enableTls       = pflag.Bool("enable_tls", false, "Use TLS - required for HTTP2.")
 	tlsCertFilePath = pflag.String("tls_cert_file", "ssl/fullchain.pem", "Path to the CRT/PEM file.")
 	tlsKeyFilePath  = pflag.String("tls_key_file", "ssl/privkey.pem", "Path to the private key file.")
 	// flagHttpMaxWriteTimeout = pflag.Duration("server_http_max_write_timeout", 10*time.Second, "HTTP server config, max write duration.")
@@ -161,11 +161,11 @@ func main(){
 
 	wrappedGrpc := grpcweb.WrapServer(grpcServer, options...)
 
-	certManager := autocert.Manager{
-        Prompt:     autocert.AcceptTOS,
-        HostPolicy: autocert.HostWhitelist("gignox.com","dev-rr.gignox.com"), //Your domain here
-        Cache:      autocert.DirCache("certs"),          //Folder for storing certificates
-    }
+	// certManager := autocert.Manager{
+    //     Prompt:     autocert.AcceptTOS,
+    //     HostPolicy: autocert.HostWhitelist("gignox.com","dev-rr.gignox.com"), //Your domain here
+    //     Cache:      autocert.DirCache("certs"),          //Folder for storing certificates
+    // }
 
 	handler := func(resp http.ResponseWriter, req *http.Request) {
 		wrappedGrpc.ServeHTTP(resp, req)
@@ -174,9 +174,9 @@ func main(){
 	httpServer := http.Server{
 		Addr:    fmt.Sprintf(":%v", port),
 		Handler: http.HandlerFunc(handler),
-		TLSConfig: &tls.Config{
-            GetCertificate: certManager.GetCertificate,
-        },
+		// TLSConfig: &tls.Config{
+        //     GetCertificate: certManager.GetCertificate,
+        // },
 	}
 
 	grpclog.Printf("Starting server. http port: %d, with TLS: %v", port, *enableTls)

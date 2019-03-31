@@ -16,7 +16,7 @@ RUN go get google.golang.org/genproto/googleapis/rpc/status
 RUN go get golang.org/x/sys/unix		
 RUN go get github.com/improbable-eng/grpc-web/go/grpcweb 
 RUN go get github.com/dgrijalva/jwt-go
-
+RUN go get golang.org/x/crypto/acme/autocert
 # set environment path
 ENV PATH /go/bin:$PATH
 

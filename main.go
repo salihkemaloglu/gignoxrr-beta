@@ -163,7 +163,7 @@ func main(){
 
 	certManager := autocert.Manager{
         Prompt:     autocert.AcceptTOS,
-        HostPolicy: autocert.HostWhitelist("gignox.com"), //Your domain here
+        HostPolicy: autocert.HostWhitelist("gignox.com","dev-rr.gignox.com"), //Your domain here
         Cache:      autocert.DirCache("certs"),          //Folder for storing certificates
     }
 

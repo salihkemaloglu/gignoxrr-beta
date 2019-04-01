@@ -3,15 +3,17 @@ services:
   nginx: 
     image: nginx:latest
     container_name: stage_nginx
-    # volumes:
-    #   - ./nginx.conf:/etc/nginx/sites-available/gignox.com.conf
+    volumes:
+      - ./nginx.conf:/etc/nginx/sites-available/dev.gignox.com.conf
     ports:
       - 80:80
       - 443:443
     links:
-        - web  
-  web:
+        - api    
+  api:
     image: api:latest
-    container_name: web
+    container_name: api
     ports:
-      - 8902:8902
+      - 8903:8903    
+
+

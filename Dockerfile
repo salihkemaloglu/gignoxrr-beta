@@ -1,6 +1,5 @@
 FROM golang:1.9
 
-
 RUN go get gopkg.in/mgo.v2/bson
 RUN go get github.com/spf13/pflag
 RUN go get golang.org/x/net/http2									
@@ -9,9 +8,6 @@ RUN go get golang.org/x/text/unicode/bidi
 RUN go get golang.org/x/text/unicode/norm	
 RUN go get github.com/golang/protobuf/proto	
 RUN go get google.golang.org/grpc				
-RUN go get google.golang.org/grpc/grpclog
-RUN go get google.golang.org/grpc/codes	
-RUN go get google.golang.org/grpc/status	
 RUN go get google.golang.org/genproto/googleapis/rpc/status	
 RUN go get golang.org/x/sys/unix		
 RUN go get github.com/improbable-eng/grpc-web/go/grpcweb 
@@ -38,6 +34,6 @@ ADD . /go/src/github.com/salihkemaloglu/gignox-rr-beta-001
 RUN go install github.com/salihkemaloglu/gignox-rr-beta-001
 
 # expose default port
- EXPOSE 8902 443
+EXPOSE 80 443
 # start application
 CMD ["go","run","main.go"] 

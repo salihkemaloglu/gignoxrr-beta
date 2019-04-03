@@ -129,8 +129,8 @@ var (
 
 	// useWebsockets = pflag.Bool("use_websockets", false, "whether to use beta websocket transport layer")
 	enableTls       = pflag.Bool("enable_tls", true, "Use TLS - required for HTTP2.")
-	tlsCertFilePath = pflag.String("tls_cert_file", "ssl/fullchain.pem", "Path to the CRT/PEM file.")
-	tlsKeyFilePath  = pflag.String("tls_key_file", "ssl/privkey.pem", "Path to the private key file.")
+	tlsCertFilePath = pflag.String("tls_cert_file", "go/src/github.com/salihkemaloglu/gignox-rr-beta-001/fullchain.pem", "Path to the CRT/PEM file.")
+	tlsKeyFilePath  = pflag.String("tls_key_file", "go/src/github.com/salihkemaloglu/gignox-rr-beta-001/privkey.pem", "Path to the private key file.")
 	// flagHttpMaxWriteTimeout = pflag.Duration("server_http_max_write_timeout", 10*time.Second, "HTTP server config, max write duration.")
 	// flagHttpMaxReadTimeout  = pflag.Duration("server_http_max_read_timeout", 10*time.Second, "HTTP server config, max read duration.")
 )

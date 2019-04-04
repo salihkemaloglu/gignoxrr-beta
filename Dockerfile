@@ -19,8 +19,6 @@ ENV PATH /go/bin:$PATH
 # cd into the api code directory
 WORKDIR /go/src/github.com/salihkemaloglu/gignox-rr-beta-001
 
-COPY ./etc/letsencrypt/live/dev-rr.gignox.com/fullchain.pem /go/src/github.com/salihkemaloglu/gignox-rr-beta-001/fullchain.pem 
-COPY ./etc/letsencrypt/live/dev-rr.gignox.com/privkey.pem   /go/src/github.com/salihkemaloglu/gignox-rr-beta-001/privkey.pem 
 # create ssh directory
 RUN mkdir ~/.ssh
 RUN touch ~/.ssh/known_hosts

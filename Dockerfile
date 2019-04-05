@@ -13,6 +13,7 @@ RUN go get golang.org/x/sys/unix
 RUN go get github.com/improbable-eng/grpc-web/go/grpcweb 
 RUN go get github.com/dgrijalva/jwt-go
 RUN go get golang.org/x/crypto/acme/autocert
+RUN go get gopkg.in/gomail.v2
 # set environment path
 ENV PATH /go/bin:$PATH
 

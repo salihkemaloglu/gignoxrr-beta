@@ -1,6 +1,7 @@
 package main
 
 import (
+	"google.golang.org/grpc/metadata"
 	"github.com/spf13/pflag"
 	
 	"fmt"
@@ -16,6 +17,7 @@ import (
 	db "github.com/salihkemaloglu/gignox-rr-beta-001/mongodb"
 	val "github.com/salihkemaloglu/gignox-rr-beta-001/validation"
 	repo "github.com/salihkemaloglu/gignox-rr-beta-001/repository"
+	"github.com/salihkemaloglu/gignox-rr-beta-001/services"
 	token "github.com/salihkemaloglu/gignox-rr-beta-001/token"
 	
 )
@@ -24,17 +26,27 @@ type server struct {
 }
 
 func (s *server) SayHello(ctx context.Context, req *gigxRR.HelloRequest) (*gigxRR.HelloResponse, error) {
+	
 	fmt.Printf("RR service is working...Received rpc from client, message=%s\n", req.GetMessage())
+	
 	return &gigxRR.HelloResponse{Message: "Hello RR service is working..."}, nil
 }
 func (s *server) Login(ctx context.Context, req *gigxRR.LoginUserRequest) (*gigxRR.LoginUserResponse, error) {
+	
 	fmt.Printf("RR service is working for Login...Received rpc from client.\n")
+
+	userLang :="en"
+	if headers, ok := metadata.FromIncomingContext(ctx); ok {
+		userLang = headers["language"][0]
+	}
+	lang := helper.DetectLanguage(userLang)
+
 	data := req.GetUser();
 	user := db.User {
 		Username:data.GetUsername(),
 		Password:data.GetPassword(),
 	}
-	if res := val.UserLoginFieldValidation(user); res != "ok" {
+	if res := val.UserLoginFieldValidation(user,lang); res != "ok" {
 		return nil,status.Errorf(
 			codes.FailedPrecondition,
 			fmt.Sprintf(res),
@@ -44,14 +56,14 @@ func (s *server) Login(ctx context.Context, req *gigxRR.LoginUserRequest) (*gigx
 	if err := op.Login(); err != nil {
 		return nil,status.Errorf(
 			codes.AlreadyExists,
-			fmt.Sprintf("Invalid Username or Password"),
+			fmt.Sprintf(helper.Translate(lang,"Invalid_User_Information")),
 		)
 	}
 	tokenRes,tokenErr:=token.CreateTokenEndpoint(user)
 	if tokenErr != nil{
 		return nil,status.Errorf(
 			codes.Unknown,
-			fmt.Sprintf("Token could not be created: %v",tokenErr.Error()),
+			fmt.Sprintf(helper.Translate(lang,"Token_Create_Error") +": %v",tokenErr.Error()),
 		)
 	}
 
@@ -67,6 +79,12 @@ func (s *server) Register(ctx context.Context, req *gigxRR.RegisterUserRequest) 
 	
 	fmt.Printf("RR service is working for Register...Received rpc from client.\n")
 	
+	userLang :="en"
+	if headers, ok := metadata.FromIncomingContext(ctx); ok {
+		userLang = headers["language"][0]
+	}
+	lang := helper.DetectLanguage(userLang)
+
 	data := req.GetUser();
 	user := db.User {
 		Username:data.GetUsername(),
@@ -74,10 +92,10 @@ func (s *server) Register(ctx context.Context, req *gigxRR.RegisterUserRequest) 
 		Email:data.GetEmail(),
 	}
 
-	if res := val.UserRegisterFieldValidation(user); res != "ok" {
+	if valResp := val.UserRegisterFieldValidation(user,lang); valResp != "ok" {
 		return nil,status.Errorf(
 			codes.FailedPrecondition,
-			fmt.Sprintf(res),
+			fmt.Sprintf(valResp),
 		)
 	}
 
@@ -85,22 +103,26 @@ func (s *server) Register(ctx context.Context, req *gigxRR.RegisterUserRequest) 
 	if err := op.CheckUser(); err ==nil  {
 		return nil,status.Errorf(
 			codes.AlreadyExists,
-			fmt.Sprintf("There is alreasy an account for: "+user.Username),
+			fmt.Sprintf(helper.Translate(lang,"Already_Created_Account")+user.Username),
 		)
 	}
 
-	resp := op.Insert()
-	if resp != nil{
+	if dbResp := op.Insert(); dbResp != nil {
 		return nil,status.Errorf(
 			codes.Unimplemented,
-			fmt.Sprintf("Error happened when insert user :%v",resp.Error()),
+			fmt.Sprintf(helper.Translate(lang,"Account_Insert_Error")+" :%v",dbResp.Error()),
 		)
+	}
+	isOk:="ok"
+	if mailResp:=helper.SendUserRegisterConfirmationMail(user.Email,"user-register-confirmation.html"); mailResp != "ok" {
+		isOk=mailResp
 	}
 
 	return &gigxRR.RegisterUserResponse{
 		User:&gigxRR.User{
 			Id:       	hex.EncodeToString([]byte(user.Id)),
 			Username:	user.Username,
+			IsMailSuccess:isOk,
 		},
 	}, nil
 }
@@ -123,14 +145,11 @@ func (s *server) DeleteFile(ctx context.Context, req *gigxRR.DeleteFileRequest) 
 	return nil,nil
 }
 var (
-	
-	flagAllowAllOrigins = pflag.Bool("allow_all_origins", true, "allow requests from any origin.")
-	flagAllowedOrigins  = pflag.StringSlice("allowed_origins", nil, "comma-separated list of origin URLs which are allowed to make cross-origin requests.")
 
 	// useWebsockets = pflag.Bool("use_websockets", false, "whether to use beta websocket transport layer")
 	enableTls       = pflag.Bool("enable_tls", true, "Use TLS - required for HTTP2.")
-	tlsCertFilePath = pflag.String("tls_cert_file", "ssl/fullchain.pem", "Path to the CRT/PEM file.")
-	tlsKeyFilePath  = pflag.String("tls_key_file", "ssl/privkey.pem", "Path to the private key file.")
+	tlsCertFilePath = pflag.String("tls_cert_file", "app-root/ssl/fullchain.pem", "Path to the CRT/PEM file.")
+	tlsKeyFilePath  = pflag.String("tls_key_file", "app-root/ssl/privkey.pem", "Path to the private key file.")
 	// flagHttpMaxWriteTimeout = pflag.Duration("server_http_max_write_timeout", 10*time.Second, "HTTP server config, max write duration.")
 	// flagHttpMaxReadTimeout  = pflag.Duration("server_http_max_read_timeout", 10*time.Second, "HTTP server config, max read duration.")
 )
@@ -142,7 +161,12 @@ func main(){
 		port = 8901
 	}
 
-	fmt.Println("RR Service Started")
+	fmt.Println("RR Service is Starting...")
+
+	err := helper.InitLocales("languages")
+	if err != nil {
+		fmt.Println("Error happened when langs file loaded", err.Error())
+	}
 
 	opts := []grpc.ServerOption{}
 	grpcServer := grpc.NewServer(opts...)
@@ -150,11 +174,12 @@ func main(){
 
 	fmt.Println("Mongodb Service Started")
 	db.LoadConfiguration()
-	allowedOrigins := makeAllowedOrigins(*flagAllowedOrigins)
+
+	allowedOrigins := helper.MakeAllowedOrigins()
 	
 	options := []grpcweb.Option{
 		grpcweb.WithCorsForRegisteredEndpointsOnly(false),
-		grpcweb.WithOriginFunc(makeHttpOriginFunc(allowedOrigins)),
+		grpcweb.WithOriginFunc(helper.MakeHttpOriginFunc(allowedOrigins)),
 	}
 
 	wrappedGrpc := grpcweb.WrapServer(grpcServer, options...)
@@ -181,29 +206,4 @@ func main(){
 			grpclog.Fatalf("failed starting http server: %v", err)
 		}
 	}
-}
-func makeHttpOriginFunc(allowedOrigins *allowedOrigins) func(origin string) bool {
-	if *flagAllowAllOrigins {
-		return func(origin string) bool {
-			return true
-		}
-	}
-	return allowedOrigins.IsAllowed
-}
-func makeAllowedOrigins(origins []string) *allowedOrigins {
-	o := map[string]struct{}{}
-	for _, allowedOrigin := range origins {
-		o[allowedOrigin] = struct{}{}
-	}
-	return &allowedOrigins{
-		origins: o,
-	}
-}
-
-type allowedOrigins struct {
-	origins map[string]struct{}
-}
-func (a *allowedOrigins) IsAllowed(origin string) bool {
-	_, ok := a.origins[origin]
-	return ok
 }

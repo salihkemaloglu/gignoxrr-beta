@@ -18,7 +18,7 @@ message User {
     string created_date=10;
     string updated_date=11;
     string language_type=12;
-   
+    string is_mail_success=13;
 }
 
 message Follow {

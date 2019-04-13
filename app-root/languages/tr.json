@@ -1,0 +1,22 @@
+{
+    "hello_world":"Merhaba Dünya",
+    "Token_Create_Error":"Token üretilemedi",
+    "Already_Created_Account":"Bu kullanıcı adı ile bir hesap bulunmaktadır: ",
+    "Account_Insert_Error":"Kullanıcı kayıt esnasında hata oluştu",
+    "Username_Field_Empty_Validation":"Kullanıcı adı boş olamaz",
+    "Email_Field_Empty_Validation":"Email boş olamaz",
+    "Password_Field_Empty_Validation":"Şİfre boş olamaz",
+    "Invalid_User_Information":"Geçersiz kullanıcı bilgisi,kullanıcı adı ya da şifre yalnış",
+    "Welcome_To_Gignox":"Gignox'a hoşgeldiniz",
+    "Thanks_For_Sigup":"Gignox'a kayıt olduğunuz için teşekkür ederiz",
+    "Must_Enter_Verrification_Code":"Hesabınızı etkinleştirmek için profilinize doğrulama kodunu girmeniz gerekir.",
+    "Your_Verification_Code":"Gignox doğrulama kodunuz:",
+    "One_Use_Code":"Bu kod tek kullanımlıktır.",
+    "User_Register_Mail_Subject":"Gignox'ta hesabınızı onaylayın",
+    "User_Forgot_Mail_Subject":"Gignox doğrulama kodu",
+    "Verification_Code_Title":"Gignox doğrulama kodu",
+    "Received_Password_Change_Request":"Adresindeki Gignox Hesabınıza erişmek için ",
+    "Via_Email_Address":"e-posta adresiniz aracılığıyla istek aldık.",
+    "Dont_Share_Verification_Code":"Bu kodu başkalarına iletmeyin veya paylaşmayın.",
+    "User_Login_attemps":"Çok sık şifre denemesi yaptınız.Lütfen daha sonra tekrar deneyiniz."
+}

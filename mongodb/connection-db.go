@@ -33,14 +33,28 @@ func Connect(connectionUrl string,databaseName string) {
 }
 
 //LoadConfiguration Parse the configuration file 'config.toml', and establish a connection to DB
-func LoadConfiguration() {
+func LoadConfiguration(connectionType bool) string {
+	
 	config:=Config{}
-    configFile, err := os.Open("config.json")
-    defer configFile.Close()
-    if err != nil {
-        fmt.Println(err.Error())
-    }
-    jsonParser := json.NewDecoder(configFile)
-    jsonParser.Decode(&config)
-    Connect(config.ConnectionUrl,config.DatabaseName)
+
+	if connectionType {
+		configFile, err := os.Open("app-root/config-files/config-prod.json")
+		defer configFile.Close()
+		if err != nil {
+			return fmt.Sprintf("Config file err: %v", err.Error())
+		}
+		jsonParser := json.NewDecoder(configFile)
+		jsonParser.Decode(&config)
+	}else {
+		configFile, err := os.Open("app-root/config-files/config-local.json")
+		defer configFile.Close()
+		if err != nil {
+			return fmt.Sprintf("Config file err: %v", err.Error())
+		}
+		jsonParser := json.NewDecoder(configFile)
+		jsonParser.Decode(&config)
+	}
+   
+	Connect(config.ConnectionUrl,config.DatabaseName)
+	return "ok"
 }

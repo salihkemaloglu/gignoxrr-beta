@@ -1,29 +1,34 @@
 package main
 
 import (
-	"google.golang.org/grpc/metadata"
-	"github.com/spf13/pflag"
+	
 	
 	"fmt"
+	"time"
 	"context"
 	"net/http"
 	"encoding/hex"
+	"github.com/spf13/pflag"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/grpc/grpclog"
+	"google.golang.org/grpc/metadata"
+	"github.com/patrickmn/go-cache"
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	"github.com/salihkemaloglu/gignox-rr-beta-001/proto"
 	db "github.com/salihkemaloglu/gignox-rr-beta-001/mongodb"
 	val "github.com/salihkemaloglu/gignox-rr-beta-001/validation"
 	repo "github.com/salihkemaloglu/gignox-rr-beta-001/repository"
-	"github.com/salihkemaloglu/gignox-rr-beta-001/services"
-	token "github.com/salihkemaloglu/gignox-rr-beta-001/token"
-	
+	helper "github.com/salihkemaloglu/gignox-rr-beta-001/services"
 )
 
 type server struct {
 }
+type respCache struct {
+	Count int 
+}
+var c *cache.Cache
 
 func (s *server) SayHello(ctx context.Context, req *gigxRR.HelloRequest) (*gigxRR.HelloResponse, error) {
 	
@@ -52,14 +57,33 @@ func (s *server) Login(ctx context.Context, req *gigxRR.LoginUserRequest) (*gigx
 			fmt.Sprintf(res),
 		)
 	}
+	var loginAttemptCount int
+	if x, found := c.Get(user.Username); found {
+		loginAttemptCount = x.(int)
+		if loginAttemptCount >= 7{
+			return nil,status.Errorf(
+				codes.Aborted,
+				fmt.Sprintf(helper.Translate(lang,"User_Login_attemps")),
+			)
+		}
+	}
 	var op repo.UserRepository=user
-	if err := op.Login(); err != nil {
+	if  err:= op.Login(); err != nil {
+	    if x, found := c.Get(user.Username); found {
+			loginAttemptCount = x.(int)
+			if loginAttemptCount < 7 {
+				loginAttemptCount=loginAttemptCount+1
+				c.Set(user.Username, loginAttemptCount, cache.DefaultExpiration)
+			}
+	    } else {
+			c.Set(user.Username, 1, cache.DefaultExpiration)
+		}
 		return nil,status.Errorf(
-			codes.AlreadyExists,
+			codes.Unauthenticated,
 			fmt.Sprintf(helper.Translate(lang,"Invalid_User_Information")),
 		)
 	}
-	tokenRes,tokenErr:=token.CreateTokenEndpoint(user)
+	tokenRes,tokenErr:=helper.CreateTokenEndpoint(user)
 	if tokenErr != nil{
 		return nil,status.Errorf(
 			codes.Unknown,
@@ -84,14 +108,27 @@ func (s *server) Register(ctx context.Context, req *gigxRR.RegisterUserRequest) 
 		userLang = headers["language"][0]
 	}
 	lang := helper.DetectLanguage(userLang)
-
-	data := req.GetUser();
-	user := db.User {
-		Username:data.GetUsername(),
-		Password:data.GetPassword(),
-		Email:data.GetEmail(),
+	verificationCode,verErr:=helper.GenerateVerificationCode()
+	if verErr !=nil {
+		verificationCode = "134584"
 	}
+	data := req.GetUser();
+	t := time.Now().UTC()
+	user := db.User {
+		Name: data.GetName(),
+		Surname: data.GetSurname(),
+		Username: data.GetUsername(),
+		Email: data.GetEmail(),
+		Password: data.GetPassword(),
+		CreatedDate: t.Format("2006-01-02 15:04:05"),
+		UpdatedDate: t.Format("2006-01-02 15:04:05"),
+		TotalSpace: 100,
+		LanguageType: userLang,
 
+		RegisterVerificationCode: verificationCode, 	   
+		ForgotPasswordVerificationCode:"0" ,
+	}
+	
 	if valResp := val.UserRegisterFieldValidation(user,lang); valResp != "ok" {
 		return nil,status.Errorf(
 			codes.FailedPrecondition,
@@ -114,7 +151,7 @@ func (s *server) Register(ctx context.Context, req *gigxRR.RegisterUserRequest) 
 		)
 	}
 	isOk:="ok"
-	if mailResp:=helper.SendUserRegisterConfirmationMail(user.Email,"user-register-confirmation.html"); mailResp != "ok" {
+	if mailResp:=helper.SendUserRegisterConfirmationMail(user.Email,userLang,verificationCode); mailResp != "ok" {
 		isOk=mailResp
 	}
 
@@ -148,6 +185,7 @@ var (
 
 	// useWebsockets = pflag.Bool("use_websockets", false, "whether to use beta websocket transport layer")
 	enableTls       = pflag.Bool("enable_tls", true, "Use TLS - required for HTTP2.")
+	configFileType  = pflag.Bool("config_file_type", true, "true is for production,false is for local development")
 	tlsCertFilePath = pflag.String("tls_cert_file", "app-root/ssl/fullchain.pem", "Path to the CRT/PEM file.")
 	tlsKeyFilePath  = pflag.String("tls_key_file", "app-root/ssl/privkey.pem", "Path to the private key file.")
 	// flagHttpMaxWriteTimeout = pflag.Duration("server_http_max_write_timeout", 10*time.Second, "HTTP server config, max write duration.")
@@ -162,18 +200,22 @@ func main(){
 	}
 
 	fmt.Println("RR Service is Starting...")
-
-	err := helper.InitLocales("languages")
+	// init language folder path
+	err := helper.InitLocales("app-root/languages")
 	if err != nil {
 		fmt.Println("Error happened when langs file loaded", err.Error())
 	}
+	// create new cache for user login attemtps
+	c = cache.New(5*time.Minute, 10*time.Minute)
 
 	opts := []grpc.ServerOption{}
 	grpcServer := grpc.NewServer(opts...)
 	gigxRR.RegisterGigxRRServiceServer(grpcServer, &server{})
 
 	fmt.Println("Mongodb Service Started")
-	db.LoadConfiguration()
+	if confErr:=db.LoadConfiguration(*configFileType); confErr!="ok"{
+		fmt.Println(confErr)
+	}
 
 	allowedOrigins := helper.MakeAllowedOrigins()
 	

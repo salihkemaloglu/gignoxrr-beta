@@ -14,11 +14,15 @@ message User {
     string password=6;
     string description=7;
     string image_path=8;
-    string total_space=9;
+    int32  total_space=9;
     string created_date=10;
     string updated_date=11;
     string language_type=12;
     string is_mail_success=13;
+    int32  login_attempt=14;
+    string register_verification_code=15;
+    string forgot_password_verification_code=16;
+    bool is_recaptcha_on=17;
 }
 
 message Follow {

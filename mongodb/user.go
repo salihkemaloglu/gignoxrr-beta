@@ -16,12 +16,14 @@ type User struct {
 	CreatedDate  	 string        `bson:"createddate" json:"createddate"`
 	UpdatedDate  	 string        `bson:"updateddate" json:"updateddate"`
 	ImagePath 		 string        `bson:"imagepath" json:"imagepath"`
-	TotalSpace  	 string        `bson:"totalspace" json:"totalspace"`
+	TotalSpace  	 int           `bson:"totalspace" json:"totalspace"`
 	LanguageType 	 string        `bson:"languagetype" json:"languagetype"`
+	RegisterVerificationCode 	     string           `bson:"registerverificationcode" json:"registerverificationcode"`
+	ForgotPasswordVerificationCode 	 string           `bson:"forgotpasswordverificationcode" json:"forgotpasswordverificationcode"`
 }
 
 // Crud operaions for User
-func (r User) Login() error {
+func (r User) Login()  error {
 	err := db.C("User").Find(bson.M{"username": r.Username, "password": r.Password}).One(&r)
 	if err != nil {
 		return err
@@ -63,7 +65,7 @@ func (r User) Delete() error {
 }
 //CheckUser user login
 func (r User) CheckUser() error {
-	err := db.C("User").Find(bson.M{"username": r.Username}).One(&r)
+	err := db.C("User").Find( bson.M{ "$or": []bson.M{{"username":r.Username}, {"email": r.Email} } } ).One(&r)
 	if err != nil {
 		return err
 	}

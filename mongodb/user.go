@@ -18,15 +18,14 @@ type User struct {
 	ImagePath 		 string        `bson:"imagepath" json:"imagepath"`
 	TotalSpace  	 int           `bson:"totalspace" json:"totalspace"`
 	LanguageType 	 string        `bson:"languagetype" json:"languagetype"`
-	RegisterVerificationCode 	     string           `bson:"registerverificationcode" json:"registerverificationcode"`
-	ForgotPasswordVerificationCode 	 string           `bson:"forgotpasswordverificationcode" json:"forgotpasswordverificationcode"`
 }
 
 // Crud operaions for User
 func (r User) Login()  error {
-	err := db.C("User").Find(bson.M{"username": r.Username, "password": r.Password}).One(&r)
-	if err != nil {
-		return err
+	errUsername := db.C("User").Find(bson.M{"username": r.Username, "password": r.Password}).One(&r)
+	errEmail := db.C("User").Find(bson.M{"email": r.Email, "password": r.Password}).One(&r)
+	if errUsername != nil && errEmail != nil {
+		return errUsername
 	}
 	return nil
 }

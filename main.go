@@ -7,7 +7,6 @@ import (
 	"time"
 	"context"
 	"net/http"
-	"encoding/hex"
 	"github.com/spf13/pflag"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -42,6 +41,7 @@ func (s *server) Login(ctx context.Context, req *gigxRR.LoginUserRequest) (*gigx
 
 	userLang :="en"
 	if headers, ok := metadata.FromIncomingContext(ctx); ok {
+		fmt.Println(headers["user-agent"][0])
 		userLang = headers["language"][0]
 	}
 	lang := helper.DetectLanguage(userLang)
@@ -71,7 +71,7 @@ func (s *server) Login(ctx context.Context, req *gigxRR.LoginUserRequest) (*gigx
 	if  err:= op.Login(); err != nil {
 	    if x, found := c.Get(user.Username); found {
 			loginAttemptCount = x.(int)
-			if loginAttemptCount < 7 {
+			if loginAttemptCount < 20 {
 				loginAttemptCount=loginAttemptCount+1
 				c.Set(user.Username, loginAttemptCount, cache.DefaultExpiration)
 			}
@@ -112,21 +112,18 @@ func (s *server) Register(ctx context.Context, req *gigxRR.RegisterUserRequest) 
 	if verErr !=nil {
 		verificationCode = "134584"
 	}
-	data := req.GetUser();
+	userData := req.GetUser();
 	t := time.Now().UTC()
 	user := db.User {
-		Name: data.GetName(),
-		Surname: data.GetSurname(),
-		Username: data.GetUsername(),
-		Email: data.GetEmail(),
-		Password: data.GetPassword(),
+		Name: userData.GetName(),
+		Surname: userData.GetSurname(),
+		Username: userData.GetUsername(),
+		Email: userData.GetEmail(),
+		Password: userData.GetPassword(),
 		CreatedDate: t.Format("2006-01-02 15:04:05"),
 		UpdatedDate: t.Format("2006-01-02 15:04:05"),
 		TotalSpace: 100,
 		LanguageType: userLang,
-
-		RegisterVerificationCode: verificationCode, 	   
-		ForgotPasswordVerificationCode:"0" ,
 	}
 	
 	if valResp := val.UserRegisterFieldValidation(user,lang); valResp != "ok" {
@@ -136,32 +133,40 @@ func (s *server) Register(ctx context.Context, req *gigxRR.RegisterUserRequest) 
 		)
 	}
 
-	var op repo.UserRepository=user
-	if err := op.CheckUser(); err ==nil  {
+	var userOp repo.UserRepository=user
+	if err := userOp.CheckUser(); err ==nil  {
 		return nil,status.Errorf(
 			codes.AlreadyExists,
 			fmt.Sprintf(helper.Translate(lang,"Already_Created_Account")+user.Username),
 		)
 	}
 
-	if dbResp := op.Insert(); dbResp != nil {
+	if dbResp := userOp.Insert(); dbResp != nil {
 		return nil,status.Errorf(
 			codes.Unimplemented,
 			fmt.Sprintf(helper.Translate(lang,"Account_Insert_Error")+" :%v",dbResp.Error()),
 		)
 	}
-	isOk:="ok"
-	if mailResp:=helper.SendUserRegisterConfirmationMail(user.Email,userLang,verificationCode); mailResp != "ok" {
-		isOk=mailResp
+
+	isOk:=false
+	mailResp:=helper.SendUserRegisterConfirmationMail(user.Email,userLang,verificationCode);
+	if mailResp != "ok" {
+		isOk=true
 	}
 
 	return &gigxRR.RegisterUserResponse{
-		User:&gigxRR.User{
-			Id:       	hex.EncodeToString([]byte(user.Id)),
-			Username:	user.Username,
+		Response:&gigxRR.Response{
+			Message:mailResp,
 			IsMailSuccess:isOk,
+			IsOperationSuccess:true,
 		},
 	}, nil
+}
+func (s *server) SendMail(ctx context.Context, req *gigxRR.SendMailRequest) (*gigxRR.SendMailResponse, error) {
+	return nil,nil
+}
+func (s *server) CheckVerificationCode(ctx context.Context, req *gigxRR.CheckVerificationCodeRequest) (*gigxRR.CheckVerificationCodeResponse, error) {
+	return nil,nil
 }
 func (s *server) UpdateUser(ctx context.Context, req *gigxRR.UpdateUserRequest) (*gigxRR.UpdateUserResponse, error) {
 	return nil,nil
@@ -184,8 +189,7 @@ func (s *server) DeleteFile(ctx context.Context, req *gigxRR.DeleteFileRequest) 
 var (
 
 	// useWebsockets = pflag.Bool("use_websockets", false, "whether to use beta websocket transport layer")
-	enableTls       = pflag.Bool("enable_tls", true, "Use TLS - required for HTTP2.")
-	configFileType  = pflag.Bool("config_file_type", true, "true is for production,false is for local development")
+	enableTls       = pflag.Bool("enable_tls", false, "Use TLS - required for HTTP2.")
 	tlsCertFilePath = pflag.String("tls_cert_file", "app-root/ssl/fullchain.pem", "Path to the CRT/PEM file.")
 	tlsKeyFilePath  = pflag.String("tls_key_file", "app-root/ssl/privkey.pem", "Path to the private key file.")
 	// flagHttpMaxWriteTimeout = pflag.Duration("server_http_max_write_timeout", 10*time.Second, "HTTP server config, max write duration.")
@@ -201,7 +205,7 @@ func main(){
 
 	fmt.Println("RR Service is Starting...")
 	// init language folder path
-	err := helper.InitLocales("app-root/languages")
+	err := helper.InitLocales("app_root/languages")
 	if err != nil {
 		fmt.Println("Error happened when langs file loaded", err.Error())
 	}
@@ -213,7 +217,7 @@ func main(){
 	gigxRR.RegisterGigxRRServiceServer(grpcServer, &server{})
 
 	fmt.Println("Mongodb Service Started")
-	if confErr:=db.LoadConfiguration(*configFileType); confErr!="ok"{
+	if confErr:=db.LoadConfiguration("dev"); confErr!="ok"{
 		fmt.Println(confErr)
 	}
 

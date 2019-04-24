@@ -43,3 +43,10 @@ type BuriedRepository interface {
 	Update() error
 	Delete() error
 }
+type UserTemporaryInformationRepository interface {
+	GetUserTemporaryInformation()(*db.UserTemporaryInformation,error)
+	GetAllUserTemporaryInformation()([]db.UserTemporaryInformation,error)
+	Insert() error
+	Update() error
+	Delete() error
+}

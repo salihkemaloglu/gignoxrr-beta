@@ -1,5 +1,0 @@
-{
-
-    "connectionUrl": "mongo:27017",
-    "databaseName":"GignoxTestDB"
-}

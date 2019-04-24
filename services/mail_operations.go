@@ -1,10 +1,13 @@
 package helper 
 
 import (
+	"time"
 	"bytes"
 	"fmt"
 	"html/template"
 	gomail "gopkg.in/gomail.v2"
+	db "github.com/salihkemaloglu/gignox-rr-beta-001/mongodb"
+	repo "github.com/salihkemaloglu/gignox-rr-beta-001/repository"
 )
 type UserRegisterData struct {
     WelcomeToGignax string
@@ -16,7 +19,7 @@ type UserRegisterData struct {
 }
 func  SendUserRegisterConfirmationMail(userMail string,lang string,verificationCode string) string {
 	
-	mailTypePath:="app-root/mail-templates/user-register-confirmation.html"
+	mailTypePath:="app_root/mail_templates/user_register_confirmation.html"
 
 	temp, err := template.ParseFiles(mailTypePath)
 	if err != nil {
@@ -34,6 +37,20 @@ func  SendUserRegisterConfirmationMail(userMail string,lang string,verificationC
 	var mailBytes bytes.Buffer
 	if err := temp.Execute(&mailBytes, &wd); err != nil {
 		return fmt.Sprintf("Mail template execute byte error: %v",err.Error())
+	}
+	t := time.Now().UTC()
+	userTemporaryInformation := db.UserTemporaryInformation {
+		Email: userMail,
+		RegisterVerificationCode:verificationCode,
+		ForgotPasswordVerificationCode:"",
+		RegisterVerificationCodeCreateDate: t.Format("2006-01-02 15:04:05"),
+		ForgotPasswordVerificationCodeCreateDate: t.Format("2006-01-02 15:04:05"),
+		IsCodeUsed: false,
+    	IsCodeExpired: false, 
+	}
+	var userOp repo.UserTemporaryInformationRepository=userTemporaryInformation
+	if dbResp := userOp.Insert(); dbResp != nil {
+		return fmt.Sprintf(Translate(lang,"User_Temporary_Indormation_Insert_Error")+" :%v",dbResp.Error())
 	}
 
 	result := mailBytes.String()
@@ -66,7 +83,7 @@ type UserForgotPasswordData struct {
 
 func  SendUserForgotPasswordVerificationMail(userMail string,lang string,verificationCode string) string {
 	
-	mailTypePath:="app-root/mail-templates/user-forgot-password.html"
+	mailTypePath:="app_root/mail_templates/user_forgot_password.html"
 
 	temp, err := template.ParseFiles(mailTypePath)
 	if err != nil {

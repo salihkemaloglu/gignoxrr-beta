@@ -1,4 +1,4 @@
-package helper
+package service
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 )
 
 //CreateTokenEndpoint user token creation
-func CreateTokenEndpoint(user db.User) (string,error) {
+func CreateTokenEndpointService(user db.User) (string,error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS512, jwt.MapClaims{
 		"username": user.Username,
 		"password": user.Password,
@@ -23,7 +23,7 @@ func CreateTokenEndpoint(user db.User) (string,error) {
 }
 
 //ValidateMiddleware token validation
-func ValidateMiddleware(authorizationToken string) (string, error) {
+func ValidateMiddlewareService(authorizationToken string) (string, error) {
 
 	if authorizationToken != "" {
 		token, err := jwt.Parse(authorizationToken, func(token *jwt.Token) (interface{}, error) {

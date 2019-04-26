@@ -1,172 +1,52 @@
 package main
 
 import (
-	
-	
 	"fmt"
 	"time"
 	"context"
 	"net/http"
 	"github.com/spf13/pflag"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 	"google.golang.org/grpc/grpclog"
-	"google.golang.org/grpc/metadata"
 	"github.com/patrickmn/go-cache"
+	"google.golang.org/grpc/metadata"
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	"github.com/salihkemaloglu/gignox-rr-beta-001/proto"
 	db "github.com/salihkemaloglu/gignox-rr-beta-001/mongodb"
-	val "github.com/salihkemaloglu/gignox-rr-beta-001/validation"
-	repo "github.com/salihkemaloglu/gignox-rr-beta-001/repository"
 	helper "github.com/salihkemaloglu/gignox-rr-beta-001/services"
+	cont "github.com/salihkemaloglu/gignox-rr-beta-001/controllers"
 )
 
 type server struct {
 }
-type respCache struct {
-	Count int 
-}
 var c *cache.Cache
 
 func (s *server) SayHello(ctx context.Context, req *gigxRR.HelloRequest) (*gigxRR.HelloResponse, error) {
-	
+	if headers, ok := metadata.FromIncomingContext(ctx); ok {
+		fmt.Println(headers["user-agent"][0])
+	}
 	fmt.Printf("RR service is working...Received rpc from client, message=%s\n", req.GetMessage())
-	
 	return &gigxRR.HelloResponse{Message: "Hello RR service is working..."}, nil
 }
 func (s *server) Login(ctx context.Context, req *gigxRR.LoginUserRequest) (*gigxRR.LoginUserResponse, error) {
 	
 	fmt.Printf("RR service is working for Login...Received rpc from client.\n")
-
-	userLang :="en"
-	if headers, ok := metadata.FromIncomingContext(ctx); ok {
-		fmt.Println(headers["user-agent"][0])
-		userLang = headers["language"][0]
-	}
-	lang := helper.DetectLanguage(userLang)
-
-	data := req.GetUser();
-	user := db.User {
-		Username:data.GetUsername(),
-		Password:data.GetPassword(),
-	}
-	if res := val.UserLoginFieldValidation(user,lang); res != "ok" {
-		return nil,status.Errorf(
-			codes.FailedPrecondition,
-			fmt.Sprintf(res),
-		)
-	}
-	var loginAttemptCount int
-	if x, found := c.Get(user.Username); found {
-		loginAttemptCount = x.(int)
-		if loginAttemptCount >= 7{
-			return nil,status.Errorf(
-				codes.Aborted,
-				fmt.Sprintf(helper.Translate(lang,"User_Login_attemps")),
-			)
-		}
-	}
-	var op repo.UserRepository=user
-	if  err:= op.Login(); err != nil {
-	    if x, found := c.Get(user.Username); found {
-			loginAttemptCount = x.(int)
-			if loginAttemptCount < 20 {
-				loginAttemptCount=loginAttemptCount+1
-				c.Set(user.Username, loginAttemptCount, cache.DefaultExpiration)
-			}
-	    } else {
-			c.Set(user.Username, 1, cache.DefaultExpiration)
-		}
-		return nil,status.Errorf(
-			codes.Unauthenticated,
-			fmt.Sprintf(helper.Translate(lang,"Invalid_User_Information")),
-		)
-	}
-	tokenRes,tokenErr:=helper.CreateTokenEndpoint(user)
-	if tokenErr != nil{
-		return nil,status.Errorf(
-			codes.Unknown,
-			fmt.Sprintf(helper.Translate(lang,"Token_Create_Error") +": %v",tokenErr.Error()),
-		)
-	}
-
-	return &gigxRR.LoginUserResponse{
-		User:&gigxRR.UserLogin{
-			Username:	user.Username,
-			Token:		tokenRes,
-		},
-	}, nil
-
+	return cont.LoginController(ctx,req,c)
 }
 func (s *server) Register(ctx context.Context, req *gigxRR.RegisterUserRequest) (*gigxRR.RegisterUserResponse, error) {
 	
 	fmt.Printf("RR service is working for Register...Received rpc from client.\n")
-	
-	userLang :="en"
-	if headers, ok := metadata.FromIncomingContext(ctx); ok {
-		userLang = headers["language"][0]
-	}
-	lang := helper.DetectLanguage(userLang)
-	verificationCode,verErr:=helper.GenerateVerificationCode()
-	if verErr !=nil {
-		verificationCode = "134584"
-	}
-	userData := req.GetUser();
-	t := time.Now().UTC()
-	user := db.User {
-		Name: userData.GetName(),
-		Surname: userData.GetSurname(),
-		Username: userData.GetUsername(),
-		Email: userData.GetEmail(),
-		Password: userData.GetPassword(),
-		CreatedDate: t.Format("2006-01-02 15:04:05"),
-		UpdatedDate: t.Format("2006-01-02 15:04:05"),
-		TotalSpace: 100,
-		LanguageType: userLang,
-	}
-	
-	if valResp := val.UserRegisterFieldValidation(user,lang); valResp != "ok" {
-		return nil,status.Errorf(
-			codes.FailedPrecondition,
-			fmt.Sprintf(valResp),
-		)
-	}
-
-	var userOp repo.UserRepository=user
-	if err := userOp.CheckUser(); err ==nil  {
-		return nil,status.Errorf(
-			codes.AlreadyExists,
-			fmt.Sprintf(helper.Translate(lang,"Already_Created_Account")+user.Username),
-		)
-	}
-
-	if dbResp := userOp.Insert(); dbResp != nil {
-		return nil,status.Errorf(
-			codes.Unimplemented,
-			fmt.Sprintf(helper.Translate(lang,"Account_Insert_Error")+" :%v",dbResp.Error()),
-		)
-	}
-
-	isOk:=false
-	mailResp:=helper.SendUserRegisterConfirmationMail(user.Email,userLang,verificationCode);
-	if mailResp != "ok" {
-		isOk=true
-	}
-
-	return &gigxRR.RegisterUserResponse{
-		Response:&gigxRR.Response{
-			Message:mailResp,
-			IsMailSuccess:isOk,
-			IsOperationSuccess:true,
-		},
-	}, nil
+	return cont.RegisterController(ctx,req)	
 }
-func (s *server) SendMail(ctx context.Context, req *gigxRR.SendMailRequest) (*gigxRR.SendMailResponse, error) {
-	return nil,nil
+func (s *server) SendEmail(ctx context.Context, req *gigxRR.SendEmailRequest) (*gigxRR.SendEmailResponse, error) {
+	
+	fmt.Printf("RR service is working for SendMail...Received rpc from client.\n")
+	return cont.SendEmailController(ctx,req)		
 }
 func (s *server) CheckVerificationCode(ctx context.Context, req *gigxRR.CheckVerificationCodeRequest) (*gigxRR.CheckVerificationCodeResponse, error) {
-	return nil,nil
+
+	fmt.Printf("RR service is working for CheckVerificationCode...Received rpc from client.\n")
+	return cont.CheckVerificationCodeController(ctx,req)	
 }
 func (s *server) UpdateUser(ctx context.Context, req *gigxRR.UpdateUserRequest) (*gigxRR.UpdateUserResponse, error) {
 	return nil,nil

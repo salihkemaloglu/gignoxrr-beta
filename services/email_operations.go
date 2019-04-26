@@ -1,4 +1,4 @@
-package helper 
+package service 
 
 import (
 	"time"
@@ -17,7 +17,7 @@ type UserRegisterData struct {
 	YourVerificationCode string
 	OneUseCode string
 }
-func  SendUserRegisterConfirmationMail(userMail string,lang string,verificationCode string) string {
+func  SendUserRegisterConfirmationMailService(userEmail string,verificationCode string,lang string) string {
 	
 	mailTypePath:="app_root/mail_templates/user_register_confirmation.html"
 
@@ -40,7 +40,7 @@ func  SendUserRegisterConfirmationMail(userMail string,lang string,verificationC
 	}
 	t := time.Now().UTC()
 	userTemporaryInformation := db.UserTemporaryInformation {
-		Email: userMail,
+		Email: userEmail,
 		RegisterVerificationCode:verificationCode,
 		ForgotPasswordVerificationCode:"",
 		RegisterVerificationCodeCreateDate: t.Format("2006-01-02 15:04:05"),
@@ -56,7 +56,7 @@ func  SendUserRegisterConfirmationMail(userMail string,lang string,verificationC
 	result := mailBytes.String()
 	mail := gomail.NewMessage()
 	mail.SetHeader("From", "gignox.us@gmail.com")
-	mail.SetHeader("To", userMail)
+	mail.SetHeader("To", userEmail)
 	mail.SetHeader("Subject", Translate(lang,"User_Register_Mail_Subject"))//bu da dinamik olacak
 	mail.SetBody("text/html", result)
 	// mail.Attach(mailTypePath)
@@ -81,7 +81,7 @@ type UserForgotPasswordData struct {
 	Email string
 }
 
-func  SendUserForgotPasswordVerificationMail(userMail string,lang string,verificationCode string) string {
+func  SendUserForgotPasswordVerificationMailService(userEmail string,verificationCode string,lang string) string {
 	
 	mailTypePath:="app_root/mail_templates/user_forgot_password.html"
 
@@ -97,18 +97,32 @@ func  SendUserForgotPasswordVerificationMail(userMail string,lang string,verific
 		YourVerificationCode: Translate(lang,"Your_Verification_Code"),
         OneUseCode: Translate(lang,"One_Use_Code"),
 		VerificationCode: verificationCode,
-		Email:userMail,
+		Email:userEmail,
     }
 
 	var mailBytes bytes.Buffer
 	if err := temp.Execute(&mailBytes, &wd); err != nil {
 		return fmt.Sprintf("Mail template execute byte error: %v",err.Error())
 	}
+	t := time.Now().UTC()
+	userTemporaryInformation := db.UserTemporaryInformation {
+		Email: userEmail,
+		RegisterVerificationCode:"",
+		ForgotPasswordVerificationCode:verificationCode,
+		RegisterVerificationCodeCreateDate: t.Format("2006-01-02 15:04:05"),
+		ForgotPasswordVerificationCodeCreateDate: t.Format("2006-01-02 15:04:05"),
+		IsCodeUsed: false,
+    	IsCodeExpired: false, 
+	}
+	var userOp repo.UserTemporaryInformationRepository=userTemporaryInformation
+	if dbResp := userOp.Insert(); dbResp != nil {
+		return fmt.Sprintf(Translate(lang,"User_Temporary_Indormation_Insert_Error")+" :%v",dbResp.Error())
+	}
 
 	result := mailBytes.String()
 	mail := gomail.NewMessage()
 	mail.SetHeader("From", "gignox.us@gmail.com")
-	mail.SetHeader("To", userMail)
+	mail.SetHeader("To", userEmail)
 	mail.SetHeader("Subject", Translate(lang,"User_Forgot_Mail_Subject"))//bu da dinamik olacak
 	mail.SetBody("text/html", result)
 	// mail.Attach(mailTypePath)

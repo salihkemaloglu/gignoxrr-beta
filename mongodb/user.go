@@ -18,14 +18,14 @@ type User struct {
 	ImagePath 		 string        `bson:"imagepath" json:"imagepath"`
 	TotalSpace  	 int           `bson:"totalspace" json:"totalspace"`
 	LanguageType 	 string        `bson:"languagetype" json:"languagetype"`
+	IsUserVerificated 	 bool      `bson:"isuserverificated" json:"isuserverificated"`
 }
 
 // Crud operaions for User
 func (r User) Login()  error {
-	errUsername := db.C("User").Find(bson.M{"username": r.Username, "password": r.Password}).One(&r)
-	errEmail := db.C("User").Find(bson.M{"email": r.Email, "password": r.Password}).One(&r)
-	if errUsername != nil && errEmail != nil {
-		return errUsername
+	err := db.C("User").Find( bson.M{ "$or": []bson.M{{"username":r.Username,"password": r.Password}, {"email": r.Username,"password": r.Password} } } ).One(&r)
+	if err != nil {
+		return err
 	}
 	return nil
 }
@@ -37,7 +37,13 @@ func (r User) GetUser() (*User, error) {
 	}
 	return &r, err
 }
-
+func (r User) GetUserByEmail() (*User, error) {
+	err := db.C("User").Find(bson.M{"email":r.Email}).One(&r)
+	if err != nil {
+		return nil, err
+	}
+	return &r, err
+}
 func (r User) Insert()  error {
 	r.Id = bson.NewObjectId()
 	err := db.C("User").Insert(&r)

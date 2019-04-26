@@ -19,5 +19,9 @@
     "Via_Email_Address":"e-posta adresiniz aracılığıyla istek aldık.",
     "Dont_Share_Verification_Code":"Bu kodu başkalarına iletmeyin veya paylaşmayın.",
     "User_Login_attemps":"Çok sık şifre denemesi yaptınız.Lütfen daha sonra tekrar deneyiniz.",
-    "User_Temporary_Indormation_Insert_Error":"Geçici kullanıcı bilgisi  kaydı esnasında hata oluştu"
+    "User_Temporary_Indormation_Insert_Error":"Geçici kullanıcı bilgisi  kaydı esnasında hata oluştu",
+    "Email_Type_Field_Empty_Validation":"Email çeşidi boş olamaz",
+    "Unknown_Email_type":"Bilinmeyen email türü",
+    "Forgot_Password_Verification_Code_Field_Empty_Validation":"Şifremi unuttum doğrulama kodu boş olamaz",
+    "Register_Verification_Code_Field_Empty_Validation":"Kayıt doğrulama kodu boş olamaz"
 }

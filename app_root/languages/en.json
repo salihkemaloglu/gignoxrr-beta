@@ -19,6 +19,10 @@
     "Via_Email_Address":"via your e-mail address.",
     "Dont_Share_Verification_Code":"Do not forward or transmit this code to anyone else.",
     "User_Login_attemps":"You've often tried a password experiment.Please try again later.",
-    "User_Temporary_Indormation_Insert_Error":"Error happened when insert User Temporary Information"
+    "User_Temporary_Indormation_Insert_Error":"Error happened when insert User Temporary Information",
+    "Email_Type_Field_Empty_Validation":"Email type can not be empty",
+    "Unknown_Email_type":"Unknown email type",
+    "Forgot_Password_Verification_Code_Field_Empty_Validation":"Forgot password verification code can not be empty",
+    "Register_Verification_Code_Field_Empty_Validation":"Register verification code can not be empty"
     
 }

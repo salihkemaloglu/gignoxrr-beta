@@ -7,6 +7,7 @@ import (
 type UserRepository interface {
 	Login() error
 	GetUser()(*db.User,error)
+	GetUserByEmail()(*db.User,error)
 	CheckUser() error
 	Insert() error
 	Update() error
@@ -44,7 +45,8 @@ type BuriedRepository interface {
 	Delete() error
 }
 type UserTemporaryInformationRepository interface {
-	GetUserTemporaryInformation()(*db.UserTemporaryInformation,error)
+	CheckRegisterVerificationCode()(*db.UserTemporaryInformation,error)
+	CheckForgotPasswordVerificationCode()(*db.UserTemporaryInformation,error)
 	GetAllUserTemporaryInformation()([]db.UserTemporaryInformation,error)
 	Insert() error
 	Update() error

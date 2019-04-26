@@ -17,14 +17,20 @@ type UserTemporaryInformation struct {
 }
 
 
-func (r UserTemporaryInformation) GetUserTemporaryInformation() (*UserTemporaryInformation, error) {
-	err := db.C("UserTemporaryInformation").FindId(r.Id).One(&r)
+func (r UserTemporaryInformation) CheckRegisterVerificationCode() (*UserTemporaryInformation, error) {
+	err := db.C("UserTemporaryInformation").Find(bson.M{"email":r.Email,"registerverificationcode": r.RegisterVerificationCode}).One(&r)
 	if err != nil {
 		return nil, err
 	}
 	return &r, err
 }
-
+func (r UserTemporaryInformation) CheckForgotPasswordVerificationCode() (*UserTemporaryInformation, error) {
+	err := db.C("UserTemporaryInformation").Find(bson.M{"email":r.Email,"forgotpasswordverificationcode": r.ForgotPasswordVerificationCode}).One(&r)
+	if err != nil {
+		return nil, err
+	}
+	return &r, err
+}
 func (r UserTemporaryInformation) Insert()  error {
 	r.Id = bson.NewObjectId()
 	err := db.C("UserTemporaryInformation").Insert(&r)

@@ -5,13 +5,4 @@ services:
     container_name: api
     ports:
       - 8901:8901    
-    depends_on:
-      - mongo
-  mongo:
-    image: mongo:latest
-    container_name: mongo
-    volumes:
-      - ./data/db:/data/db
-    ports:
-      - 27100:27017
- 
+

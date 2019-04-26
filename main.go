@@ -69,7 +69,7 @@ func (s *server) DeleteFile(ctx context.Context, req *gigxRR.DeleteFileRequest) 
 var (
 
 	// useWebsockets = pflag.Bool("use_websockets", false, "whether to use beta websocket transport layer")
-	enableTls       = pflag.Bool("enable_tls", false, "Use TLS - required for HTTP2.")
+	enableTls       = pflag.Bool("enable_tls", true, "Use TLS - required for HTTP2.")
 	tlsCertFilePath = pflag.String("tls_cert_file", "app-root/ssl/fullchain.pem", "Path to the CRT/PEM file.")
 	tlsKeyFilePath  = pflag.String("tls_key_file", "app-root/ssl/privkey.pem", "Path to the private key file.")
 	// flagHttpMaxWriteTimeout = pflag.Duration("server_http_max_write_timeout", 10*time.Second, "HTTP server config, max write duration.")

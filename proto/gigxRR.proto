@@ -156,15 +156,23 @@ message CheckVerificationCodeRequest {
 message CheckVerificationCodeResponse {
     GeneralResponse general_response=1;
 }
+message GetIpAddressRequest {
+    string message=1;
+}
+message GetIpAddressResponse {
+    string ip_address=1;
+}
 service GigxRRService{
-    //Check service
+    //Say Hello 
     rpc SayHello (HelloRequest) returns (HelloResponse);
     //User methods
     rpc Login                       (LoginUserRequest) returns (LoginUserResponse);
     rpc Register                    (RegisterUserRequest) returns (RegisterUserResponse);
     rpc UpdateUser                  (UpdateUserRequest) returns (UpdateUserResponse);
     rpc DeleteUser                  (DeleteUserRequest) returns (DeleteUserResponse);
+    //Srvices
     rpc SendEmail                   (SendEmailRequest) returns (SendEmailResponse);
+    rpc GetIpAddress                 (GetIpAddressRequest) returns (GetIpAddressResponse);
     rpc CheckVerificationCode       (CheckVerificationCodeRequest) returns (CheckVerificationCodeResponse);
     //File methods
     rpc GetFile                     (GetFileRequest) returns (GetFileResponse);

@@ -1,6 +1,7 @@
 package main
 
 import (
+	
 	"fmt"
 	"time"
 	"context"
@@ -9,7 +10,6 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/grpclog"
 	"github.com/patrickmn/go-cache"
-	"google.golang.org/grpc/metadata"
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	"github.com/salihkemaloglu/gignox-rr-beta-001/proto"
 	db "github.com/salihkemaloglu/gignox-rr-beta-001/mongodb"
@@ -22,11 +22,14 @@ type server struct {
 var c *cache.Cache
 
 func (s *server) SayHello(ctx context.Context, req *gigxRR.HelloRequest) (*gigxRR.HelloResponse, error) {
-	if headers, ok := metadata.FromIncomingContext(ctx); ok {
-		fmt.Println(headers["user-agent"][0])
-	}
-	fmt.Printf("RR service is working...Received rpc from client, message=%s\n", req.GetMessage())
+
+	fmt.Printf("RR service is working for SayHello...Received rpc from client, message=%s\n", req.GetMessage())
 	return &gigxRR.HelloResponse{Message: "Hello RR service is working..."}, nil
+}
+func (s *server) GetIpAddress(ctx context.Context, req *gigxRR.GetIpAddressRequest) (*gigxRR.GetIpAddressResponse, error) {
+
+	fmt.Printf("RR service is working for GetIpAddess...Received rpc from client")
+	return helper.GetIpAddress(ctx)
 }
 func (s *server) Login(ctx context.Context, req *gigxRR.LoginUserRequest) (*gigxRR.LoginUserResponse, error) {
 	
@@ -70,8 +73,8 @@ var (
 
 	// useWebsockets = pflag.Bool("use_websockets", false, "whether to use beta websocket transport layer")
 	enableTls       = pflag.Bool("enable_tls", true, "Use TLS - required for HTTP2.")
-	tlsCertFilePath = pflag.String("tls_cert_file", "app-root/ssl/fullchain.pem", "Path to the CRT/PEM file.")
-	tlsKeyFilePath  = pflag.String("tls_key_file", "app-root/ssl/privkey.pem", "Path to the private key file.")
+	tlsCertFilePath = pflag.String("tls_cert_file", "app_root/ssl/fullchain.pem", "Path to the CRT/PEM file.")
+	tlsKeyFilePath  = pflag.String("tls_key_file", "app_root/ssl/privkey.pem", "Path to the private key file.")
 	// flagHttpMaxWriteTimeout = pflag.Duration("server_http_max_write_timeout", 10*time.Second, "HTTP server config, max write duration.")
 	// flagHttpMaxReadTimeout  = pflag.Duration("server_http_max_read_timeout", 10*time.Second, "HTTP server config, max read duration.")
 )

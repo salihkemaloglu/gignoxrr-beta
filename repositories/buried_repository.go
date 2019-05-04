@@ -1,4 +1,4 @@
-package mongodb
+package repositories
 
 import (
 	"gopkg.in/mgo.v2/bson"

@@ -2,7 +2,8 @@ package validation
 
 import (
 	"strings"
-	db "github.com/salihkemaloglu/gignox-rr-beta-001/mongodb"
+
+	str "github.com/salihkemaloglu/gignox-rr-beta-001/repositories"
 	helper "github.com/salihkemaloglu/gignox-rr-beta-001/services"
 )
 
@@ -16,7 +17,7 @@ func SendMailFieldValidation(email_ string,mailType_ string,lang_ string) string
 		return "ok"
 	}
 }
-func CheckVerificationCodeValidation(userTemporaryInformation_ *db.UserTemporaryInformation,mailType_ string,lang_ string) string {
+func CheckVerificationCodeValidation(userTemporaryInformation_ *str.UserTemporaryInformation,mailType_ string,lang_ string) string {
 
 	if strings.TrimSpace(userTemporaryInformation_.Email) == "" {
 		return helper.Translate(lang_,"Email_Field_Empty_Validation")

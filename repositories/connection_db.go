@@ -1,10 +1,11 @@
-package mongodb
+package repositories
 
 import (
-	"encoding/json"
+	
 	"fmt"
 	"os"
 	"time"
+	"encoding/json"
 	mgo "gopkg.in/mgo.v2"
 )
 
@@ -19,27 +20,27 @@ type Config struct {
 }
 
 // Connect Establish a connection to database
-func Connect(con Config) {
+func Connect(con_ Config) {
 	info := &mgo.DialInfo{
-		Addrs:    []string{con.ConnectionUrl},
+		Addrs:    []string{con_.ConnectionUrl},
 		Timeout:  5 * time.Second,
-		Database: con.DatabaseName,
-		Username: con.DatabaseUsername,
-		Password: con.DatabasePassword,
+		Database: con_.DatabaseName,
+		Username: con_.DatabaseUsername,
+		Password: con_.DatabasePassword,
 	}
 	session, err := mgo.DialWithInfo(info)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	db = session.DB(con.DatabaseName)
+	db = session.DB(con_.DatabaseName)
 }
 
 //LoadConfiguration Parse the configuration file 'config.toml', and establish a connection to DB
-func LoadConfiguration(connectionType string) string {
+func LoadConfiguration(connectionType_ string) string {
 	
 	config:=Config{}
 
-	if connectionType == "dev" {
+	if connectionType_ == "dev" {
 		configFile, err := os.Open("app_root/config_files/dev.json")
 		defer configFile.Close()
 		if err != nil {
@@ -47,7 +48,7 @@ func LoadConfiguration(connectionType string) string {
 		}
 		jsonParser := json.NewDecoder(configFile)
 		jsonParser.Decode(&config)
-	}else if connectionType == "prod" {
+	}else if connectionType_ == "prod" {
 		configFile, err := os.Open("app_root/config_files/prod.json")
 		defer configFile.Close()
 		if err != nil {
@@ -55,7 +56,7 @@ func LoadConfiguration(connectionType string) string {
 		}
 		jsonParser := json.NewDecoder(configFile)
 		jsonParser.Decode(&config)
-	}else if connectionType == "local" {
+	}else if connectionType_ == "local" {
 		configFile, err := os.Open("app_root/config_files/local.json")
 		defer configFile.Close()
 		if err != nil {

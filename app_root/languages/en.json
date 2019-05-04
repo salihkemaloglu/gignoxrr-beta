@@ -23,6 +23,18 @@
     "Email_Type_Field_Empty_Validation":"Email type can not be empty",
     "Unknown_Email_type":"Unknown email type",
     "Forgot_Password_Verification_Code_Field_Empty_Validation":"Forgot password verification code can not be empty",
-    "Register_Verification_Code_Field_Empty_Validation":"Register verification code can not be empty"
+    "Register_Verification_Code_Field_Empty_Validation":"Register verification code can not be empty",
+    "Register_Verification_Code_Not_Found":"Register verification code is wrong",
+    "Register_Verification_Code_Used_Before":"Register verification code is used before",
+    "Register_Verification_Code_Expired":"Register verification code is expired",
+    "Register_Verification_Code_Time_Parse_Error":"Register verification code time parse error",
+    "Register_Verification_Code_User_Not_Exist":"User for register verification code is not exist",
+    "Register_Verification_Code_User_Update_Error":"Register verification code update error",
+    "Register_Verification_Code_User_Temporary_Information_Update_Error":"Register verification code user temporary information error",
+    "Forgot_Password_Verification_Code_Not_Found":"Forgot password verification code is wrong",
+    "Forgot_Password_Verification_Code_Used_Before":"Forgot password verification code is used before",
+    "Forgot_Password_Verification_Code_Expired":"Forgot password verification code can is expired",
+    "Forgot_Password_Verification_Code_Time_Parse_Error":"Forgot password verification code time parse error",
+    "Forgot_Password_Verification_Code_User_Temporary_Information_Update_Error":"Forgot password verification code user temporary information update error"
     
 }

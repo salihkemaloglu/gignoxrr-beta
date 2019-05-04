@@ -23,5 +23,17 @@
     "Email_Type_Field_Empty_Validation":"Email çeşidi boş olamaz",
     "Unknown_Email_type":"Bilinmeyen email türü",
     "Forgot_Password_Verification_Code_Field_Empty_Validation":"Şifremi unuttum doğrulama kodu boş olamaz",
-    "Register_Verification_Code_Field_Empty_Validation":"Kayıt doğrulama kodu boş olamaz"
+    "Register_Verification_Code_Field_Empty_Validation":"Kullanıcı kaydı doğrulama kodu boş olamaz",
+    "Register_Verification_Code_Not_Found": "Kullanıcı kaydı doğrulama kodu yanlış",
+    "Register_Verification_Code_Used_Before": "Kullanıcı kaydı kayıt doğrulama kodu daha önce kullanılmış",
+    "Register_Verification_Code_Expired": "Kullanıcı kaydı doğrulama kodunun süresi doldu",
+    "Register_Verification_Code_Time_Parse_Error": "Kullanıcı kaydı  doğrulama kodu zaman ayrıştırma hatasını",
+    "Register_Verification_Code_User_Not_Exist": "Kullanıcı kaydı  doğrulama kodu kullanıcısı mevcut değil",
+    "Register_Verification_Code_User_Update_Error": "Kullanıcı kaydı  doğrulama kodu güncelleme hatasını",
+    "Register_Verification_Code_User_Temporary_Information_Update_Error": "Kullanıcı kaydı oğrulama kodu kullanıcı geçici bilgi hatasını",
+    "Forgot_Password_Verification_Code_Not_Found": "Şifremi unuttum doğrulama kodu yanlış",
+    "Forgot_Password_Verification_Code_Used_Before": "Şifremi unuttum  doğrulama kodu daha önce kullanılmış",
+    "Forgot_Password_Verification_Code_Expired": "Şifremi unuttum  doğrulama kodunun süresi dolmuş",
+    "Forgot_Password_Verification_Code_Time_Parse_Error": "Şifremi unuttum doğrulama kodu zaman format hatası hatası kaydet",
+    "Forgot_Password_Verification_Code_User_Temporary_Information_Update_Error": "Şifremi unuttum doğrulama kodunu  geçici kullanıcı bilgisi güncelleme hatası"
 }

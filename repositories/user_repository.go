@@ -1,10 +1,9 @@
-package mongodb
+package repositories
 
 import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-// Mongodb User database structs
 type User struct {
 	Id          	 bson.ObjectId `bson:"_id" json:"id" `
 	Name 	 		 string        `bson:"name" json:"name"`
@@ -17,17 +16,17 @@ type User struct {
 	UpdatedDate  	 string        `bson:"updateddate" json:"updateddate"`
 	ImagePath 		 string        `bson:"imagepath" json:"imagepath"`
 	TotalSpace  	 int           `bson:"totalspace" json:"totalspace"`
-	LanguageType 	 string        `bson:"languagetype" json:"languagetype"`
+	LanguageCode 	 string        `bson:"languagecode" json:"languagecode"`
 	IsUserVerificated 	 bool      `bson:"isuserverificated" json:"isuserverificated"`
 }
 
 // Crud operaions for User
-func (r User) Login()  error {
+func (r User) Login()  (*User, error) {
 	err := db.C("User").Find( bson.M{ "$or": []bson.M{{"username":r.Username,"password": r.Password}, {"email": r.Username,"password": r.Password} } } ).One(&r)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return &r, err
 }
 
 func (r User) GetUser() (*User, error) {

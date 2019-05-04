@@ -1,10 +1,8 @@
-package mongodb
+package repositories
 
 import (
 	"gopkg.in/mgo.v2/bson"
 )
-
-// Mongodb User database structs
 type UserTemporaryInformation struct {
 	Id          	 bson.ObjectId `bson:"_id" json:"id" `
 	Email 		 	 string        `bson:"email" json:"email"`
@@ -15,7 +13,6 @@ type UserTemporaryInformation struct {
 	IsCodeUsed 	 	 bool          `bson:"iscodeused" json:"iscodeused"`
 	IsCodeExpired 	 bool          `bson:"iscodeexpired" json:"iscodeexpired"`
 }
-
 
 func (r UserTemporaryInformation) CheckRegisterVerificationCode() (*UserTemporaryInformation, error) {
 	err := db.C("UserTemporaryInformation").Find(bson.M{"email":r.Email,"registerverificationcode": r.RegisterVerificationCode}).One(&r)

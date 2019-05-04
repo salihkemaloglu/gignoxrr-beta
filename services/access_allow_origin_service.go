@@ -9,13 +9,13 @@ var (
 	flagAllowAllOrigins = pflag.Bool("allow_all_origins", true, "allow requests from any origin.")
 	flagAllowedOrigins  = pflag.StringSlice("allowed_origins", nil, "comma-separated list of origin URLs which are allowed to make cross-origin requests.")
 )
-func MakeHttpOriginFunc(allowedOrigins *allowedOrigins) func(origin string) bool {
+func MakeHttpOriginFunc(allowedOrigins_ *allowedOrigins) func(origin string) bool {
 	if *flagAllowAllOrigins {
 		return func(origin string) bool {
 			return true
 		}
 	}
-	return allowedOrigins.IsAllowed
+	return allowedOrigins_.IsAllowed
 }
 func MakeAllowedOrigins() *allowedOrigins {
 	o := map[string]struct{}{}

@@ -1,10 +1,9 @@
 
-package mongodb
+package repositories
 
 import (
 	"gopkg.in/mgo.v2/bson"
 )
-
 type File struct {
 	Id          	 bson.ObjectId `bson:"_id" json:"id" `
 	UserId 	    	 string        `bson:"userid" json:"userid"`
@@ -20,6 +19,7 @@ type File struct {
 	IsTrash     	 bool          `bson:"istrash" json:"istrash"`
 	IsDeleted   	 bool          `bson:"isdeleted" json:"isdeleted"`
 }
+
 // Crud operaions for File
 func (r File) GetFile() (*File, error) {
 	err := db.C("File").FindId(r.Id).One(&r)

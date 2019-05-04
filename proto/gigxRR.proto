@@ -17,7 +17,8 @@ message User {
     int32  total_space=9;
     string created_date=10;
     string updated_date=11;
-    string language_type=12;
+    string language_code=12;
+    bool   is_confirm_account=13;
 }
 
 message Follow {
@@ -66,7 +67,10 @@ message Buried {
 message UserLogin {
     string username=1;
     string password=2;
-    string token=3;
+    string language_code=3;
+    string country_flag=4;
+    int32  gmt_off_set=5;
+    string token=6;
 }
 
 message Email {
@@ -80,6 +84,14 @@ message GeneralResponse {
     string message=1;
     bool is_email_success=3;
     bool is_operation_success=4;
+}
+
+message IpInformation {
+    string ip_address=1;
+    string language_code=2;
+    string country_flag=3;
+    int32  gmt_off_set=4;
+
 }
 
 //Check is service working ?
@@ -156,11 +168,11 @@ message CheckVerificationCodeRequest {
 message CheckVerificationCodeResponse {
     GeneralResponse general_response=1;
 }
-message GetIpAddressRequest {
+message GetIpInformationRequest {
     string message=1;
 }
-message GetIpAddressResponse {
-    string ip_address=1;
+message GetIpInformationResponse {
+    IpInformation ip_information=1;
 }
 service GigxRRService{
     //Say Hello 
@@ -172,7 +184,7 @@ service GigxRRService{
     rpc DeleteUser                  (DeleteUserRequest) returns (DeleteUserResponse);
     //Srvices
     rpc SendEmail                   (SendEmailRequest) returns (SendEmailResponse);
-    rpc GetIpAddress                 (GetIpAddressRequest) returns (GetIpAddressResponse);
+    rpc GetIpInformation            (GetIpInformationRequest) returns (GetIpInformationResponse);
     rpc CheckVerificationCode       (CheckVerificationCodeRequest) returns (CheckVerificationCodeResponse);
     //File methods
     rpc GetFile                     (GetFileRequest) returns (GetFileResponse);

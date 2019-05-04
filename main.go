@@ -12,24 +12,32 @@ import (
 	"github.com/patrickmn/go-cache"
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	"github.com/salihkemaloglu/gignox-rr-beta-001/proto"
-	db "github.com/salihkemaloglu/gignox-rr-beta-001/mongodb"
+	repo "github.com/salihkemaloglu/gignox-rr-beta-001/repositories"
 	helper "github.com/salihkemaloglu/gignox-rr-beta-001/services"
 	cont "github.com/salihkemaloglu/gignox-rr-beta-001/controllers"
 )
 
 type server struct {
 }
-var c *cache.Cache
 
+var (
+	c *cache.Cache
+	// useWebsockets = pflag.Bool("use_websockets", false, "whether to use beta websocket transport layer")
+	enableTls       = pflag.Bool("enable_tls", false, "Use TLS - required for HTTP2.")// false is for local development
+	tlsCertFilePath = pflag.String("tls_cert_file", "app_root/ssl/fullchain.pem", "Path to the CRT/PEM file.")
+	tlsKeyFilePath  = pflag.String("tls_key_file", "app_root/ssl/privkey.pem", "Path to the private key file.")
+	// flagHttpMaxWriteTimeout = pflag.Duration("server_http_max_write_timeout", 10*time.Second, "HTTP server config, max write duration.")
+	// flagHttpMaxReadTimeout  = pflag.Duration("server_http_max_read_timeout", 10*time.Second, "HTTP server config, max read duration.")
+)
 func (s *server) SayHello(ctx context.Context, req *gigxRR.HelloRequest) (*gigxRR.HelloResponse, error) {
 
 	fmt.Printf("RR service is working for SayHello...Received rpc from client, message=%s\n", req.GetMessage())
 	return &gigxRR.HelloResponse{Message: "Hello RR service is working..."}, nil
 }
-func (s *server) GetIpAddress(ctx context.Context, req *gigxRR.GetIpAddressRequest) (*gigxRR.GetIpAddressResponse, error) {
+func (s *server) GetIpInformation(ctx context.Context, req *gigxRR.GetIpInformationRequest) (*gigxRR.GetIpInformationResponse, error) {
 
 	fmt.Printf("RR service is working for GetIpAddess...Received rpc from client")
-	return helper.GetIpAddress(ctx)
+	return cont.GetIpInformationController(ctx)
 }
 func (s *server) Login(ctx context.Context, req *gigxRR.LoginUserRequest) (*gigxRR.LoginUserResponse, error) {
 	
@@ -69,15 +77,7 @@ func (s *server) UpdateFile(ctx context.Context, req *gigxRR.UpdateFileRequest) 
 func (s *server) DeleteFile(ctx context.Context, req *gigxRR.DeleteFileRequest) (*gigxRR.DeleteFileResponse, error) {
 	return nil,nil
 }
-var (
 
-	// useWebsockets = pflag.Bool("use_websockets", false, "whether to use beta websocket transport layer")
-	enableTls       = pflag.Bool("enable_tls", true, "Use TLS - required for HTTP2.")
-	tlsCertFilePath = pflag.String("tls_cert_file", "app_root/ssl/fullchain.pem", "Path to the CRT/PEM file.")
-	tlsKeyFilePath  = pflag.String("tls_key_file", "app_root/ssl/privkey.pem", "Path to the private key file.")
-	// flagHttpMaxWriteTimeout = pflag.Duration("server_http_max_write_timeout", 10*time.Second, "HTTP server config, max write duration.")
-	// flagHttpMaxReadTimeout  = pflag.Duration("server_http_max_read_timeout", 10*time.Second, "HTTP server config, max read duration.")
-)
 func main(){
 	pflag.Parse()
 
@@ -100,7 +100,7 @@ func main(){
 	gigxRR.RegisterGigxRRServiceServer(grpcServer, &server{})
 
 	fmt.Println("Mongodb Service Started")
-	if confErr:=db.LoadConfiguration("dev"); confErr!="ok"{
+	if confErr:=repo.LoadConfiguration("dev"); confErr!="ok"{
 		fmt.Println(confErr)
 	}
 

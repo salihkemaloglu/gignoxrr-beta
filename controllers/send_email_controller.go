@@ -7,17 +7,17 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/grpc/metadata"
 	"github.com/salihkemaloglu/gignox-rr-beta-001/proto"
-	val "github.com/salihkemaloglu/gignox-rr-beta-001/validation"
+	val "github.com/salihkemaloglu/gignox-rr-beta-001/validations"
 	helper "github.com/salihkemaloglu/gignox-rr-beta-001/services"
 )
 
-func  SendEmailController(ctx context.Context, req *gigxRR.SendEmailRequest) (*gigxRR.SendEmailResponse, error) {
+func  SendEmailController(ctx_ context.Context, req_ *gigxRR.SendEmailRequest) (*gigxRR.SendEmailResponse, error) {
 	userLang :="en"
-	if headers, ok := metadata.FromIncomingContext(ctx); ok {
+	if headers, ok := metadata.FromIncomingContext(ctx_); ok {
 		userLang = headers["language"][0]
 	}
 	lang := helper.DetectLanguage(userLang)
-	mailData := req.GetEmail();
+	mailData := req_.GetEmail();
 
 	if valResp := val.SendMailFieldValidation(mailData.GetEmailAddress(),mailData.GetEmailType(),lang); valResp != "ok" {
 		return nil,status.Errorf(

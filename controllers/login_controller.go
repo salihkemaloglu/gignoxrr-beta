@@ -8,22 +8,31 @@ import (
 	"google.golang.org/grpc/metadata"
 	"github.com/patrickmn/go-cache"
 	"github.com/salihkemaloglu/gignox-rr-beta-001/proto"
-	db "github.com/salihkemaloglu/gignox-rr-beta-001/mongodb"
-	val "github.com/salihkemaloglu/gignox-rr-beta-001/validation"
-	repo "github.com/salihkemaloglu/gignox-rr-beta-001/repository"
+	repo "github.com/salihkemaloglu/gignox-rr-beta-001/repositories"
+	val "github.com/salihkemaloglu/gignox-rr-beta-001/validations"
+	inter "github.com/salihkemaloglu/gignox-rr-beta-001/interfaces"
 	helper "github.com/salihkemaloglu/gignox-rr-beta-001/services"
 )
-func LoginController(ctx context.Context, req *gigxRR.LoginUserRequest,c *cache.Cache) (*gigxRR.LoginUserResponse, error) {
+func LoginController(ctx_ context.Context, req_ *gigxRR.LoginUserRequest,c *cache.Cache) (*gigxRR.LoginUserResponse, error) {
 
 	userLang :="en"
-	if headers, ok := metadata.FromIncomingContext(ctx); ok {
-		fmt.Println(headers["user-agent"][0])
+	if headers, ok := metadata.FromIncomingContext(ctx_); ok {
 		userLang = headers["language"][0]
 	}
 	lang := helper.DetectLanguage(userLang)
 
-	data := req.GetUser();
-	user := db.User {
+	userIpInformationReq,ipErr:=helper.GetIpInformation(ctx_,false)
+	if ipErr !=nil {
+		return nil,status.Errorf(
+			codes.Unavailable,
+			fmt.Sprintf(ipErr.Error()),
+		)
+	}
+	
+	userIpInformation:=userIpInformationReq.GetIpInformation()
+
+	data := req_.GetUser();
+	user := repo.User {
 		Username:data.GetUsername(),
 		Password:data.GetPassword(),
 	}
@@ -34,17 +43,18 @@ func LoginController(ctx context.Context, req *gigxRR.LoginUserRequest,c *cache.
 		)
 	}
 	var loginAttemptCount int
-	if x, found := c.Get(user.Username); found {
+	if x, found := c.Get(userIpInformation.IpAddress); found {
 		loginAttemptCount = x.(int)
-		if loginAttemptCount >= 20{
+		if loginAttemptCount >= 20 {
 			return nil,status.Errorf(
 				codes.Aborted,
 				fmt.Sprintf(helper.Translate(lang,"User_Login_attemps")),
 			)
 		}
 	}
-	var op repo.UserRepository=user
-	if  err:= op.Login(); err != nil {
+	var op inter.IUserRepository=user
+	userResp,err:= op.Login();
+	if err != nil {
 	    if x, found := c.Get(user.Username); found {
 			loginAttemptCount = x.(int)
 			if loginAttemptCount < 20 {
@@ -69,7 +79,8 @@ func LoginController(ctx context.Context, req *gigxRR.LoginUserRequest,c *cache.
 
 	return &gigxRR.LoginUserResponse{
 		User:&gigxRR.UserLogin{
-			Username:	user.Username,
+			Username:	userResp.Username,
+			LanguageCode:userResp.LanguageCode,
 			Token:		tokenRes,
 		},
 	}, nil

@@ -5,14 +5,14 @@ import (
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
-	db "github.com/salihkemaloglu/gignox-rr-beta-001/mongodb"
+	repo "github.com/salihkemaloglu/gignox-rr-beta-001/repositories"
 )
 
 //CreateTokenEndpoint user token creation
-func CreateTokenEndpointService(user db.User) (string,error) {
+func CreateTokenEndpointService(user_ repo.User) (string,error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS512, jwt.MapClaims{
-		"username": user.Username,
-		"password": user.Password,
+		"username": user_.Username,
+		"password": user_.Password,
 		"exp":      time.Now().Add(time.Hour * 24).Unix(),
 	})
 	tokenString, err := token.SignedString([]byte("secret"))
@@ -23,10 +23,10 @@ func CreateTokenEndpointService(user db.User) (string,error) {
 }
 
 //ValidateMiddleware token validation
-func ValidateMiddlewareService(authorizationToken string) (string, error) {
+func ValidateMiddlewareService(authorizationToken_ string) (string, error) {
 
-	if authorizationToken != "" {
-		token, err := jwt.Parse(authorizationToken, func(token *jwt.Token) (interface{}, error) {
+	if authorizationToken_ != "" {
+		token, err := jwt.Parse(authorizationToken_, func(token *jwt.Token) (interface{}, error) {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 				return nil, fmt.Errorf("There was an error")
 			}

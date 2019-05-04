@@ -17,28 +17,28 @@ type translation struct {
 var trans *translation
 
 // InitLocales - initiate locales from the folder
-func InitLocales(trPath string) error {
+func InitLocales(trPath_ string) error {
 	trans = &translation{translations: make(map[string]map[string]string)}
-	return loadTranslations(trPath)
+	return loadTranslations(trPath_)
 }
 
 // Tr - translate for current locale
-func Translate(locale string, trKey string) string {
-	trValue, ok := trans.translations[locale][trKey]
+func Translate(locale_ string, trKey_ string) string {
+	trValue, ok := trans.translations[locale_][trKey_]
 	if ok {
 		return trValue
 	}
-	trValue, ok = trans.translations["en"][trKey]
+	trValue, ok = trans.translations["en"][trKey_]
 	if ok {
 		return trValue
 	}
-	return trKey
+	return trKey_
 }
 
 // DetectLanguage - parse to find the most preferable language
-func DetectLanguage(acceptLanguage string) string {
+func DetectLanguage(acceptLanguage_ string) string {
 
-	langStrs := strings.Split(acceptLanguage, ",")
+	langStrs := strings.Split(acceptLanguage_, ",")
 	for _, langStr := range langStrs {
 		lang := strings.Split(strings.Trim(langStr, " "), ";")
 		if checkLocale(lang[0]) {
@@ -50,8 +50,8 @@ func DetectLanguage(acceptLanguage string) string {
 }
 
 // LoadTranslations - load translations files from the folder
-func loadTranslations(trPath string) error {
-	files, err := filepath.Glob(trPath + "/*.json")
+func loadTranslations(trPath_ string) error {
+	files, err := filepath.Glob(trPath_ + "/*.json")
 	if err != nil {
 		return err
 	}
@@ -69,12 +69,12 @@ func loadTranslations(trPath string) error {
 	return nil
 }
 
-func loadFileToMap(filename string) error {
+func loadFileToMap(filename_ string) error {
 	var objmap map[string]string
 
-	localName := strings.Replace(filepath.Base(filename), ".json", "", 1)
+	localName := strings.Replace(filepath.Base(filename_), ".json", "", 1)
 
-	content, err := ioutil.ReadFile(filename)
+	content, err := ioutil.ReadFile(filename_)
 	if err != nil {
 		return err
 	}
@@ -88,9 +88,9 @@ func loadFileToMap(filename string) error {
 	return nil
 }
 
-func checkLocale(localeName string) bool {
+func checkLocale(localeName_ string) bool {
 	for _, locale := range trans.locales {
-		if locale == localeName {
+		if locale == localeName_ {
 			return true
 		}
 	}

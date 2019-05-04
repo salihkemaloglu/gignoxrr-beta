@@ -7,19 +7,19 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/grpc/metadata"
 	"github.com/salihkemaloglu/gignox-rr-beta-001/proto"
-	db "github.com/salihkemaloglu/gignox-rr-beta-001/mongodb"
-	val "github.com/salihkemaloglu/gignox-rr-beta-001/validation"
+	str "github.com/salihkemaloglu/gignox-rr-beta-001/repositories"
+	val "github.com/salihkemaloglu/gignox-rr-beta-001/validations"
 	helper "github.com/salihkemaloglu/gignox-rr-beta-001/services"
 )
 
-func CheckVerificationCodeController(ctx context.Context, req *gigxRR.CheckVerificationCodeRequest) (*gigxRR.CheckVerificationCodeResponse, error) {
+func CheckVerificationCodeController(ctx_ context.Context, req_ *gigxRR.CheckVerificationCodeRequest) (*gigxRR.CheckVerificationCodeResponse, error) {
 	userLang :="en"
-	if headers, ok := metadata.FromIncomingContext(ctx); ok {
+	if headers, ok := metadata.FromIncomingContext(ctx_); ok {
 		userLang = headers["language"][0]
 	}
 	lang := helper.DetectLanguage(userLang)
-	emailData := req.GetEmail();
-	userTemporaryInformation:=db.UserTemporaryInformation {
+	emailData := req_.GetEmail();
+	userTemporaryInformation:=str.UserTemporaryInformation {
 		Email: emailData.GetEmailAddress(),
 		RegisterVerificationCode: emailData.GetRegisterVerificationCode(),
 		ForgotPasswordVerificationCode: emailData.GetForgotPasswordVerificationCode(),

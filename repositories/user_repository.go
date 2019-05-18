@@ -59,7 +59,13 @@ func (r User) Update() error {
 	}
 	return nil
 }
-
+func (r User) UpdateUserPassword() error {
+	err := db.C("User").Update(bson.M{"_id": r.Id}, bson.M{"$set": bson.M{"password": r.Password}})
+	if err!=nil {
+		return err
+	}
+	return nil
+}
 func (r User) Delete() error {
 	err := db.C("User").Remove(&r)
 	if err!=nil {

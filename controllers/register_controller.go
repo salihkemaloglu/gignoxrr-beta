@@ -53,24 +53,23 @@ func  RegisterController(ctx_ context.Context, req_ *gigxRR.RegisterUserRequest)
 	}
 	if dbResp := userOp.Insert(); dbResp != nil {
 		return nil,status.Errorf(
-			codes.Unimplemented,
+			codes.Aborted,
 			fmt.Sprintf(helper.Translate(lang,"Account_Insert_Error")+" :%v",dbResp.Error()),
 		)
 	}
-	verificationCode,verErr:=helper.GenerateVerificationCodeService()
+	verificationCode,verErr:=helper.GenerateRandomStringURLService(128)
 	if verErr !=nil {
 		verificationCode = "134584"
 	}
-	isOk:=false
-	emailResp:=helper.SendUserRegisterConfirmationMailService(user.Email,verificationCode,userLang);
-	if emailResp != "ok" {
-		isOk=true
+	_,err:=helper.SendUserRegisterConfirmationMailService(user.Email,"register",verificationCode,userLang);
+	if err != nil {
+		return nil,err
 	}
 
 	return &gigxRR.RegisterUserResponse{
 		GeneralResponse:&gigxRR.GeneralResponse{
-			Message:emailResp,
-			IsEmailSuccess:isOk,
+			Message:"register",
+			IsEmailSuccess:true,
 			IsOperationSuccess:true,
 		},
 	}, nil

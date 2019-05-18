@@ -8,6 +8,8 @@ import (
 	"google.golang.org/grpc/metadata"
 	"github.com/salihkemaloglu/gignox-rr-beta-001/proto"
 	val "github.com/salihkemaloglu/gignox-rr-beta-001/validations"
+	repo "github.com/salihkemaloglu/gignox-rr-beta-001/repositories"
+	inter "github.com/salihkemaloglu/gignox-rr-beta-001/interfaces"
 	helper "github.com/salihkemaloglu/gignox-rr-beta-001/services"
 )
 
@@ -17,7 +19,11 @@ func  SendEmailController(ctx_ context.Context, req_ *gigxRR.SendEmailRequest) (
 		userLang = headers["language"][0]
 	}
 	lang := helper.DetectLanguage(userLang)
-	mailData := req_.GetEmail();
+
+	mailData := req_.GetGeneralRequest();
+	user := repo.User {
+		Email: mailData.GetEmailAddress(),
+	}
 
 	if valResp := val.SendMailFieldValidation(mailData.GetEmailAddress(),mailData.GetEmailType(),lang); valResp != "ok" {
 		return nil,status.Errorf(
@@ -26,23 +32,30 @@ func  SendEmailController(ctx_ context.Context, req_ *gigxRR.SendEmailRequest) (
 		)
 	}
 
-	verificationCode,verErr:=helper.GenerateVerificationCodeService()
-	if verErr !=nil {
-		verificationCode = "134584"
+	var userOp inter.IUserRepository=user
+	if err := userOp.CheckUser(); err != nil {
+		return nil,status.Errorf(
+			codes.NotFound,
+			fmt.Sprintf(helper.Translate(lang,"User_Account_Not_Exist_Account")+user.Email),
+		)
 	}
 
-	isOk:=false
-	mailResp:=""
+
+	verificationCode,verErr:=helper.GenerateRandomStringURLService(128)
+	if verErr !=nil {
+		return nil,status.Errorf(
+			codes.Aborted,
+			fmt.Sprintf(helper.Translate(lang,"Generate_Password_Verification_Token_Error")+verErr.Error()),
+		)
+	}
+
+
 	if mailData.GetEmailType() == "register" {
-		mailResp=helper.SendUserRegisterConfirmationMailService(mailData.GetEmailAddress(),verificationCode,userLang);
-		if mailResp != "ok" {
-			isOk=true
-		}
+		return helper.SendUserRegisterConfirmationMailService(mailData.GetEmailAddress(),mailData.GetEmailType(),verificationCode,userLang)
+		
 	} else if mailData.GetEmailType() == "forgot" {
-		mailResp=helper.SendUserForgotPasswordVerificationMailService(mailData.GetEmailAddress(),verificationCode,userLang);
-		if mailResp != "ok" {
-			isOk=true
-		}
+	  return	helper.SendUserForgotPasswordVerificationMailService(mailData.GetEmailAddress(),mailData.GetEmailType(),verificationCode,userLang)
+		
 	} else {
 		return nil,status.Errorf(
 			codes.InvalidArgument,
@@ -50,11 +63,5 @@ func  SendEmailController(ctx_ context.Context, req_ *gigxRR.SendEmailRequest) (
 		)
 	} 
 
-	return &gigxRR.SendEmailResponse{
-		GeneralResponse:&gigxRR.GeneralResponse{
-			Message:mailResp,
-			IsEmailSuccess:isOk,
-			IsOperationSuccess:true,
-		},
-	}, nil
+
 }

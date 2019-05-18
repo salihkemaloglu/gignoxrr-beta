@@ -94,6 +94,8 @@ func GetIpInformation(ctx_ context.Context,requestType_ bool) (*gigxRR.GetIpInfo
 				IpAddress:	subIpAddress,
 				LanguageCode: ipstack.Location.Languages[0].Code,
 				CountryFlag: ipstack.Location.CountryFlag,
+				CountryCode: ipstack.CountryCode,
+				CountryName: ipstack.CountryName,
 				GmtOffSet : geoname.GmtOffset,
 			},
 		}, nil

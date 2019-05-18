@@ -9,6 +9,7 @@ type IUserRepository interface {
 	GetUser()(*repo.User,error)
 	GetUserByEmail()(*repo.User,error)
 	CheckUser() error
+	UpdateUserPassword() error
 	Insert() error
 	Update() error
 	Delete() error
@@ -45,10 +46,12 @@ type IBuriedRepository interface {
 	Delete() error
 }
 type IUserTemporaryInformationRepository interface {
-	CheckRegisterVerificationCode()(*repo.UserTemporaryInformation,error)
-	CheckForgotPasswordVerificationCode()(*repo.UserTemporaryInformation,error)
+	CheckRegisterVerificationToken()(*repo.UserTemporaryInformation,error)
+	CheckForgotPasswordVerificationToken()(*repo.UserTemporaryInformation,error)
+	CheckVerificationTokenResentEmail()(*repo.UserTemporaryInformation,error)
 	GetAllUserTemporaryInformation()([]repo.UserTemporaryInformation,error)
 	Insert() error
 	Update() error
+	UpdateByEmail() error
 	Delete() error
 }

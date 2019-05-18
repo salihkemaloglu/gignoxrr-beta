@@ -49,15 +49,25 @@ func (s *server) Register(ctx context.Context, req *gigxRR.RegisterUserRequest) 
 	fmt.Printf("RR service is working for Register...Received rpc from client.\n")
 	return cont.RegisterController(ctx,req)	
 }
+func (s *server) CheckUserToRegister(ctx context.Context, req *gigxRR.CheckUserToRegisterRequest) (*gigxRR.CheckUserToRegisterResponse, error) {
+	
+	fmt.Printf("RR service is working for CheckUserToRegister...Received rpc from client.\n")
+	return cont.CheckUserToRegisterController(ctx,req)	
+}
 func (s *server) SendEmail(ctx context.Context, req *gigxRR.SendEmailRequest) (*gigxRR.SendEmailResponse, error) {
 	
 	fmt.Printf("RR service is working for SendMail...Received rpc from client.\n")
 	return cont.SendEmailController(ctx,req)		
 }
-func (s *server) CheckVerificationCode(ctx context.Context, req *gigxRR.CheckVerificationCodeRequest) (*gigxRR.CheckVerificationCodeResponse, error) {
+func (s *server) CheckVerificationToken(ctx context.Context, req *gigxRR.CheckVerificationTokenRequest) (*gigxRR.CheckVerificationTokenResponse, error) {
 
-	fmt.Printf("RR service is working for CheckVerificationCode...Received rpc from client.\n")
-	return cont.CheckVerificationCodeController(ctx,req)	
+	fmt.Printf("RR service is working for CheckVerificationToken...Received rpc from client.\n")
+	return cont.CheckVerificationTokenController(ctx,req)	
+}
+func (s *server) ResetUserPassword(ctx context.Context, req *gigxRR.ResetUserPasswordRequest) (*gigxRR.ResetUserPasswordResponse, error) {
+
+	fmt.Printf("RR service is working for CheckVerificationToken...Received rpc from client.\n")
+	return cont.ResetUserPasswordController(ctx,req)	
 }
 func (s *server) UpdateUser(ctx context.Context, req *gigxRR.UpdateUserRequest) (*gigxRR.UpdateUserResponse, error) {
 	return nil,nil

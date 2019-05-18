@@ -35,7 +35,7 @@ type User struct {
 	TotalSpace           int32    `protobuf:"varint,9,opt,name=total_space,json=totalSpace,proto3" json:"total_space,omitempty"`
 	CreatedDate          string   `protobuf:"bytes,10,opt,name=created_date,json=createdDate,proto3" json:"created_date,omitempty"`
 	UpdatedDate          string   `protobuf:"bytes,11,opt,name=updated_date,json=updatedDate,proto3" json:"updated_date,omitempty"`
-	LanguageCode         string   `protobuf:"bytes,12,opt,name=language_code,json=languageCode,proto3" json:"language_code,omitempty"`
+	LanguageToken        string   `protobuf:"bytes,12,opt,name=language_token,json=languageToken,proto3" json:"language_token,omitempty"`
 	IsConfirmAccount     bool     `protobuf:"varint,13,opt,name=is_confirm_account,json=isConfirmAccount,proto3" json:"is_confirm_account,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -144,9 +144,9 @@ func (m *User) GetUpdatedDate() string {
 	return ""
 }
 
-func (m *User) GetLanguageCode() string {
+func (m *User) GetLanguageToken() string {
 	if m != nil {
-		return m.LanguageCode
+		return m.LanguageToken
 	}
 	return ""
 }
@@ -610,65 +610,81 @@ func (m *UserLogin) GetToken() string {
 	return ""
 }
 
-type Email struct {
-	EmailAddress                   string   `protobuf:"bytes,1,opt,name=email_address,json=emailAddress,proto3" json:"email_address,omitempty"`
-	EmailType                      string   `protobuf:"bytes,2,opt,name=email_type,json=emailType,proto3" json:"email_type,omitempty"`
-	RegisterVerificationCode       string   `protobuf:"bytes,3,opt,name=register_verification_code,json=registerVerificationCode,proto3" json:"register_verification_code,omitempty"`
-	ForgotPasswordVerificationCode string   `protobuf:"bytes,4,opt,name=forgot_password_verification_code,json=forgotPasswordVerificationCode,proto3" json:"forgot_password_verification_code,omitempty"`
-	XXX_NoUnkeyedLiteral           struct{} `json:"-"`
-	XXX_unrecognized               []byte   `json:"-"`
-	XXX_sizecache                  int32    `json:"-"`
+type GeneralRequest struct {
+	EmailAddress                    string   `protobuf:"bytes,1,opt,name=email_address,json=emailAddress,proto3" json:"email_address,omitempty"`
+	EmailType                       string   `protobuf:"bytes,2,opt,name=email_type,json=emailType,proto3" json:"email_type,omitempty"`
+	RegisterVerificationToken       string   `protobuf:"bytes,3,opt,name=register_verification_token,json=registerVerificationToken,proto3" json:"register_verification_token,omitempty"`
+	ForgotPasswordVerificationToken string   `protobuf:"bytes,4,opt,name=forgot_password_verification_token,json=forgotPasswordVerificationToken,proto3" json:"forgot_password_verification_token,omitempty"`
+	Password                        string   `protobuf:"bytes,5,opt,name=password,proto3" json:"password,omitempty"`
+	PasswordConfirm                 string   `protobuf:"bytes,6,opt,name=password_confirm,json=passwordConfirm,proto3" json:"password_confirm,omitempty"`
+	XXX_NoUnkeyedLiteral            struct{} `json:"-"`
+	XXX_unrecognized                []byte   `json:"-"`
+	XXX_sizecache                   int32    `json:"-"`
 }
 
-func (m *Email) Reset()         { *m = Email{} }
-func (m *Email) String() string { return proto.CompactTextString(m) }
-func (*Email) ProtoMessage()    {}
-func (*Email) Descriptor() ([]byte, []int) {
+func (m *GeneralRequest) Reset()         { *m = GeneralRequest{} }
+func (m *GeneralRequest) String() string { return proto.CompactTextString(m) }
+func (*GeneralRequest) ProtoMessage()    {}
+func (*GeneralRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_9ce114fac961b177, []int{6}
 }
 
-func (m *Email) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Email.Unmarshal(m, b)
+func (m *GeneralRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GeneralRequest.Unmarshal(m, b)
 }
-func (m *Email) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Email.Marshal(b, m, deterministic)
+func (m *GeneralRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GeneralRequest.Marshal(b, m, deterministic)
 }
-func (m *Email) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Email.Merge(m, src)
+func (m *GeneralRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GeneralRequest.Merge(m, src)
 }
-func (m *Email) XXX_Size() int {
-	return xxx_messageInfo_Email.Size(m)
+func (m *GeneralRequest) XXX_Size() int {
+	return xxx_messageInfo_GeneralRequest.Size(m)
 }
-func (m *Email) XXX_DiscardUnknown() {
-	xxx_messageInfo_Email.DiscardUnknown(m)
+func (m *GeneralRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GeneralRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Email proto.InternalMessageInfo
+var xxx_messageInfo_GeneralRequest proto.InternalMessageInfo
 
-func (m *Email) GetEmailAddress() string {
+func (m *GeneralRequest) GetEmailAddress() string {
 	if m != nil {
 		return m.EmailAddress
 	}
 	return ""
 }
 
-func (m *Email) GetEmailType() string {
+func (m *GeneralRequest) GetEmailType() string {
 	if m != nil {
 		return m.EmailType
 	}
 	return ""
 }
 
-func (m *Email) GetRegisterVerificationCode() string {
+func (m *GeneralRequest) GetRegisterVerificationToken() string {
 	if m != nil {
-		return m.RegisterVerificationCode
+		return m.RegisterVerificationToken
 	}
 	return ""
 }
 
-func (m *Email) GetForgotPasswordVerificationCode() string {
+func (m *GeneralRequest) GetForgotPasswordVerificationToken() string {
 	if m != nil {
-		return m.ForgotPasswordVerificationCode
+		return m.ForgotPasswordVerificationToken
+	}
+	return ""
+}
+
+func (m *GeneralRequest) GetPassword() string {
+	if m != nil {
+		return m.Password
+	}
+	return ""
+}
+
+func (m *GeneralRequest) GetPasswordConfirm() string {
+	if m != nil {
+		return m.PasswordConfirm
 	}
 	return ""
 }
@@ -732,7 +748,9 @@ type IpInformation struct {
 	IpAddress            string   `protobuf:"bytes,1,opt,name=ip_address,json=ipAddress,proto3" json:"ip_address,omitempty"`
 	LanguageCode         string   `protobuf:"bytes,2,opt,name=language_code,json=languageCode,proto3" json:"language_code,omitempty"`
 	CountryFlag          string   `protobuf:"bytes,3,opt,name=country_flag,json=countryFlag,proto3" json:"country_flag,omitempty"`
-	GmtOffSet            int32    `protobuf:"varint,4,opt,name=gmt_off_set,json=gmtOffSet,proto3" json:"gmt_off_set,omitempty"`
+	CountryCode          string   `protobuf:"bytes,4,opt,name=country_code,json=countryCode,proto3" json:"country_code,omitempty"`
+	CountryName          string   `protobuf:"bytes,5,opt,name=country_name,json=countryName,proto3" json:"country_name,omitempty"`
+	GmtOffSet            int32    `protobuf:"varint,6,opt,name=gmt_off_set,json=gmtOffSet,proto3" json:"gmt_off_set,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -780,6 +798,20 @@ func (m *IpInformation) GetLanguageCode() string {
 func (m *IpInformation) GetCountryFlag() string {
 	if m != nil {
 		return m.CountryFlag
+	}
+	return ""
+}
+
+func (m *IpInformation) GetCountryCode() string {
+	if m != nil {
+		return m.CountryCode
+	}
+	return ""
+}
+
+func (m *IpInformation) GetCountryName() string {
+	if m != nil {
+		return m.CountryName
 	}
 	return ""
 }
@@ -949,6 +981,84 @@ func (m *RegisterUserResponse) GetGeneralResponse() *GeneralResponse {
 	return nil
 }
 
+type CheckUserToRegisterRequest struct {
+	User                 *User    `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *CheckUserToRegisterRequest) Reset()         { *m = CheckUserToRegisterRequest{} }
+func (m *CheckUserToRegisterRequest) String() string { return proto.CompactTextString(m) }
+func (*CheckUserToRegisterRequest) ProtoMessage()    {}
+func (*CheckUserToRegisterRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9ce114fac961b177, []int{13}
+}
+
+func (m *CheckUserToRegisterRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CheckUserToRegisterRequest.Unmarshal(m, b)
+}
+func (m *CheckUserToRegisterRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CheckUserToRegisterRequest.Marshal(b, m, deterministic)
+}
+func (m *CheckUserToRegisterRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CheckUserToRegisterRequest.Merge(m, src)
+}
+func (m *CheckUserToRegisterRequest) XXX_Size() int {
+	return xxx_messageInfo_CheckUserToRegisterRequest.Size(m)
+}
+func (m *CheckUserToRegisterRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_CheckUserToRegisterRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CheckUserToRegisterRequest proto.InternalMessageInfo
+
+func (m *CheckUserToRegisterRequest) GetUser() *User {
+	if m != nil {
+		return m.User
+	}
+	return nil
+}
+
+type CheckUserToRegisterResponse struct {
+	GeneralResponse      *GeneralResponse `protobuf:"bytes,1,opt,name=general_response,json=generalResponse,proto3" json:"general_response,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
+}
+
+func (m *CheckUserToRegisterResponse) Reset()         { *m = CheckUserToRegisterResponse{} }
+func (m *CheckUserToRegisterResponse) String() string { return proto.CompactTextString(m) }
+func (*CheckUserToRegisterResponse) ProtoMessage()    {}
+func (*CheckUserToRegisterResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9ce114fac961b177, []int{14}
+}
+
+func (m *CheckUserToRegisterResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CheckUserToRegisterResponse.Unmarshal(m, b)
+}
+func (m *CheckUserToRegisterResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CheckUserToRegisterResponse.Marshal(b, m, deterministic)
+}
+func (m *CheckUserToRegisterResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CheckUserToRegisterResponse.Merge(m, src)
+}
+func (m *CheckUserToRegisterResponse) XXX_Size() int {
+	return xxx_messageInfo_CheckUserToRegisterResponse.Size(m)
+}
+func (m *CheckUserToRegisterResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_CheckUserToRegisterResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CheckUserToRegisterResponse proto.InternalMessageInfo
+
+func (m *CheckUserToRegisterResponse) GetGeneralResponse() *GeneralResponse {
+	if m != nil {
+		return m.GeneralResponse
+	}
+	return nil
+}
+
 type LoginUserRequest struct {
 	User                 *UserLogin `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}   `json:"-"`
@@ -960,7 +1070,7 @@ func (m *LoginUserRequest) Reset()         { *m = LoginUserRequest{} }
 func (m *LoginUserRequest) String() string { return proto.CompactTextString(m) }
 func (*LoginUserRequest) ProtoMessage()    {}
 func (*LoginUserRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9ce114fac961b177, []int{13}
+	return fileDescriptor_9ce114fac961b177, []int{15}
 }
 
 func (m *LoginUserRequest) XXX_Unmarshal(b []byte) error {
@@ -999,7 +1109,7 @@ func (m *LoginUserResponse) Reset()         { *m = LoginUserResponse{} }
 func (m *LoginUserResponse) String() string { return proto.CompactTextString(m) }
 func (*LoginUserResponse) ProtoMessage()    {}
 func (*LoginUserResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9ce114fac961b177, []int{14}
+	return fileDescriptor_9ce114fac961b177, []int{16}
 }
 
 func (m *LoginUserResponse) XXX_Unmarshal(b []byte) error {
@@ -1038,7 +1148,7 @@ func (m *UpdateUserRequest) Reset()         { *m = UpdateUserRequest{} }
 func (m *UpdateUserRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateUserRequest) ProtoMessage()    {}
 func (*UpdateUserRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9ce114fac961b177, []int{15}
+	return fileDescriptor_9ce114fac961b177, []int{17}
 }
 
 func (m *UpdateUserRequest) XXX_Unmarshal(b []byte) error {
@@ -1077,7 +1187,7 @@ func (m *UpdateUserResponse) Reset()         { *m = UpdateUserResponse{} }
 func (m *UpdateUserResponse) String() string { return proto.CompactTextString(m) }
 func (*UpdateUserResponse) ProtoMessage()    {}
 func (*UpdateUserResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9ce114fac961b177, []int{16}
+	return fileDescriptor_9ce114fac961b177, []int{18}
 }
 
 func (m *UpdateUserResponse) XXX_Unmarshal(b []byte) error {
@@ -1116,7 +1226,7 @@ func (m *DeleteUserRequest) Reset()         { *m = DeleteUserRequest{} }
 func (m *DeleteUserRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteUserRequest) ProtoMessage()    {}
 func (*DeleteUserRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9ce114fac961b177, []int{17}
+	return fileDescriptor_9ce114fac961b177, []int{19}
 }
 
 func (m *DeleteUserRequest) XXX_Unmarshal(b []byte) error {
@@ -1155,7 +1265,7 @@ func (m *DeleteUserResponse) Reset()         { *m = DeleteUserResponse{} }
 func (m *DeleteUserResponse) String() string { return proto.CompactTextString(m) }
 func (*DeleteUserResponse) ProtoMessage()    {}
 func (*DeleteUserResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9ce114fac961b177, []int{18}
+	return fileDescriptor_9ce114fac961b177, []int{20}
 }
 
 func (m *DeleteUserResponse) XXX_Unmarshal(b []byte) error {
@@ -1195,7 +1305,7 @@ func (m *UpdateFileRequest) Reset()         { *m = UpdateFileRequest{} }
 func (m *UpdateFileRequest) String() string { return proto.CompactTextString(m) }
 func (*UpdateFileRequest) ProtoMessage()    {}
 func (*UpdateFileRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9ce114fac961b177, []int{19}
+	return fileDescriptor_9ce114fac961b177, []int{21}
 }
 
 func (m *UpdateFileRequest) XXX_Unmarshal(b []byte) error {
@@ -1234,7 +1344,7 @@ func (m *UpdateFileResponse) Reset()         { *m = UpdateFileResponse{} }
 func (m *UpdateFileResponse) String() string { return proto.CompactTextString(m) }
 func (*UpdateFileResponse) ProtoMessage()    {}
 func (*UpdateFileResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9ce114fac961b177, []int{20}
+	return fileDescriptor_9ce114fac961b177, []int{22}
 }
 
 func (m *UpdateFileResponse) XXX_Unmarshal(b []byte) error {
@@ -1274,7 +1384,7 @@ func (m *GetFileRequest) Reset()         { *m = GetFileRequest{} }
 func (m *GetFileRequest) String() string { return proto.CompactTextString(m) }
 func (*GetFileRequest) ProtoMessage()    {}
 func (*GetFileRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9ce114fac961b177, []int{21}
+	return fileDescriptor_9ce114fac961b177, []int{23}
 }
 
 func (m *GetFileRequest) XXX_Unmarshal(b []byte) error {
@@ -1320,7 +1430,7 @@ func (m *GetFileResponse) Reset()         { *m = GetFileResponse{} }
 func (m *GetFileResponse) String() string { return proto.CompactTextString(m) }
 func (*GetFileResponse) ProtoMessage()    {}
 func (*GetFileResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9ce114fac961b177, []int{22}
+	return fileDescriptor_9ce114fac961b177, []int{24}
 }
 
 func (m *GetFileResponse) XXX_Unmarshal(b []byte) error {
@@ -1359,7 +1469,7 @@ func (m *GetAllFilesRequest) Reset()         { *m = GetAllFilesRequest{} }
 func (m *GetAllFilesRequest) String() string { return proto.CompactTextString(m) }
 func (*GetAllFilesRequest) ProtoMessage()    {}
 func (*GetAllFilesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9ce114fac961b177, []int{23}
+	return fileDescriptor_9ce114fac961b177, []int{25}
 }
 
 func (m *GetAllFilesRequest) XXX_Unmarshal(b []byte) error {
@@ -1398,7 +1508,7 @@ func (m *GetAllFilesResponse) Reset()         { *m = GetAllFilesResponse{} }
 func (m *GetAllFilesResponse) String() string { return proto.CompactTextString(m) }
 func (*GetAllFilesResponse) ProtoMessage()    {}
 func (*GetAllFilesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9ce114fac961b177, []int{24}
+	return fileDescriptor_9ce114fac961b177, []int{26}
 }
 
 func (m *GetAllFilesResponse) XXX_Unmarshal(b []byte) error {
@@ -1438,7 +1548,7 @@ func (m *DeleteFileRequest) Reset()         { *m = DeleteFileRequest{} }
 func (m *DeleteFileRequest) String() string { return proto.CompactTextString(m) }
 func (*DeleteFileRequest) ProtoMessage()    {}
 func (*DeleteFileRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9ce114fac961b177, []int{25}
+	return fileDescriptor_9ce114fac961b177, []int{27}
 }
 
 func (m *DeleteFileRequest) XXX_Unmarshal(b []byte) error {
@@ -1484,7 +1594,7 @@ func (m *DeleteFileResponse) Reset()         { *m = DeleteFileResponse{} }
 func (m *DeleteFileResponse) String() string { return proto.CompactTextString(m) }
 func (*DeleteFileResponse) ProtoMessage()    {}
 func (*DeleteFileResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9ce114fac961b177, []int{26}
+	return fileDescriptor_9ce114fac961b177, []int{28}
 }
 
 func (m *DeleteFileResponse) XXX_Unmarshal(b []byte) error {
@@ -1513,17 +1623,17 @@ func (m *DeleteFileResponse) GetGeneralResponse() *GeneralResponse {
 }
 
 type SendEmailRequest struct {
-	Email                *Email   `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+	GeneralRequest       *GeneralRequest `protobuf:"bytes,1,opt,name=generalRequest,proto3" json:"generalRequest,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
+	XXX_unrecognized     []byte          `json:"-"`
+	XXX_sizecache        int32           `json:"-"`
 }
 
 func (m *SendEmailRequest) Reset()         { *m = SendEmailRequest{} }
 func (m *SendEmailRequest) String() string { return proto.CompactTextString(m) }
 func (*SendEmailRequest) ProtoMessage()    {}
 func (*SendEmailRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9ce114fac961b177, []int{27}
+	return fileDescriptor_9ce114fac961b177, []int{29}
 }
 
 func (m *SendEmailRequest) XXX_Unmarshal(b []byte) error {
@@ -1544,9 +1654,9 @@ func (m *SendEmailRequest) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_SendEmailRequest proto.InternalMessageInfo
 
-func (m *SendEmailRequest) GetEmail() *Email {
+func (m *SendEmailRequest) GetGeneralRequest() *GeneralRequest {
 	if m != nil {
-		return m.Email
+		return m.GeneralRequest
 	}
 	return nil
 }
@@ -1562,7 +1672,7 @@ func (m *SendEmailResponse) Reset()         { *m = SendEmailResponse{} }
 func (m *SendEmailResponse) String() string { return proto.CompactTextString(m) }
 func (*SendEmailResponse) ProtoMessage()    {}
 func (*SendEmailResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9ce114fac961b177, []int{28}
+	return fileDescriptor_9ce114fac961b177, []int{30}
 }
 
 func (m *SendEmailResponse) XXX_Unmarshal(b []byte) error {
@@ -1590,78 +1700,78 @@ func (m *SendEmailResponse) GetGeneralResponse() *GeneralResponse {
 	return nil
 }
 
-type CheckVerificationCodeRequest struct {
-	Email                *Email   `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
+type CheckVerificationTokenRequest struct {
+	GeneralRequest       *GeneralRequest `protobuf:"bytes,1,opt,name=generalRequest,proto3" json:"generalRequest,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
+	XXX_unrecognized     []byte          `json:"-"`
+	XXX_sizecache        int32           `json:"-"`
 }
 
-func (m *CheckVerificationCodeRequest) Reset()         { *m = CheckVerificationCodeRequest{} }
-func (m *CheckVerificationCodeRequest) String() string { return proto.CompactTextString(m) }
-func (*CheckVerificationCodeRequest) ProtoMessage()    {}
-func (*CheckVerificationCodeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9ce114fac961b177, []int{29}
+func (m *CheckVerificationTokenRequest) Reset()         { *m = CheckVerificationTokenRequest{} }
+func (m *CheckVerificationTokenRequest) String() string { return proto.CompactTextString(m) }
+func (*CheckVerificationTokenRequest) ProtoMessage()    {}
+func (*CheckVerificationTokenRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9ce114fac961b177, []int{31}
 }
 
-func (m *CheckVerificationCodeRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_CheckVerificationCodeRequest.Unmarshal(m, b)
+func (m *CheckVerificationTokenRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CheckVerificationTokenRequest.Unmarshal(m, b)
 }
-func (m *CheckVerificationCodeRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_CheckVerificationCodeRequest.Marshal(b, m, deterministic)
+func (m *CheckVerificationTokenRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CheckVerificationTokenRequest.Marshal(b, m, deterministic)
 }
-func (m *CheckVerificationCodeRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_CheckVerificationCodeRequest.Merge(m, src)
+func (m *CheckVerificationTokenRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CheckVerificationTokenRequest.Merge(m, src)
 }
-func (m *CheckVerificationCodeRequest) XXX_Size() int {
-	return xxx_messageInfo_CheckVerificationCodeRequest.Size(m)
+func (m *CheckVerificationTokenRequest) XXX_Size() int {
+	return xxx_messageInfo_CheckVerificationTokenRequest.Size(m)
 }
-func (m *CheckVerificationCodeRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_CheckVerificationCodeRequest.DiscardUnknown(m)
+func (m *CheckVerificationTokenRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_CheckVerificationTokenRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_CheckVerificationCodeRequest proto.InternalMessageInfo
+var xxx_messageInfo_CheckVerificationTokenRequest proto.InternalMessageInfo
 
-func (m *CheckVerificationCodeRequest) GetEmail() *Email {
+func (m *CheckVerificationTokenRequest) GetGeneralRequest() *GeneralRequest {
 	if m != nil {
-		return m.Email
+		return m.GeneralRequest
 	}
 	return nil
 }
 
-type CheckVerificationCodeResponse struct {
+type CheckVerificationTokenResponse struct {
 	GeneralResponse      *GeneralResponse `protobuf:"bytes,1,opt,name=general_response,json=generalResponse,proto3" json:"general_response,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
 	XXX_unrecognized     []byte           `json:"-"`
 	XXX_sizecache        int32            `json:"-"`
 }
 
-func (m *CheckVerificationCodeResponse) Reset()         { *m = CheckVerificationCodeResponse{} }
-func (m *CheckVerificationCodeResponse) String() string { return proto.CompactTextString(m) }
-func (*CheckVerificationCodeResponse) ProtoMessage()    {}
-func (*CheckVerificationCodeResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9ce114fac961b177, []int{30}
+func (m *CheckVerificationTokenResponse) Reset()         { *m = CheckVerificationTokenResponse{} }
+func (m *CheckVerificationTokenResponse) String() string { return proto.CompactTextString(m) }
+func (*CheckVerificationTokenResponse) ProtoMessage()    {}
+func (*CheckVerificationTokenResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9ce114fac961b177, []int{32}
 }
 
-func (m *CheckVerificationCodeResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_CheckVerificationCodeResponse.Unmarshal(m, b)
+func (m *CheckVerificationTokenResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CheckVerificationTokenResponse.Unmarshal(m, b)
 }
-func (m *CheckVerificationCodeResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_CheckVerificationCodeResponse.Marshal(b, m, deterministic)
+func (m *CheckVerificationTokenResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CheckVerificationTokenResponse.Marshal(b, m, deterministic)
 }
-func (m *CheckVerificationCodeResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_CheckVerificationCodeResponse.Merge(m, src)
+func (m *CheckVerificationTokenResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CheckVerificationTokenResponse.Merge(m, src)
 }
-func (m *CheckVerificationCodeResponse) XXX_Size() int {
-	return xxx_messageInfo_CheckVerificationCodeResponse.Size(m)
+func (m *CheckVerificationTokenResponse) XXX_Size() int {
+	return xxx_messageInfo_CheckVerificationTokenResponse.Size(m)
 }
-func (m *CheckVerificationCodeResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_CheckVerificationCodeResponse.DiscardUnknown(m)
+func (m *CheckVerificationTokenResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_CheckVerificationTokenResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_CheckVerificationCodeResponse proto.InternalMessageInfo
+var xxx_messageInfo_CheckVerificationTokenResponse proto.InternalMessageInfo
 
-func (m *CheckVerificationCodeResponse) GetGeneralResponse() *GeneralResponse {
+func (m *CheckVerificationTokenResponse) GetGeneralResponse() *GeneralResponse {
 	if m != nil {
 		return m.GeneralResponse
 	}
@@ -1679,7 +1789,7 @@ func (m *GetIpInformationRequest) Reset()         { *m = GetIpInformationRequest
 func (m *GetIpInformationRequest) String() string { return proto.CompactTextString(m) }
 func (*GetIpInformationRequest) ProtoMessage()    {}
 func (*GetIpInformationRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9ce114fac961b177, []int{31}
+	return fileDescriptor_9ce114fac961b177, []int{33}
 }
 
 func (m *GetIpInformationRequest) XXX_Unmarshal(b []byte) error {
@@ -1718,7 +1828,7 @@ func (m *GetIpInformationResponse) Reset()         { *m = GetIpInformationRespon
 func (m *GetIpInformationResponse) String() string { return proto.CompactTextString(m) }
 func (*GetIpInformationResponse) ProtoMessage()    {}
 func (*GetIpInformationResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_9ce114fac961b177, []int{32}
+	return fileDescriptor_9ce114fac961b177, []int{34}
 }
 
 func (m *GetIpInformationResponse) XXX_Unmarshal(b []byte) error {
@@ -1746,6 +1856,84 @@ func (m *GetIpInformationResponse) GetIpInformation() *IpInformation {
 	return nil
 }
 
+type ResetUserPasswordRequest struct {
+	GeneralRequest       *GeneralRequest `protobuf:"bytes,1,opt,name=generalRequest,proto3" json:"generalRequest,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
+	XXX_unrecognized     []byte          `json:"-"`
+	XXX_sizecache        int32           `json:"-"`
+}
+
+func (m *ResetUserPasswordRequest) Reset()         { *m = ResetUserPasswordRequest{} }
+func (m *ResetUserPasswordRequest) String() string { return proto.CompactTextString(m) }
+func (*ResetUserPasswordRequest) ProtoMessage()    {}
+func (*ResetUserPasswordRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9ce114fac961b177, []int{35}
+}
+
+func (m *ResetUserPasswordRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ResetUserPasswordRequest.Unmarshal(m, b)
+}
+func (m *ResetUserPasswordRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ResetUserPasswordRequest.Marshal(b, m, deterministic)
+}
+func (m *ResetUserPasswordRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ResetUserPasswordRequest.Merge(m, src)
+}
+func (m *ResetUserPasswordRequest) XXX_Size() int {
+	return xxx_messageInfo_ResetUserPasswordRequest.Size(m)
+}
+func (m *ResetUserPasswordRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_ResetUserPasswordRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ResetUserPasswordRequest proto.InternalMessageInfo
+
+func (m *ResetUserPasswordRequest) GetGeneralRequest() *GeneralRequest {
+	if m != nil {
+		return m.GeneralRequest
+	}
+	return nil
+}
+
+type ResetUserPasswordResponse struct {
+	GeneralResponse      *GeneralResponse `protobuf:"bytes,1,opt,name=general_response,json=generalResponse,proto3" json:"general_response,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
+	XXX_unrecognized     []byte           `json:"-"`
+	XXX_sizecache        int32            `json:"-"`
+}
+
+func (m *ResetUserPasswordResponse) Reset()         { *m = ResetUserPasswordResponse{} }
+func (m *ResetUserPasswordResponse) String() string { return proto.CompactTextString(m) }
+func (*ResetUserPasswordResponse) ProtoMessage()    {}
+func (*ResetUserPasswordResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_9ce114fac961b177, []int{36}
+}
+
+func (m *ResetUserPasswordResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ResetUserPasswordResponse.Unmarshal(m, b)
+}
+func (m *ResetUserPasswordResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ResetUserPasswordResponse.Marshal(b, m, deterministic)
+}
+func (m *ResetUserPasswordResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ResetUserPasswordResponse.Merge(m, src)
+}
+func (m *ResetUserPasswordResponse) XXX_Size() int {
+	return xxx_messageInfo_ResetUserPasswordResponse.Size(m)
+}
+func (m *ResetUserPasswordResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_ResetUserPasswordResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ResetUserPasswordResponse proto.InternalMessageInfo
+
+func (m *ResetUserPasswordResponse) GetGeneralResponse() *GeneralResponse {
+	if m != nil {
+		return m.GeneralResponse
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*User)(nil), "gigx.User")
 	proto.RegisterType((*Follow)(nil), "gigx.Follow")
@@ -1753,13 +1941,15 @@ func init() {
 	proto.RegisterType((*File)(nil), "gigx.File")
 	proto.RegisterType((*Buried)(nil), "gigx.Buried")
 	proto.RegisterType((*UserLogin)(nil), "gigx.UserLogin")
-	proto.RegisterType((*Email)(nil), "gigx.Email")
+	proto.RegisterType((*GeneralRequest)(nil), "gigx.GeneralRequest")
 	proto.RegisterType((*GeneralResponse)(nil), "gigx.GeneralResponse")
 	proto.RegisterType((*IpInformation)(nil), "gigx.IpInformation")
 	proto.RegisterType((*HelloRequest)(nil), "gigx.HelloRequest")
 	proto.RegisterType((*HelloResponse)(nil), "gigx.HelloResponse")
 	proto.RegisterType((*RegisterUserRequest)(nil), "gigx.RegisterUserRequest")
 	proto.RegisterType((*RegisterUserResponse)(nil), "gigx.RegisterUserResponse")
+	proto.RegisterType((*CheckUserToRegisterRequest)(nil), "gigx.CheckUserToRegisterRequest")
+	proto.RegisterType((*CheckUserToRegisterResponse)(nil), "gigx.CheckUserToRegisterResponse")
 	proto.RegisterType((*LoginUserRequest)(nil), "gigx.LoginUserRequest")
 	proto.RegisterType((*LoginUserResponse)(nil), "gigx.LoginUserResponse")
 	proto.RegisterType((*UpdateUserRequest)(nil), "gigx.UpdateUserRequest")
@@ -1776,103 +1966,113 @@ func init() {
 	proto.RegisterType((*DeleteFileResponse)(nil), "gigx.DeleteFileResponse")
 	proto.RegisterType((*SendEmailRequest)(nil), "gigx.SendEmailRequest")
 	proto.RegisterType((*SendEmailResponse)(nil), "gigx.SendEmailResponse")
-	proto.RegisterType((*CheckVerificationCodeRequest)(nil), "gigx.CheckVerificationCodeRequest")
-	proto.RegisterType((*CheckVerificationCodeResponse)(nil), "gigx.CheckVerificationCodeResponse")
+	proto.RegisterType((*CheckVerificationTokenRequest)(nil), "gigx.CheckVerificationTokenRequest")
+	proto.RegisterType((*CheckVerificationTokenResponse)(nil), "gigx.CheckVerificationTokenResponse")
 	proto.RegisterType((*GetIpInformationRequest)(nil), "gigx.GetIpInformationRequest")
 	proto.RegisterType((*GetIpInformationResponse)(nil), "gigx.GetIpInformationResponse")
+	proto.RegisterType((*ResetUserPasswordRequest)(nil), "gigx.ResetUserPasswordRequest")
+	proto.RegisterType((*ResetUserPasswordResponse)(nil), "gigx.ResetUserPasswordResponse")
 }
 
 func init() { proto.RegisterFile("proto/gigxRR.proto", fileDescriptor_9ce114fac961b177) }
 
 var fileDescriptor_9ce114fac961b177 = []byte{
-	// 1386 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x58, 0x5b, 0x6f, 0xdc, 0x44,
-	0x14, 0x96, 0xb3, 0x37, 0xef, 0xd9, 0xdd, 0x34, 0x99, 0xa4, 0xc4, 0x5d, 0x68, 0x92, 0x3a, 0x3c,
-	0x04, 0xa9, 0x2a, 0xa5, 0x17, 0xa8, 0x50, 0x25, 0x48, 0x5b, 0x92, 0xae, 0x84, 0x68, 0xf1, 0xb6,
-	0x15, 0xe2, 0xc5, 0xb8, 0xf6, 0xac, 0x33, 0xaa, 0x77, 0x6d, 0x3c, 0xb3, 0x2d, 0x79, 0xe4, 0x89,
-	0x07, 0xc4, 0x2b, 0xcf, 0xfc, 0x0a, 0xde, 0xf9, 0x0f, 0xfc, 0x12, 0x7e, 0x01, 0x9a, 0xdb, 0x7a,
-	0x6c, 0x6f, 0x73, 0x51, 0xfb, 0x96, 0xf9, 0xce, 0x77, 0xce, 0x9c, 0x9b, 0xbf, 0x49, 0x02, 0x28,
-	0xcb, 0x53, 0x96, 0x7e, 0x1a, 0x93, 0xf8, 0x17, 0xcf, 0xbb, 0x21, 0x0e, 0xa8, 0xc9, 0x4f, 0xee,
-	0x1f, 0x0d, 0x68, 0x3e, 0xa7, 0x38, 0x47, 0xab, 0xb0, 0x42, 0x22, 0xc7, 0xda, 0xb5, 0xf6, 0xbb,
-	0xde, 0x0a, 0x89, 0x10, 0x82, 0xe6, 0x2c, 0x98, 0x62, 0x67, 0x45, 0x20, 0xe2, 0x67, 0xe4, 0x40,
-	0x87, 0xce, 0x73, 0x01, 0x37, 0x04, 0xac, 0x8f, 0x68, 0x13, 0x5a, 0x78, 0x1a, 0x90, 0xc4, 0x69,
-	0x0a, 0x5c, 0x1e, 0xd0, 0x10, 0xec, 0x39, 0xc5, 0xd2, 0xa1, 0x25, 0x0c, 0x8b, 0x33, 0xb7, 0x65,
-	0x01, 0xa5, 0x6f, 0xd2, 0x3c, 0x72, 0xda, 0xd2, 0xa6, 0xcf, 0x68, 0x17, 0x7a, 0x11, 0xa6, 0x61,
-	0x4e, 0x32, 0x46, 0xd2, 0x99, 0xd3, 0x11, 0x66, 0x13, 0x42, 0x57, 0x01, 0xc8, 0x34, 0x88, 0xb1,
-	0x9f, 0x05, 0xec, 0xd8, 0xb1, 0x05, 0xa1, 0x2b, 0x90, 0xa7, 0x01, 0x3b, 0x46, 0x3b, 0xd0, 0x63,
-	0x29, 0x0b, 0x12, 0x9f, 0x66, 0x41, 0x88, 0x9d, 0xee, 0xae, 0xb5, 0xdf, 0xf2, 0x40, 0x40, 0x63,
-	0x8e, 0xa0, 0x6b, 0xd0, 0x0f, 0x73, 0x1c, 0x30, 0x1c, 0xf9, 0x51, 0xc0, 0xb0, 0x03, 0xf2, 0x0a,
-	0x85, 0x3d, 0x0a, 0x98, 0xa0, 0xcc, 0xb3, 0xa8, 0xa0, 0xf4, 0x24, 0x45, 0x61, 0x82, 0xb2, 0x07,
-	0x83, 0x24, 0x98, 0xc5, 0x73, 0x9e, 0x48, 0x98, 0x46, 0xd8, 0xe9, 0x0b, 0x4e, 0x5f, 0x83, 0x0f,
-	0xd3, 0x08, 0xa3, 0xeb, 0x80, 0x08, 0xf5, 0xc3, 0x74, 0x36, 0x21, 0xf9, 0xd4, 0x0f, 0xc2, 0x30,
-	0x9d, 0xcf, 0x98, 0x33, 0xd8, 0xb5, 0xf6, 0x6d, 0x6f, 0x8d, 0xd0, 0x87, 0xd2, 0x70, 0x20, 0x71,
-	0xf7, 0x2f, 0x0b, 0xda, 0x87, 0x69, 0x92, 0xa4, 0x6f, 0x6a, 0x13, 0xd9, 0x81, 0xde, 0x44, 0x58,
-	0x70, 0xee, 0x93, 0x48, 0x0d, 0x06, 0x34, 0x34, 0x32, 0x09, 0x11, 0x27, 0x34, 0x4a, 0x84, 0xc8,
-	0x24, 0xc8, 0x8a, 0x9a, 0x26, 0x41, 0x17, 0x34, 0x9f, 0x99, 0x14, 0x39, 0xb5, 0xbe, 0x06, 0x39,
-	0xc9, 0xfd, 0x5d, 0xa6, 0x18, 0x9d, 0x73, 0x69, 0xb6, 0xa0, 0xc3, 0x87, 0x5e, 0x64, 0xd4, 0xe6,
-	0xc7, 0x51, 0x54, 0x9b, 0x41, 0xf3, 0xec, 0x19, 0xb4, 0x6a, 0x33, 0x70, 0x7f, 0x6d, 0x40, 0xf3,
-	0x90, 0x24, 0xb8, 0x96, 0x8b, 0x71, 0xef, 0x4a, 0xe9, 0xde, 0x0f, 0xa1, 0x3b, 0x11, 0xe9, 0x17,
-	0x29, 0xd9, 0x12, 0x18, 0x15, 0x15, 0x34, 0x8d, 0x0a, 0x2a, 0xeb, 0xd8, 0xaa, 0xaf, 0x63, 0xb5,
-	0x94, 0xf6, 0xd9, 0xa5, 0x74, 0xea, 0xeb, 0xc4, 0x13, 0x23, 0x09, 0xf6, 0x8f, 0x03, 0xaa, 0x77,
-	0xda, 0xe6, 0xc0, 0xe3, 0x80, 0x1e, 0x73, 0x23, 0xa1, 0xfe, 0xcb, 0x79, 0x4e, 0x70, 0x24, 0x16,
-	0xda, 0xf6, 0x6c, 0x42, 0x1f, 0x88, 0x33, 0xfa, 0x18, 0x56, 0x09, 0xf5, 0x55, 0x55, 0xdc, 0x45,
-	0x2c, 0xb4, 0xed, 0xf5, 0x09, 0x95, 0x93, 0x12, 0x1d, 0xe2, 0x1f, 0x0d, 0xf5, 0x29, 0x0b, 0xf2,
-	0x1c, 0x47, 0x62, 0x9f, 0x6d, 0xaf, 0x4b, 0xe8, 0x58, 0x02, 0xe8, 0x0a, 0xd8, 0x84, 0xfa, 0x2c,
-	0xe7, 0xb7, 0xf7, 0x85, 0xb1, 0x43, 0xe8, 0x33, 0x7e, 0x54, 0x9e, 0x11, 0x4e, 0x30, 0xc3, 0x91,
-	0xda, 0xdd, 0x2e, 0xa1, 0x8f, 0x24, 0xe0, 0xfe, 0x67, 0x41, 0x5b, 0x65, 0x72, 0xa1, 0x29, 0xf0,
-	0x62, 0x0d, 0x35, 0x11, 0xc5, 0x7e, 0xc7, 0x3b, 0x5e, 0xea, 0x44, 0xb3, 0xd2, 0x89, 0x1d, 0xe8,
-	0x65, 0xf3, 0x97, 0x09, 0x09, 0xa5, 0x59, 0x8e, 0x03, 0x24, 0x24, 0x08, 0x95, 0x79, 0xb5, 0xeb,
-	0xf3, 0xda, 0x81, 0x9e, 0xec, 0xa4, 0x39, 0x0b, 0x90, 0x90, 0x9e, 0x56, 0x44, 0xe2, 0x98, 0xcc,
-	0x62, 0xc9, 0xb0, 0x55, 0x0c, 0x89, 0x89, 0xc5, 0xfb, 0xc7, 0x82, 0x2e, 0x57, 0xce, 0x6f, 0xd3,
-	0x98, 0xcc, 0x4a, 0x52, 0x67, 0x9d, 0x22, 0x75, 0x2b, 0x15, 0xa9, 0xab, 0x49, 0x48, 0x63, 0x89,
-	0x84, 0xf0, 0xf5, 0xe2, 0xea, 0x90, 0x9f, 0xf8, 0x93, 0x24, 0x88, 0x17, 0x5f, 0x8a, 0xc4, 0x0e,
-	0x93, 0x20, 0x46, 0xdb, 0xd0, 0x8b, 0xa7, 0xcc, 0x4f, 0x27, 0x13, 0x9f, 0x62, 0x26, 0x9a, 0xd2,
-	0xf2, 0xba, 0xf1, 0x94, 0x3d, 0x99, 0x4c, 0xc6, 0x98, 0x71, 0x81, 0x66, 0xe9, 0x2b, 0xac, 0xbb,
-	0x21, 0x0f, 0xee, 0xbf, 0x16, 0xb4, 0xbe, 0x11, 0x52, 0xbd, 0x07, 0x03, 0xa1, 0xd9, 0x7e, 0x10,
-	0x45, 0x39, 0xa6, 0x54, 0x15, 0xd1, 0x17, 0xe0, 0x81, 0xc4, 0xf8, 0x1a, 0x48, 0x12, 0x3b, 0xc9,
-	0xf4, 0x47, 0xde, 0x15, 0xc8, 0xb3, 0x93, 0x0c, 0xa3, 0xfb, 0x30, 0xcc, 0x71, 0x4c, 0x28, 0xc3,
-	0xb9, 0xff, 0x1a, 0xe7, 0x64, 0x42, 0xc2, 0x80, 0xb7, 0xdb, 0x2c, 0xcc, 0xd1, 0x8c, 0x17, 0x06,
-	0x41, 0x14, 0x39, 0x82, 0x6b, 0x93, 0x34, 0x8f, 0x53, 0xe6, 0xeb, 0xe6, 0x2c, 0x09, 0x22, 0x2b,
-	0xdf, 0x96, 0xc4, 0xa7, 0x8a, 0x57, 0x0d, 0xe5, 0xfe, 0x66, 0xc1, 0xa5, 0x23, 0x3c, 0xc3, 0x79,
-	0x90, 0x78, 0x98, 0x66, 0xe9, 0x8c, 0x8a, 0xb7, 0x6b, 0x8a, 0x29, 0x0d, 0x62, 0x3d, 0x1f, 0x7d,
-	0x44, 0xfb, 0xb0, 0x46, 0xa8, 0x2f, 0x0b, 0xa3, 0xf3, 0x30, 0xe4, 0xd5, 0x37, 0xc4, 0x8a, 0xaf,
-	0x12, 0x2a, 0xba, 0x33, 0x96, 0x28, 0xba, 0x09, 0x9b, 0x84, 0xfa, 0x69, 0x86, 0x73, 0x99, 0x92,
-	0x66, 0x37, 0x05, 0x1b, 0x11, 0xfa, 0x44, 0x9b, 0x94, 0x87, 0xfb, 0xa7, 0x05, 0x83, 0x51, 0x36,
-	0x9a, 0x4d, 0xd2, 0x7c, 0x1a, 0x2c, 0x5e, 0xae, 0xac, 0xd2, 0xe5, 0x2e, 0xc9, 0x74, 0x8b, 0x6b,
-	0xfb, 0xb0, 0x72, 0x8e, 0x7d, 0x68, 0x9c, 0xb9, 0x0f, 0xcd, 0xca, 0x3e, 0xb8, 0xfb, 0xd0, 0x7f,
-	0x8c, 0x93, 0x24, 0xf5, 0xf0, 0xcf, 0x73, 0x4c, 0xd9, 0xdb, 0xdb, 0xe3, 0x7e, 0x02, 0x03, 0xc5,
-	0x3c, 0xab, 0x93, 0xee, 0x5d, 0xd8, 0xf0, 0xd4, 0x78, 0xf9, 0x97, 0xa1, 0x63, 0x6f, 0x43, 0x93,
-	0x7f, 0x0b, 0x82, 0xdd, 0xbb, 0x05, 0x37, 0xf8, 0x2f, 0x1e, 0x37, 0x04, 0x41, 0xe0, 0xee, 0x0f,
-	0xb0, 0x59, 0x76, 0x53, 0x17, 0x7d, 0x0d, 0x6b, 0xb1, 0x9c, 0xa2, 0x9f, 0x2b, 0x4c, 0xc5, 0xb8,
-	0x2c, 0x63, 0x54, 0x66, 0xec, 0x5d, 0x8a, 0xcb, 0x80, 0xfb, 0x05, 0xac, 0x89, 0xcf, 0xd3, 0xcc,
-	0x66, 0xaf, 0x94, 0xcd, 0xa5, 0x22, 0x1b, 0xc1, 0x54, 0x29, 0xdd, 0x83, 0x75, 0xc3, 0x51, 0xe5,
-	0x73, 0x2e, 0xcf, 0xdb, 0xb0, 0xfe, 0x5c, 0x68, 0xfa, 0x45, 0x3a, 0x70, 0x07, 0x90, 0xe9, 0xa4,
-	0xee, 0x3b, 0xcb, 0xeb, 0x3a, 0xac, 0x4b, 0x05, 0x36, 0xaf, 0x32, 0x04, 0xd7, 0x32, 0x05, 0xd7,
-	0x7d, 0x01, 0xc8, 0x64, 0xbf, 0xb7, 0x1e, 0x2f, 0x0a, 0xe6, 0x6f, 0x8c, 0x51, 0xb0, 0x78, 0x86,
-	0x4a, 0xa9, 0x0b, 0x82, 0xc0, 0x8b, 0x82, 0xa5, 0x53, 0x51, 0xf0, 0xa9, 0x5e, 0x87, 0xb0, 0x7a,
-	0x84, 0x99, 0x79, 0xcf, 0x16, 0x74, 0xc4, 0x43, 0x51, 0x54, 0xcb, 0x8f, 0xc6, 0xf3, 0x22, 0x9e,
-	0x88, 0x95, 0xf2, 0x0b, 0xe2, 0x7e, 0xc6, 0xe5, 0x81, 0x5d, 0xe8, 0xea, 0x3b, 0x80, 0x8e, 0x30,
-	0x3b, 0x48, 0x12, 0x8e, 0xd1, 0xf3, 0x96, 0x79, 0x17, 0x36, 0x4a, 0x5e, 0xe7, 0xbc, 0x6c, 0xa4,
-	0x07, 0xfb, 0xee, 0xa5, 0x2e, 0xa6, 0x5e, 0xaa, 0xf6, 0xdd, 0xa7, 0x7e, 0x17, 0xd6, 0xc6, 0x78,
-	0x16, 0x09, 0x79, 0xd4, 0x19, 0x5e, 0xd3, 0x7f, 0x04, 0xc8, 0x50, 0x3d, 0x19, 0x4a, 0x52, 0xa4,
-	0xc5, 0x7d, 0x0e, 0xeb, 0x86, 0xdb, 0x7b, 0xcb, 0xe6, 0x00, 0x3e, 0x7a, 0x78, 0x8c, 0xc3, 0x57,
-	0xd5, 0x97, 0xe0, 0x02, 0x99, 0x05, 0x70, 0xf5, 0x2d, 0x21, 0xde, 0xe3, 0x97, 0xb2, 0x75, 0x84,
-	0x59, 0xe9, 0x39, 0x38, 0x5b, 0x7e, 0x5f, 0x80, 0x53, 0x77, 0x52, 0x29, 0x7d, 0x09, 0xab, 0x24,
-	0xf3, 0x49, 0x61, 0x51, 0x09, 0x6d, 0xc8, 0x84, 0xca, 0x4e, 0x03, 0x62, 0x1e, 0x6f, 0xfd, 0xdd,
-	0x86, 0xc1, 0x91, 0xf8, 0x7b, 0x70, 0x8c, 0xf3, 0xd7, 0x24, 0xc4, 0xe8, 0x36, 0xd8, 0xe3, 0xe0,
-	0x44, 0x68, 0x3d, 0x42, 0x32, 0x82, 0xf9, 0x44, 0x0c, 0x37, 0x4a, 0x98, 0x4a, 0xe1, 0x1e, 0xb4,
-	0xe4, 0x2f, 0x40, 0x1f, 0x48, 0x6b, 0x55, 0x6e, 0x87, 0x5b, 0x35, 0x5c, 0x79, 0x1e, 0x80, 0xad,
-	0x55, 0x1f, 0x5d, 0x91, 0xa4, 0x25, 0x8f, 0xc7, 0x70, 0xb8, 0xcc, 0xa4, 0x42, 0x7c, 0x05, 0x50,
-	0xc8, 0x26, 0x52, 0x37, 0xd5, 0xd4, 0x77, 0xe8, 0xd4, 0x0d, 0x45, 0x80, 0x42, 0x13, 0x75, 0x80,
-	0x9a, 0xa6, 0xea, 0x00, 0x4b, 0xe4, 0xf3, 0x3e, 0x74, 0x17, 0xfb, 0xac, 0x5b, 0x50, 0xfd, 0x2e,
-	0x74, 0x0b, 0xea, 0x8b, 0xff, 0x3d, 0xac, 0x55, 0x67, 0x8b, 0xae, 0xea, 0x65, 0x5a, 0xba, 0x28,
-	0xc3, 0xed, 0xb7, 0x99, 0x55, 0xc8, 0x9f, 0xe0, 0xf2, 0xd2, 0x35, 0x46, 0xae, 0x74, 0x3c, 0xed,
-	0x33, 0x19, 0xee, 0x9d, 0xca, 0x51, 0x37, 0x7c, 0x0e, 0x1d, 0x25, 0x9e, 0x68, 0x73, 0x91, 0x8c,
-	0x21, 0x54, 0xc3, 0xcb, 0x15, 0x54, 0xf9, 0x3d, 0x82, 0x9e, 0xa1, 0x85, 0xc8, 0x59, 0xb0, 0x2a,
-	0xa2, 0x3a, 0xbc, 0xb2, 0xc4, 0x22, 0x63, 0xdc, 0xb4, 0x8a, 0x91, 0x8b, 0x04, 0x4a, 0x23, 0x37,
-	0x73, 0x70, 0xea, 0x86, 0xea, 0xc8, 0xcd, 0x00, 0x35, 0xb5, 0x2d, 0x8f, 0xdc, 0x0c, 0xf0, 0xc0,
-	0xfe, 0xb1, 0x2d, 0xff, 0x8f, 0xf2, 0xb2, 0x2d, 0xfe, 0x91, 0x72, 0xfb, 0xff, 0x00, 0x00, 0x00,
-	0xff, 0xff, 0x7a, 0x24, 0x09, 0x53, 0x5e, 0x11, 0x00, 0x00,
+	// 1519 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x58, 0xcb, 0x6e, 0xdb, 0xc6,
+	0x1a, 0x86, 0x64, 0x5d, 0xa8, 0x5f, 0xb2, 0x2d, 0x8f, 0x9d, 0x98, 0x56, 0x10, 0xdb, 0xa1, 0x73,
+	0x00, 0x07, 0x08, 0x72, 0x72, 0x72, 0x39, 0x27, 0x38, 0x08, 0xda, 0x3a, 0x49, 0xed, 0x18, 0x2d,
+	0x9a, 0x94, 0x72, 0x82, 0x20, 0x40, 0x40, 0xd0, 0xe4, 0x88, 0x1e, 0x84, 0x12, 0x59, 0xce, 0x28,
+	0xa9, 0x97, 0x5d, 0x75, 0xd1, 0x45, 0x5f, 0xa1, 0xcb, 0xbe, 0x46, 0xdf, 0xa3, 0x6f, 0xd0, 0x5d,
+	0x9f, 0xa0, 0x98, 0x9b, 0x34, 0x24, 0xe5, 0x4b, 0x10, 0xed, 0x34, 0xdf, 0x7f, 0x99, 0xff, 0x36,
+	0xff, 0x27, 0x10, 0x50, 0x9a, 0x25, 0x2c, 0xf9, 0x77, 0x44, 0xa2, 0x1f, 0x5d, 0xf7, 0x8e, 0x38,
+	0xa0, 0x1a, 0x3f, 0x39, 0xbf, 0x2e, 0x40, 0xed, 0x15, 0xc5, 0x19, 0x5a, 0x82, 0x2a, 0x09, 0xed,
+	0xca, 0x76, 0x65, 0xb7, 0xe5, 0x56, 0x49, 0x88, 0x10, 0xd4, 0x46, 0xfe, 0x10, 0xdb, 0x55, 0x81,
+	0x88, 0xdf, 0xc8, 0x86, 0x26, 0x1d, 0x67, 0x02, 0x5e, 0x10, 0xb0, 0x3e, 0xa2, 0x35, 0xa8, 0xe3,
+	0xa1, 0x4f, 0x62, 0xbb, 0x26, 0x70, 0x79, 0x40, 0x3d, 0xb0, 0xc6, 0x14, 0x4b, 0x83, 0xba, 0x10,
+	0x4c, 0xce, 0x5c, 0x96, 0xfa, 0x94, 0x7e, 0x4c, 0xb2, 0xd0, 0x6e, 0x48, 0x99, 0x3e, 0xa3, 0x6d,
+	0x68, 0x87, 0x98, 0x06, 0x19, 0x49, 0x19, 0x49, 0x46, 0x76, 0x53, 0x88, 0x4d, 0x08, 0x5d, 0x07,
+	0x20, 0x43, 0x3f, 0xc2, 0x5e, 0xea, 0xb3, 0x13, 0xdb, 0x12, 0x0a, 0x2d, 0x81, 0xbc, 0xf4, 0xd9,
+	0x09, 0xda, 0x82, 0x36, 0x4b, 0x98, 0x1f, 0x7b, 0x34, 0xf5, 0x03, 0x6c, 0xb7, 0xb6, 0x2b, 0xbb,
+	0x75, 0x17, 0x04, 0xd4, 0xe7, 0x08, 0xba, 0x01, 0x9d, 0x20, 0xc3, 0x3e, 0xc3, 0xa1, 0x17, 0xfa,
+	0x0c, 0xdb, 0x20, 0xaf, 0x50, 0xd8, 0x33, 0x9f, 0x09, 0x95, 0x71, 0x1a, 0x4e, 0x55, 0xda, 0x52,
+	0x45, 0x61, 0x42, 0xe5, 0x5f, 0xb0, 0x14, 0xfb, 0xa3, 0x68, 0xcc, 0x03, 0x61, 0xc9, 0x7b, 0x3c,
+	0xb2, 0x3b, 0x42, 0x69, 0x51, 0xa3, 0x47, 0x1c, 0x44, 0xb7, 0x01, 0x11, 0xea, 0x05, 0xc9, 0x68,
+	0x40, 0xb2, 0xa1, 0xe7, 0x07, 0x41, 0x32, 0x1e, 0x31, 0x7b, 0x71, 0xbb, 0xb2, 0x6b, 0xb9, 0x5d,
+	0x42, 0x9f, 0x4a, 0xc1, 0x9e, 0xc4, 0x9d, 0xdf, 0x2a, 0xd0, 0xd8, 0x4f, 0xe2, 0x38, 0xf9, 0x58,
+	0xea, 0xc9, 0x16, 0xb4, 0x07, 0x42, 0x82, 0x33, 0x8f, 0x84, 0xaa, 0x35, 0xa0, 0xa1, 0x43, 0x53,
+	0x21, 0xe4, 0x0a, 0x0b, 0x39, 0x85, 0xd0, 0x54, 0x90, 0x39, 0xd5, 0x4c, 0x05, 0x91, 0xd2, 0x0e,
+	0x2c, 0x8e, 0x47, 0xa6, 0x8a, 0xec, 0x5b, 0x47, 0x83, 0x5c, 0xc9, 0xf9, 0x45, 0x86, 0x18, 0x5e,
+	0x72, 0x6c, 0xd6, 0xa1, 0xc9, 0xdb, 0x3e, 0x8d, 0xa8, 0xc1, 0x8f, 0x87, 0x61, 0xa9, 0x0b, 0xb5,
+	0x8b, 0xbb, 0x50, 0x2f, 0x75, 0xc1, 0xf9, 0x69, 0x01, 0x6a, 0xfb, 0x24, 0xc6, 0xa5, 0x58, 0x8c,
+	0x7b, 0xab, 0xb9, 0x7b, 0xaf, 0x41, 0x6b, 0x20, 0xc2, 0x9f, 0x86, 0x64, 0x49, 0xe0, 0x70, 0x9a,
+	0x41, 0xcd, 0xc8, 0xa0, 0x30, 0x90, 0xf5, 0xf2, 0x40, 0x16, 0x53, 0x69, 0x5c, 0x9c, 0x4a, 0xb3,
+	0x3c, 0x50, 0x3c, 0x30, 0x12, 0x63, 0xef, 0xc4, 0xa7, 0x7a, 0xaa, 0x2d, 0x0e, 0x3c, 0xf7, 0xe9,
+	0x09, 0x17, 0x12, 0xea, 0x1d, 0x8f, 0x33, 0x82, 0x43, 0x31, 0xd2, 0x96, 0x6b, 0x11, 0xfa, 0x44,
+	0x9c, 0xd1, 0x4d, 0x58, 0x22, 0xd4, 0x53, 0x59, 0x71, 0x13, 0x31, 0xd2, 0x96, 0xdb, 0x21, 0x54,
+	0x76, 0x4a, 0x54, 0x88, 0x3f, 0x1b, 0xea, 0x51, 0xe6, 0x67, 0x19, 0x0e, 0xc5, 0x44, 0x5b, 0x6e,
+	0x8b, 0xd0, 0xbe, 0x04, 0xd0, 0x06, 0x58, 0x84, 0x7a, 0x2c, 0xe3, 0xb7, 0x77, 0x84, 0xb0, 0x49,
+	0xe8, 0x11, 0x3f, 0x2a, 0xcb, 0x10, 0xc7, 0x98, 0xe1, 0x50, 0xcd, 0x6e, 0x8b, 0xd0, 0x67, 0x12,
+	0x70, 0xfe, 0xae, 0x40, 0x43, 0x45, 0xf2, 0x49, 0x5d, 0xe0, 0xc9, 0x1a, 0xfb, 0x44, 0x24, 0xfb,
+	0x1d, 0xaf, 0x78, 0xae, 0x12, 0xb5, 0x42, 0x25, 0xb6, 0xa0, 0x9d, 0x8e, 0x8f, 0x63, 0x12, 0x48,
+	0xb1, 0x6c, 0x07, 0x48, 0x48, 0x28, 0x14, 0xfa, 0xd5, 0x28, 0xf7, 0x6b, 0x0b, 0xda, 0xb2, 0x92,
+	0x66, 0x2f, 0x40, 0x42, 0xba, 0x5b, 0x21, 0x89, 0x22, 0x32, 0x8a, 0xa4, 0x86, 0xa5, 0x7c, 0x48,
+	0x4c, 0x0c, 0xde, 0x1f, 0x15, 0x68, 0xf1, 0xdd, 0xf9, 0x6d, 0x12, 0x91, 0x51, 0x6e, 0xd9, 0x55,
+	0xce, 0x59, 0x76, 0xd5, 0xc2, 0xb2, 0xdb, 0x81, 0xc9, 0xba, 0xf0, 0x82, 0x24, 0xd4, 0xa5, 0xe8,
+	0x68, 0xf0, 0x69, 0x12, 0xca, 0x7d, 0xc5, 0xb7, 0x43, 0x76, 0xea, 0x0d, 0x62, 0x3f, 0x9a, 0xbc,
+	0x14, 0x89, 0xed, 0xc7, 0x7e, 0x84, 0x36, 0xa1, 0x1d, 0x0d, 0x99, 0x97, 0x0c, 0x06, 0x1e, 0xc5,
+	0x4c, 0x14, 0xa5, 0xee, 0xb6, 0xa2, 0x21, 0x7b, 0x31, 0x18, 0xf4, 0x31, 0xe3, 0x2b, 0x5a, 0xee,
+	0x28, 0x59, 0x0d, 0x79, 0x70, 0x7e, 0xaf, 0xc2, 0xd2, 0x01, 0x1e, 0xe1, 0xcc, 0x8f, 0x5d, 0xfc,
+	0xc3, 0x18, 0x53, 0xc6, 0x03, 0x12, 0xeb, 0xdb, 0xf3, 0xc3, 0x30, 0xc3, 0x94, 0xaa, 0x6c, 0x3a,
+	0x02, 0xdc, 0x93, 0x18, 0x9f, 0x07, 0xa9, 0xc4, 0x4e, 0x53, 0xfd, 0xda, 0x5b, 0x02, 0x39, 0x3a,
+	0x4d, 0x31, 0xfa, 0x02, 0xae, 0x65, 0x38, 0x22, 0x94, 0xe1, 0xcc, 0xfb, 0x80, 0x33, 0x32, 0x20,
+	0x81, 0xcf, 0xeb, 0xae, 0xd6, 0xa4, 0x4c, 0x71, 0x43, 0xab, 0xbc, 0x36, 0x34, 0xe4, 0xca, 0xfc,
+	0x06, 0x9c, 0x41, 0x92, 0x45, 0x09, 0xf3, 0x74, 0x9d, 0x66, 0xb9, 0x91, 0x55, 0xd8, 0x92, 0x9a,
+	0x2f, 0x95, 0x62, 0xd9, 0x99, 0x59, 0xfd, 0x7a, 0xa1, 0xfa, 0xb7, 0xa0, 0x3b, 0xb9, 0x41, 0x6d,
+	0x68, 0x55, 0xa0, 0x65, 0x8d, 0xab, 0xfd, 0xec, 0xfc, 0x5c, 0x81, 0xe5, 0x49, 0xa9, 0x68, 0x9a,
+	0x8c, 0xa8, 0x60, 0xc4, 0x21, 0xa6, 0xd4, 0x8f, 0x74, 0xcf, 0xf5, 0x11, 0xed, 0x42, 0x97, 0x50,
+	0x4f, 0xd6, 0x88, 0x8e, 0x83, 0x80, 0x17, 0x72, 0x41, 0x3c, 0x9b, 0x25, 0x42, 0xbf, 0xe6, 0x70,
+	0x5f, 0xa2, 0xe8, 0x2e, 0xac, 0x11, 0xea, 0x25, 0x29, 0xce, 0x64, 0x6e, 0x5a, 0xbb, 0x26, 0xb4,
+	0x11, 0xa1, 0x2f, 0xb4, 0x48, 0x59, 0x38, 0x7f, 0x56, 0x60, 0xf1, 0x30, 0x3d, 0x1c, 0x0d, 0x92,
+	0x6c, 0xe8, 0x4f, 0xf8, 0x30, 0x2d, 0x34, 0xac, 0x45, 0x52, 0xdd, 0xad, 0xd2, 0x8c, 0x55, 0x2f,
+	0x31, 0x63, 0x0b, 0xe5, 0x19, 0x33, 0x54, 0x84, 0x9b, 0xfc, 0x18, 0x16, 0xbd, 0x18, 0xbc, 0xaf,
+	0x55, 0xc4, 0xdb, 0x2e, 0x4c, 0x6a, 0xa3, 0x30, 0xa9, 0xce, 0x2e, 0x74, 0x9e, 0xe3, 0x38, 0x4e,
+	0xf4, 0x40, 0x9e, 0x59, 0x64, 0xe7, 0x16, 0x2c, 0x2a, 0xcd, 0x8b, 0xfa, 0xe1, 0x3c, 0x84, 0x55,
+	0x57, 0x8d, 0x1b, 0x7f, 0xb3, 0xda, 0xf7, 0x26, 0xd4, 0xf8, 0x2b, 0x15, 0xda, 0xed, 0x7b, 0x70,
+	0x87, 0xff, 0x29, 0xba, 0x23, 0x14, 0x04, 0xee, 0xbc, 0x81, 0xb5, 0xbc, 0x99, 0xba, 0xe8, 0x2b,
+	0xe8, 0x46, 0x72, 0x16, 0xbc, 0x4c, 0x61, 0xca, 0xc7, 0x15, 0xe9, 0xa3, 0x30, 0x29, 0xee, 0x72,
+	0x94, 0x07, 0x9c, 0xc7, 0xd0, 0x7b, 0x7a, 0x82, 0x83, 0xf7, 0xdc, 0xed, 0x51, 0xa2, 0x2f, 0xb9,
+	0x6c, 0x5c, 0x1e, 0x5c, 0x9b, 0x69, 0x3d, 0xb7, 0xf0, 0xfe, 0x07, 0x5d, 0xb1, 0xd7, 0xcc, 0x62,
+	0xed, 0xe4, 0x82, 0x5a, 0x9e, 0x06, 0x25, 0x34, 0x55, 0x64, 0x8f, 0x60, 0xc5, 0x30, 0x54, 0xf1,
+	0x5c, 0xca, 0xf2, 0x3e, 0xac, 0xbc, 0x12, 0x64, 0xf8, 0x29, 0x0d, 0x7a, 0x00, 0xc8, 0x34, 0x52,
+	0xf7, 0x5d, 0x64, 0x75, 0x1b, 0x56, 0x24, 0x75, 0x99, 0x57, 0x19, 0x4c, 0x55, 0x31, 0x99, 0xca,
+	0x79, 0x0d, 0xc8, 0xd4, 0x9e, 0x5b, 0x8d, 0x27, 0x09, 0x73, 0x72, 0x36, 0x12, 0x16, 0xfc, 0x9d,
+	0x0b, 0x5d, 0x28, 0x08, 0x7c, 0x9a, 0xb0, 0x34, 0x9a, 0x26, 0x7c, 0xae, 0xd5, 0x3e, 0x5f, 0xf3,
+	0xcc, 0xbc, 0x67, 0x1d, 0x9a, 0x82, 0x61, 0xa7, 0xd9, 0xf2, 0xa3, 0xc1, 0xcb, 0x82, 0x5b, 0xab,
+	0x79, 0xea, 0x75, 0xfe, 0xc3, 0x77, 0x20, 0xfb, 0xa4, 0xab, 0x1f, 0x00, 0x3a, 0xc0, 0x6c, 0x2f,
+	0x8e, 0x39, 0x46, 0x2f, 0x9b, 0xe6, 0x43, 0x58, 0xcd, 0x59, 0x5d, 0xf2, 0xb2, 0x43, 0xdd, 0xd8,
+	0xcf, 0x4f, 0x75, 0xd2, 0xf5, 0x5c, 0xb6, 0x9f, 0xdf, 0xf5, 0x97, 0xd0, 0xed, 0xe3, 0x51, 0x28,
+	0x38, 0x40, 0x47, 0xf8, 0x18, 0x96, 0xa2, 0x1c, 0x0b, 0x2b, 0x9f, 0x6b, 0x05, 0x9f, 0x42, 0xe6,
+	0x16, 0x74, 0x9d, 0x57, 0xb0, 0x62, 0x78, 0x9c, 0x5b, 0xa0, 0xef, 0xe0, 0xba, 0xd8, 0x31, 0x25,
+	0x46, 0x9d, 0x4f, 0xd4, 0xc7, 0xb0, 0x79, 0x96, 0xfb, 0x39, 0xbe, 0xb0, 0xf5, 0x03, 0xcc, 0x72,
+	0x5c, 0x79, 0x31, 0xab, 0xbc, 0x06, 0xbb, 0x6c, 0xa4, 0x42, 0xfa, 0x3f, 0x2c, 0x91, 0xd4, 0x23,
+	0x53, 0x89, 0x0a, 0x68, 0x55, 0x06, 0x94, 0x37, 0x5a, 0x24, 0xe6, 0xd1, 0x79, 0x03, 0xb6, 0x8b,
+	0x29, 0x66, 0x7c, 0x8b, 0xe8, 0x7f, 0x2b, 0xf3, 0x29, 0xe5, 0x3b, 0xd8, 0x98, 0xe1, 0x79, 0x5e,
+	0x55, 0xbc, 0xf7, 0x57, 0x13, 0x16, 0x0f, 0xc4, 0xb7, 0x83, 0x3e, 0xce, 0x3e, 0x90, 0x00, 0xa3,
+	0xfb, 0x60, 0xf5, 0xfd, 0x53, 0xc1, 0xbd, 0x08, 0x49, 0x2f, 0x26, 0x65, 0xf7, 0x56, 0x73, 0x98,
+	0x0a, 0xe4, 0x11, 0xd4, 0xe5, 0x5f, 0xe5, 0xab, 0x52, 0x5a, 0xe4, 0x97, 0xde, 0x7a, 0x09, 0x57,
+	0x96, 0x7b, 0x60, 0x69, 0x8a, 0x43, 0x1b, 0x52, 0x69, 0x06, 0x99, 0xf7, 0x7a, 0xb3, 0x44, 0xca,
+	0xc5, 0x5b, 0x58, 0x9d, 0x41, 0x98, 0x68, 0x5b, 0x9a, 0x9c, 0xcd, 0xc4, 0xbd, 0x1b, 0xe7, 0x68,
+	0x28, 0xdf, 0x47, 0xb0, 0x52, 0x2a, 0x3f, 0xda, 0xd4, 0xc1, 0xcc, 0xee, 0x78, 0x6f, 0xeb, 0x4c,
+	0xb9, 0xf2, 0xfa, 0x25, 0xc0, 0x94, 0xd9, 0x90, 0xaa, 0x4d, 0x89, 0x20, 0x7b, 0x76, 0x59, 0x30,
+	0x75, 0x30, 0xa5, 0x2d, 0xed, 0xa0, 0x44, 0x7b, 0xda, 0xc1, 0x0c, 0x86, 0x7b, 0x0c, 0xad, 0xc9,
+	0x5e, 0xd1, 0x4d, 0x2b, 0xae, 0x2e, 0xdd, 0xb4, 0xf2, 0x02, 0xfa, 0x1e, 0xba, 0xc5, 0x67, 0x84,
+	0xae, 0xeb, 0x89, 0x9b, 0xf9, 0x26, 0x7b, 0x9b, 0x67, 0x89, 0x95, 0xcb, 0x00, 0xae, 0xce, 0x5e,
+	0x19, 0x68, 0xc7, 0xe8, 0xd2, 0x59, 0xfb, 0xaa, 0x77, 0xf3, 0x7c, 0x25, 0x75, 0xc9, 0x7f, 0xa1,
+	0xa9, 0x28, 0x0e, 0x4d, 0x5e, 0x9f, 0xc9, 0x9c, 0xbd, 0x2b, 0x05, 0x54, 0xd9, 0x3d, 0x83, 0xb6,
+	0xc1, 0x58, 0xc8, 0x9e, 0x68, 0x15, 0xa8, 0xaf, 0xb7, 0x31, 0x43, 0x22, 0x7d, 0xdc, 0xad, 0x4c,
+	0xbb, 0x2e, 0x02, 0xc8, 0x75, 0xdd, 0x8c, 0xc1, 0x2e, 0x0b, 0x8a, 0x5d, 0x37, 0x1d, 0x94, 0x38,
+	0x31, 0xdf, 0x75, 0xd3, 0xc1, 0x13, 0xeb, 0x6d, 0x43, 0x7e, 0x28, 0x3c, 0x6e, 0x88, 0x2f, 0x85,
+	0xf7, 0xff, 0x09, 0x00, 0x00, 0xff, 0xff, 0xc1, 0xa6, 0x0b, 0x60, 0x3f, 0x14, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -1892,12 +2092,14 @@ type GigxRRServiceClient interface {
 	//User methods
 	Login(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error)
 	Register(ctx context.Context, in *RegisterUserRequest, opts ...grpc.CallOption) (*RegisterUserResponse, error)
+	CheckUserToRegister(ctx context.Context, in *CheckUserToRegisterRequest, opts ...grpc.CallOption) (*CheckUserToRegisterResponse, error)
+	ResetUserPassword(ctx context.Context, in *ResetUserPasswordRequest, opts ...grpc.CallOption) (*ResetUserPasswordResponse, error)
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error)
-	//Srvices
+	//Services
 	SendEmail(ctx context.Context, in *SendEmailRequest, opts ...grpc.CallOption) (*SendEmailResponse, error)
 	GetIpInformation(ctx context.Context, in *GetIpInformationRequest, opts ...grpc.CallOption) (*GetIpInformationResponse, error)
-	CheckVerificationCode(ctx context.Context, in *CheckVerificationCodeRequest, opts ...grpc.CallOption) (*CheckVerificationCodeResponse, error)
+	CheckVerificationToken(ctx context.Context, in *CheckVerificationTokenRequest, opts ...grpc.CallOption) (*CheckVerificationTokenResponse, error)
 	//File methods
 	GetFile(ctx context.Context, in *GetFileRequest, opts ...grpc.CallOption) (*GetFileResponse, error)
 	GetAllFiles(ctx context.Context, in *GetAllFilesRequest, opts ...grpc.CallOption) (GigxRRService_GetAllFilesClient, error)
@@ -1940,6 +2142,24 @@ func (c *gigxRRServiceClient) Register(ctx context.Context, in *RegisterUserRequ
 	return out, nil
 }
 
+func (c *gigxRRServiceClient) CheckUserToRegister(ctx context.Context, in *CheckUserToRegisterRequest, opts ...grpc.CallOption) (*CheckUserToRegisterResponse, error) {
+	out := new(CheckUserToRegisterResponse)
+	err := c.cc.Invoke(ctx, "/gigx.GigxRRService/CheckUserToRegister", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *gigxRRServiceClient) ResetUserPassword(ctx context.Context, in *ResetUserPasswordRequest, opts ...grpc.CallOption) (*ResetUserPasswordResponse, error) {
+	out := new(ResetUserPasswordResponse)
+	err := c.cc.Invoke(ctx, "/gigx.GigxRRService/ResetUserPassword", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *gigxRRServiceClient) UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error) {
 	out := new(UpdateUserResponse)
 	err := c.cc.Invoke(ctx, "/gigx.GigxRRService/UpdateUser", in, out, opts...)
@@ -1976,9 +2196,9 @@ func (c *gigxRRServiceClient) GetIpInformation(ctx context.Context, in *GetIpInf
 	return out, nil
 }
 
-func (c *gigxRRServiceClient) CheckVerificationCode(ctx context.Context, in *CheckVerificationCodeRequest, opts ...grpc.CallOption) (*CheckVerificationCodeResponse, error) {
-	out := new(CheckVerificationCodeResponse)
-	err := c.cc.Invoke(ctx, "/gigx.GigxRRService/CheckVerificationCode", in, out, opts...)
+func (c *gigxRRServiceClient) CheckVerificationToken(ctx context.Context, in *CheckVerificationTokenRequest, opts ...grpc.CallOption) (*CheckVerificationTokenResponse, error) {
+	out := new(CheckVerificationTokenResponse)
+	err := c.cc.Invoke(ctx, "/gigx.GigxRRService/CheckVerificationToken", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -2051,12 +2271,14 @@ type GigxRRServiceServer interface {
 	//User methods
 	Login(context.Context, *LoginUserRequest) (*LoginUserResponse, error)
 	Register(context.Context, *RegisterUserRequest) (*RegisterUserResponse, error)
+	CheckUserToRegister(context.Context, *CheckUserToRegisterRequest) (*CheckUserToRegisterResponse, error)
+	ResetUserPassword(context.Context, *ResetUserPasswordRequest) (*ResetUserPasswordResponse, error)
 	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
 	DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error)
-	//Srvices
+	//Services
 	SendEmail(context.Context, *SendEmailRequest) (*SendEmailResponse, error)
 	GetIpInformation(context.Context, *GetIpInformationRequest) (*GetIpInformationResponse, error)
-	CheckVerificationCode(context.Context, *CheckVerificationCodeRequest) (*CheckVerificationCodeResponse, error)
+	CheckVerificationToken(context.Context, *CheckVerificationTokenRequest) (*CheckVerificationTokenResponse, error)
 	//File methods
 	GetFile(context.Context, *GetFileRequest) (*GetFileResponse, error)
 	GetAllFiles(*GetAllFilesRequest, GigxRRService_GetAllFilesServer) error
@@ -2118,6 +2340,42 @@ func _GigxRRService_Register_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GigxRRServiceServer).Register(ctx, req.(*RegisterUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GigxRRService_CheckUserToRegister_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CheckUserToRegisterRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GigxRRServiceServer).CheckUserToRegister(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/gigx.GigxRRService/CheckUserToRegister",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GigxRRServiceServer).CheckUserToRegister(ctx, req.(*CheckUserToRegisterRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _GigxRRService_ResetUserPassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ResetUserPasswordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GigxRRServiceServer).ResetUserPassword(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/gigx.GigxRRService/ResetUserPassword",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GigxRRServiceServer).ResetUserPassword(ctx, req.(*ResetUserPasswordRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2194,20 +2452,20 @@ func _GigxRRService_GetIpInformation_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GigxRRService_CheckVerificationCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CheckVerificationCodeRequest)
+func _GigxRRService_CheckVerificationToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CheckVerificationTokenRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GigxRRServiceServer).CheckVerificationCode(ctx, in)
+		return srv.(GigxRRServiceServer).CheckVerificationToken(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/gigx.GigxRRService/CheckVerificationCode",
+		FullMethod: "/gigx.GigxRRService/CheckVerificationToken",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GigxRRServiceServer).CheckVerificationCode(ctx, req.(*CheckVerificationCodeRequest))
+		return srv.(GigxRRServiceServer).CheckVerificationToken(ctx, req.(*CheckVerificationTokenRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -2304,6 +2562,14 @@ var _GigxRRService_serviceDesc = grpc.ServiceDesc{
 			Handler:    _GigxRRService_Register_Handler,
 		},
 		{
+			MethodName: "CheckUserToRegister",
+			Handler:    _GigxRRService_CheckUserToRegister_Handler,
+		},
+		{
+			MethodName: "ResetUserPassword",
+			Handler:    _GigxRRService_ResetUserPassword_Handler,
+		},
+		{
 			MethodName: "UpdateUser",
 			Handler:    _GigxRRService_UpdateUser_Handler,
 		},
@@ -2320,8 +2586,8 @@ var _GigxRRService_serviceDesc = grpc.ServiceDesc{
 			Handler:    _GigxRRService_GetIpInformation_Handler,
 		},
 		{
-			MethodName: "CheckVerificationCode",
-			Handler:    _GigxRRService_CheckVerificationCode_Handler,
+			MethodName: "CheckVerificationToken",
+			Handler:    _GigxRRService_CheckVerificationToken_Handler,
 		},
 		{
 			MethodName: "GetFile",

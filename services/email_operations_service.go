@@ -6,61 +6,88 @@ import (
 	"fmt"
 	"html/template"
 	gomail "gopkg.in/gomail.v2"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"github.com/salihkemaloglu/gignox-rr-beta-001/proto"
 	repo "github.com/salihkemaloglu/gignox-rr-beta-001/repositories"
 	inter "github.com/salihkemaloglu/gignox-rr-beta-001/interfaces"
 )
 type UserRegisterData struct {
     WelcomeToGignax string
     ThanksForSigup string
-    MustEnterVerrificationCode string
-	VerificationCode string
-	YourVerificationCode string
-	OneUseCode string
+    MustEnterVerrificationToken string
+	VerificationToken string
+	YourVerificationToken string
+	OneUseToken string
 }
 type UserForgotPasswordData struct {
-    VerificationCodeTitle string
+    VerificationTokenTitle string
     ReceivedPasswordChangeRequest string
     ViaEmailAddress string
-	DontShareVerificationCode string
-	VerificationCode string
-	YourVerificationCode string 
-	OneUseCode string
+	DontShareVerificationToken string
+	ResetPasswordLink string
+	YourVerificationToken string 
+	OneUseToken string
 	Email string
 }
-func  SendUserRegisterConfirmationMailService(userEmail_ string,verificationCode_ string,lang_ string) string {
+func  SendUserRegisterConfirmationMailService(userEmail_ string,emailType_ string,verificationToken_ string,lang_ string) (*gigxRR.SendEmailResponse, error) {
 	
-	mailTypePath:="app_root/mail_templates/user_register_confirmation.html"
+	t := time.Now().UTC()
+	userTemporaryInformation := repo.UserTemporaryInformation {
+		Email: userEmail_,
+		ForgotPasswordVerificationToken:"",
+		RegisterVerificationTokenCreateDate: t.Format("2006-01-02 15:04:05"),
+		ForgotPasswordVerificationTokenCreateDate: t.Format("2006-01-02 15:04:05"),
+		EmailType:emailType_,
+		IsTokenUsed: false,
+    	IsTokenExpired: false, 
+	}
+	// if there is verification code not used
+	var userTemporaryInformationOp inter.IUserTemporaryInformationRepository=&userTemporaryInformation
+	if dbResp,dbErr := userTemporaryInformationOp.CheckVerificationTokenResentEmail(); dbErr == nil {
+		userTemporaryInformation.Id=dbResp.Id
+		userTemporaryInformation.RegisterVerificationToken=dbResp.RegisterVerificationToken
+		dbResp.IsTokenUsed=false
+		dbResp.IsTokenExpired=true
+		if dbErr := userTemporaryInformationOp.Update(); dbErr != nil {
+			return nil,status.Errorf(
+				codes.Aborted,
+				fmt.Sprintf(Translate(lang_,"Resent_Register_Email_Update_Database_Error")+":%v",dbErr.Error()),
+			)
+		}
 
+	}
+	userTemporaryInformation.RegisterVerificationToken=verificationToken_
+	mailTypePath:="app_root/mail_templates/user_register_confirmation.html"
 	temp, err := template.ParseFiles(mailTypePath)
 	if err != nil {
-		return fmt.Sprintf("Mail template parse error: %v",err.Error())
+		return nil,status.Errorf(
+			codes.Aborted,
+			fmt.Sprintf(Translate(lang_,"Email_Template_Parse_Error")+":%v",err.Error()),
+		)
 	}
 	wd := UserRegisterData{
         WelcomeToGignax: Translate(lang_,"Welcome_To_Gignox"),
         ThanksForSigup: Translate(lang_,"Thanks_For_Sigup"),
-        MustEnterVerrificationCode: Translate(lang_,"Must_Enter_Verrification_Code"),
-        YourVerificationCode: Translate(lang_,"Your_Verification_Code"),
-        OneUseCode: Translate(lang_,"One_Use_Code"),
-        VerificationCode: verificationCode_,
+        MustEnterVerrificationToken: Translate(lang_,"Must_Enter_Verrification_Token"),
+        YourVerificationToken: Translate(lang_,"Your_Verification_Url"),
+        OneUseToken: Translate(lang_,"One_Use_Token"),
+        VerificationToken: verificationToken_,
     }
 
 	var mailBytes bytes.Buffer
 	if err := temp.Execute(&mailBytes, &wd); err != nil {
-		return fmt.Sprintf("Mail template execute byte error: %v",err.Error())
+		return nil,status.Errorf(
+			codes.Aborted,
+			fmt.Sprintf(Translate(lang_,"Email_Template_Execute_Error")+":%v",err.Error()),
+		)
 	}
-	t := time.Now().UTC()
-	userTemporaryInformation := repo.UserTemporaryInformation {
-		Email: userEmail_,
-		RegisterVerificationCode:verificationCode_,
-		ForgotPasswordVerificationCode:"",
-		RegisterVerificationCodeCreateDate: t.Format("2006-01-02 15:04:05"),
-		ForgotPasswordVerificationCodeCreateDate: t.Format("2006-01-02 15:04:05"),
-		IsCodeUsed: false,
-    	IsCodeExpired: false, 
-	}
-	var userOp inter.IUserTemporaryInformationRepository=userTemporaryInformation
-	if dbResp := userOp.Insert(); dbResp != nil {
-		return fmt.Sprintf(Translate(lang_,"User_Temporary_Indormation_Insert_Error")+" :%v",dbResp.Error())
+
+	if dbResp := userTemporaryInformationOp.Insert(); dbResp != nil {
+		return nil,status.Errorf(
+			codes.Aborted,
+			fmt.Sprintf(Translate(lang_,"User_Temporary_Indormation_Insert_Error")+":%v",err.Error()),
+		)
 	}
 
 	result := mailBytes.String()
@@ -75,49 +102,84 @@ func  SendUserRegisterConfirmationMailService(userEmail_ string,verificationCode
 
 	// Send the email to user
 	if err := dial.DialAndSend(mail); err != nil {
-		return fmt.Sprintf("Mail send  error: %v",err.Error())
+		return nil,status.Errorf(
+			codes.Aborted,
+			fmt.Sprintf(Translate(lang_,"Email_Send_Error")+":%v",err.Error()),
+		)
 	}
-	return "ok"
+	return &gigxRR.SendEmailResponse{
+		GeneralResponse:&gigxRR.GeneralResponse{
+			Message:emailType_,
+			IsEmailSuccess:true,
+			IsOperationSuccess:true,
+		},
+	}, nil
 }
 
 
 
-func  SendUserForgotPasswordVerificationMailService(userEmail_ string,verificationCode_ string,lang_ string) string {
+func  SendUserForgotPasswordVerificationMailService(userEmail_ string,emailType_ string,verificationToken_ string,lang_ string) (*gigxRR.SendEmailResponse, error) {
 	
-	mailTypePath:="app_root/mail_templates/user_forgot_password.html"
+	t := time.Now().UTC()
+	userTemporaryInformation := repo.UserTemporaryInformation {
+		Email: userEmail_,
+		RegisterVerificationToken:"",
+		RegisterVerificationTokenCreateDate: t.Format("2006-01-02 15:04:05"),
+		ForgotPasswordVerificationTokenCreateDate: t.Format("2006-01-02 15:04:05"),
+		EmailType:emailType_,
+		IsTokenUsed: false,
+    	IsTokenExpired: false, 
+	}
+	// if there is verification code not used
+	var userTemporaryInformationOp inter.IUserTemporaryInformationRepository=&userTemporaryInformation
+	if dbResp,dbErr := userTemporaryInformationOp.CheckVerificationTokenResentEmail(); dbErr == nil {
+		userTemporaryInformation.Id=dbResp.Id
+		userTemporaryInformation.ForgotPasswordVerificationToken=dbResp.ForgotPasswordVerificationToken
+		userTemporaryInformation.IsTokenUsed=false
+		userTemporaryInformation.IsTokenExpired=true
+		if dbErr := userTemporaryInformationOp.Update(); dbErr != nil {
+			return nil,status.Errorf(
+				codes.Aborted,
+				fmt.Sprintf(Translate(lang_,"Resent_Forgot_Password_Email_Update_Database_Error")+":%v",dbErr.Error()),
+			)
+		}
 
+	}
+	userTemporaryInformation.ForgotPasswordVerificationToken=verificationToken_
+	mailTypePath:="app_root/mail_templates/user_forgot_password.html"
 	temp, err := template.ParseFiles(mailTypePath)
 	if err != nil {
-		return fmt.Sprintf("Mail template parse error: %v",err.Error())
+		return nil,status.Errorf(
+			codes.Aborted,
+			fmt.Sprintf(Translate(lang_,"Email_Template_Parse_Error")+":%v",err.Error()),
+		)
 	}
+	var resetPasswordLink = "http://localhost:3000/password_reset/" + verificationToken_;
 	wd := UserForgotPasswordData{
-        VerificationCodeTitle: Translate(lang_,"Verification_Code_Title"),
+        VerificationTokenTitle: Translate(lang_,"Password_reset_Token_Title"),
         ReceivedPasswordChangeRequest: Translate(lang_,"Received_Password_Change_Request"),
         ViaEmailAddress: Translate(lang_,"Via_Email_Address"),
-		DontShareVerificationCode: Translate(lang_,"Dont_Share_Verification_Code"),
-		YourVerificationCode: Translate(lang_,"Your_Verification_Code"),
-        OneUseCode: Translate(lang_,"One_Use_Code"),
-		VerificationCode: verificationCode_,
+		DontShareVerificationToken: Translate(lang_,"Dont_Share_Verification_Token"),
+		YourVerificationToken: Translate(lang_,"Your_Password_Reset_Url"),
+        OneUseToken: Translate(lang_,"One_Use_Token"),
+		ResetPasswordLink: resetPasswordLink,
 		Email:userEmail_,
     }
 
 	var mailBytes bytes.Buffer
 	if err := temp.Execute(&mailBytes, &wd); err != nil {
-		return fmt.Sprintf("Mail template execute byte error: %v",err.Error())
+		return nil,status.Errorf(
+			codes.Aborted,
+			fmt.Sprintf(Translate(lang_,"Email_Template_Execute_Error")+":%v",err.Error()),
+		)
 	}
-	t := time.Now().UTC()
-	userTemporaryInformation := repo.UserTemporaryInformation {
-		Email: userEmail_,
-		RegisterVerificationCode:"",
-		ForgotPasswordVerificationCode:verificationCode_,
-		RegisterVerificationCodeCreateDate: t.Format("2006-01-02 15:04:05"),
-		ForgotPasswordVerificationCodeCreateDate: t.Format("2006-01-02 15:04:05"),
-		IsCodeUsed: false,
-    	IsCodeExpired: false, 
-	}
-	var userOp inter.IUserTemporaryInformationRepository=userTemporaryInformation
-	if dbResp := userOp.Insert(); dbResp != nil {
-		return fmt.Sprintf(Translate(lang_,"User_Temporary_Indormation_Insert_Error")+" :%v",dbResp.Error())
+	userTemporaryInformation.IsTokenUsed=false
+	userTemporaryInformation.IsTokenExpired=false
+	if dbResp := userTemporaryInformationOp.Insert(); dbResp != nil {
+		return nil,status.Errorf(
+			codes.Aborted,
+			fmt.Sprintf(Translate(lang_,"User_Temporary_Indormation_Insert_Error")+":%v",err.Error()),
+		)
 	}
 
 	result := mailBytes.String()
@@ -132,7 +194,16 @@ func  SendUserForgotPasswordVerificationMailService(userEmail_ string,verificati
 
 	// Send the email to user
 	if err := dial.DialAndSend(mail); err != nil {
-		return fmt.Sprintf("Mail send  error: %v",err.Error())
+		return nil,status.Errorf(
+			codes.Aborted,
+			fmt.Sprintf(Translate(lang_,"Email_Send_Error")+":%v",err.Error()),
+		)
 	}
-	return "ok"
+	return &gigxRR.SendEmailResponse{
+		GeneralResponse:&gigxRR.GeneralResponse{
+			Message:emailType_,
+			IsEmailSuccess:true,
+			IsOperationSuccess:true,
+		},
+	}, nil
 }

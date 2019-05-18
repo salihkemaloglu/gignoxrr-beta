@@ -6,28 +6,16 @@ import (
 type UserTemporaryInformation struct {
 	Id          	 bson.ObjectId `bson:"_id" json:"id" `
 	Email 		 	 string        `bson:"email" json:"email"`
-	RegisterVerificationCode 	     string           `bson:"registerverificationcode" json:"registerverificationcode"`
-	ForgotPasswordVerificationCode 	 string           `bson:"forgotpasswordverificationcode" json:"forgotpasswordverificationcode"`
-	RegisterVerificationCodeCreateDate 	     string       `bson:"registerverificationcodecreatedate" json:"registerverificationcodecreatedate"`
-	ForgotPasswordVerificationCodeCreateDate 	 string       `bson:"forgotpasswordverificationcodecreatedate" json:"forgotpasswordverificationcodecreatedate"`
-	IsCodeUsed 	 	 bool          `bson:"iscodeused" json:"iscodeused"`
-	IsCodeExpired 	 bool          `bson:"iscodeexpired" json:"iscodeexpired"`
+	RegisterVerificationToken	     string           `bson:"registerverificationtoken" json:"registerverificationtoken"`
+	ForgotPasswordVerificationToken 	 string           `bson:"forgotpasswordverificationtoken" json:"forgotpasswordverificationtoken"`
+	RegisterVerificationTokenCreateDate 	     string       `bson:"registerverificationtokencreatedate" json:"registerverificationtokencreatedate"`
+	ForgotPasswordVerificationTokenCreateDate 	 string       `bson:"forgotpasswordverificationtokencreatedate" json:"forgotpasswordverificationtokencreatedate"`
+	EmailType 	 	 string        `bson:"emailtype" json:"emailtype"`
+	IsTokenUsed 	 	 bool          `bson:"istokenused" json:"istokenused"`
+	IsTokenExpired 	 bool          `bson:"istokenexpired" json:"istokenexpired"`
 }
 
-func (r UserTemporaryInformation) CheckRegisterVerificationCode() (*UserTemporaryInformation, error) {
-	err := db.C("UserTemporaryInformation").Find(bson.M{"email":r.Email,"registerverificationcode": r.RegisterVerificationCode}).One(&r)
-	if err != nil {
-		return nil, err
-	}
-	return &r, err
-}
-func (r UserTemporaryInformation) CheckForgotPasswordVerificationCode() (*UserTemporaryInformation, error) {
-	err := db.C("UserTemporaryInformation").Find(bson.M{"email":r.Email,"forgotpasswordverificationcode": r.ForgotPasswordVerificationCode}).One(&r)
-	if err != nil {
-		return nil, err
-	}
-	return &r, err
-}
+
 func (r UserTemporaryInformation) Insert()  error {
 	r.Id = bson.NewObjectId()
 	err := db.C("UserTemporaryInformation").Insert(&r)
@@ -43,12 +31,40 @@ func (r UserTemporaryInformation) Update() error {
 	}
 	return nil
 }
+func (r UserTemporaryInformation) UpdateByEmail() error {
+	err := db.C("UserTemporaryInformation").Update(bson.M{"email": r.Email}, bson.M{"$set": bson.M{"istokenused": r.IsTokenUsed}})
+	if err!=nil {
+		return err
+	}
+	return nil
+}
 func (r UserTemporaryInformation) Delete() error {
 	err := db.C("UserTemporaryInformation").Remove(&r)
 	if err!=nil {
 		return err
 	}
 	return nil
+}
+func (r UserTemporaryInformation) CheckRegisterVerificationToken() (*UserTemporaryInformation, error) {
+	err := db.C("UserTemporaryInformation").Find(bson.M{"emailtype":r.EmailType,"registerverificationtoken": r.RegisterVerificationToken}).One(&r)
+	if err != nil {
+		return nil, err
+	}
+	return &r, err
+}
+func (r UserTemporaryInformation) CheckForgotPasswordVerificationToken() (*UserTemporaryInformation, error) {
+	err := db.C("UserTemporaryInformation").Find(bson.M{"emailtype":r.EmailType,"forgotpasswordverificationtoken": r.ForgotPasswordVerificationToken}).One(&r)
+	if err != nil {
+		return nil, err
+	}
+	return &r, err
+}
+func (r UserTemporaryInformation) CheckVerificationTokenResentEmail() (*UserTemporaryInformation, error) {
+	err := db.C("UserTemporaryInformation").Find(bson.M{"email":r.Email,"emailtype":r.EmailType,"istokenused":false,"istokenexpired": false}).One(&r)
+	if err != nil {
+		return nil, err
+	}
+	return &r, err
 }
 func (r UserTemporaryInformation) GetAllUserTemporaryInformation() ([]UserTemporaryInformation, error) {
 	var informations []UserTemporaryInformation

@@ -20,17 +20,17 @@ func CheckVerificationTokenService(userTemporaryInformation_ *repo.UserTemporary
 		if err == nil  {
 			return nil,status.Errorf(
 				codes.NotFound,
-				fmt.Sprintf(Translate(lang_,"Register_Verification_Token_Not_Found")),
+				fmt.Sprintf(Translate(lang_,"register_verification_token_not_found")),
 			)
 		} else if userTemporaryInformation.IsTokenUsed {
 			return nil,status.Errorf(
 				codes.ResourceExhausted,
-				fmt.Sprintf(Translate(lang_,"Register_Verification_Token_Used_Before")),
+				fmt.Sprintf(Translate(lang_,"register_verification_token_used_before")),
 			)
 		} else if userTemporaryInformation.IsTokenExpired {
 			return nil,status.Errorf(
 				codes.DeadlineExceeded,
-				fmt.Sprintf(Translate(lang_,"Register_Verification_Token_Expired")),
+				fmt.Sprintf(Translate(lang_,"register_verification_token_expired")),
 			)
 		} else {
 			timeNow := time.Now().UTC()
@@ -38,7 +38,7 @@ func CheckVerificationTokenService(userTemporaryInformation_ *repo.UserTemporary
 			if errTime != nil {
 				return nil,status.Errorf(
 					codes.Aborted,
-					fmt.Sprintf(Translate(lang_,"Register_Verification_Token_Expired")),
+					fmt.Sprintf(Translate(lang_,"register_verification_token_expired")),
 				)
 			}
 			if minutes := timeNow.Sub(createdTime).Minutes(); minutes >= 120 {
@@ -52,7 +52,7 @@ func CheckVerificationTokenService(userTemporaryInformation_ *repo.UserTemporary
 				}
 				return nil,status.Errorf(
 					codes.DeadlineExceeded,
-					fmt.Sprintf(Translate(lang_,"Register_Verification_Token_Expired")),
+					fmt.Sprintf(Translate(lang_,"register_verification_token_expired")),
 				)
 			} else {
 				user := repo.User {
@@ -63,7 +63,7 @@ func CheckVerificationTokenService(userTemporaryInformation_ *repo.UserTemporary
 				if errUserGet != nil {
 					return nil,status.Errorf(
 						codes.NotFound,
-						fmt.Sprintf(Translate(lang_,"Register_Verification_Token_User_Not_Exist")),
+						fmt.Sprintf(Translate(lang_,"register_verification_token_user_not_exist")),
 					)
 				}
 				userGet.IsUserVerificated=true
@@ -95,17 +95,17 @@ func CheckVerificationTokenService(userTemporaryInformation_ *repo.UserTemporary
 		if err != nil  {
 			return nil,status.Errorf(
 				codes.NotFound,
-				fmt.Sprintf(Translate(lang_,"Forgot_Password_Verification_Token_Not_Found")),
+				fmt.Sprintf(Translate(lang_,"forgot_password_verification_token_not_found")),
 			)
 		} else if userTemporaryInformation.IsTokenUsed {
 			return nil,status.Errorf(
 				codes.ResourceExhausted,
-				fmt.Sprintf(Translate(lang_,"Forgot_Password_Verification_Token_Used_Before")),
+				fmt.Sprintf(Translate(lang_,"forgot_password_verification_token_used_before")),
 			)
 		} else if userTemporaryInformation.IsTokenExpired {
 			return nil,status.Errorf(
 				codes.DeadlineExceeded,
-				fmt.Sprintf(Translate(lang_,"Forgot_Password_Verification_Token_Expired")),
+				fmt.Sprintf(Translate(lang_,"forgot_password_verification_token_expired")),
 			)
 		} else {
 			timeNow := time.Now().UTC()
@@ -113,7 +113,7 @@ func CheckVerificationTokenService(userTemporaryInformation_ *repo.UserTemporary
 			if errTime != nil {
 				return nil,status.Errorf(
 					codes.Aborted,
-					fmt.Sprintf(Translate(lang_,"Forgot_Password_Verification_Token_Time_Parse_Error")),
+					fmt.Sprintf(Translate(lang_,"forgot_password_verification_token_time_parse_error")),
 				)
 			}
 			if minutes := timeNow.Sub(createdTime).Minutes(); minutes >= 120 {
@@ -123,12 +123,12 @@ func CheckVerificationTokenService(userTemporaryInformation_ *repo.UserTemporary
 				if updateErr := userTemporaryInformationUpdateOp.Update(); updateErr != nil {
 					return nil,status.Errorf(
 						codes.Aborted,
-						fmt.Sprintf(Translate(lang_,"Forgot_Password_Verification_Token_User_Temporary_Information_Update_Database_Error")+updateErr.Error()),
+						fmt.Sprintf(Translate(lang_,"forgot_password_verification_token_user_temporary_information_update_database_error")+updateErr.Error()),
 					)
 				}
 				return nil,status.Errorf(
 					codes.DeadlineExceeded,
-					fmt.Sprintf(Translate(lang_,"Forgot_Password_Verification_Token_Expired")),
+					fmt.Sprintf(Translate(lang_,"forgot_password_verification_token_expired")),
 				)
 			} else {
 			
@@ -143,7 +143,7 @@ func CheckVerificationTokenService(userTemporaryInformation_ *repo.UserTemporary
 	} else {
 		return nil,status.Errorf(
 			codes.Unknown,
-			fmt.Sprintf(Translate(lang_,"Unknown_Email_type")),
+			fmt.Sprintf(Translate(lang_,"unknown_email_type")),
 		)
 	}
 }

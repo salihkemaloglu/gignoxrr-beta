@@ -32,7 +32,7 @@ func (r UserTemporaryInformation) Update() error {
 	return nil
 }
 func (r UserTemporaryInformation) UpdateByEmail() error {
-	err := db.C("UserTemporaryInformation").Update(bson.M{"email": r.Email}, bson.M{"$set": bson.M{"istokenused": r.IsTokenUsed}})
+	err := db.C("UserTemporaryInformation").Update(bson.M{"email": r.Email,"forgotpasswordverificationtoken": r.ForgotPasswordVerificationToken}, bson.M{"$set": bson.M{"istokenused": r.IsTokenUsed}})
 	if err!=nil {
 		return err
 	}

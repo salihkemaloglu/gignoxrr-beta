@@ -52,7 +52,7 @@ func  SendUserRegisterConfirmationMailService(userEmail_ string,emailType_ strin
 		if dbErr := userTemporaryInformationOp.Update(); dbErr != nil {
 			return nil,status.Errorf(
 				codes.Aborted,
-				fmt.Sprintf(Translate(lang_,"Resent_Register_Email_Update_Database_Error")+":%v",dbErr.Error()),
+				fmt.Sprintf(Translate(lang_,"resent_register_email_update_database_error")+":%v",dbErr.Error()),
 			)
 		}
 
@@ -63,15 +63,15 @@ func  SendUserRegisterConfirmationMailService(userEmail_ string,emailType_ strin
 	if err != nil {
 		return nil,status.Errorf(
 			codes.Aborted,
-			fmt.Sprintf(Translate(lang_,"Email_Template_Parse_Error")+":%v",err.Error()),
+			fmt.Sprintf(Translate(lang_,"email_template_parse_error")+":%v",err.Error()),
 		)
 	}
 	wd := UserRegisterData{
-        WelcomeToGignax: Translate(lang_,"Welcome_To_Gignox"),
-        ThanksForSigup: Translate(lang_,"Thanks_For_Sigup"),
-        MustEnterVerrificationToken: Translate(lang_,"Must_Enter_Verrification_Token"),
-        YourVerificationToken: Translate(lang_,"Your_Verification_Url"),
-        OneUseToken: Translate(lang_,"One_Use_Token"),
+        WelcomeToGignax: Translate(lang_,"welcome_to_gignox"),
+        ThanksForSigup: Translate(lang_,"thanks_for_signup"),
+        MustEnterVerrificationToken: Translate(lang_,"must_enter_verification_token"),
+        YourVerificationToken: Translate(lang_,"your_verification_link"),
+        OneUseToken: Translate(lang_,"one_use_token"),
         VerificationToken: verificationToken_,
     }
 
@@ -79,14 +79,14 @@ func  SendUserRegisterConfirmationMailService(userEmail_ string,emailType_ strin
 	if err := temp.Execute(&mailBytes, &wd); err != nil {
 		return nil,status.Errorf(
 			codes.Aborted,
-			fmt.Sprintf(Translate(lang_,"Email_Template_Execute_Error")+":%v",err.Error()),
+			fmt.Sprintf(Translate(lang_,"email_template_execute_error")+":%v",err.Error()),
 		)
 	}
 
 	if dbResp := userTemporaryInformationOp.Insert(); dbResp != nil {
 		return nil,status.Errorf(
 			codes.Aborted,
-			fmt.Sprintf(Translate(lang_,"User_Temporary_Indormation_Insert_Error")+":%v",err.Error()),
+			fmt.Sprintf(Translate(lang_,"user_temporary_information_insert_error")+":%v",err.Error()),
 		)
 	}
 
@@ -94,7 +94,7 @@ func  SendUserRegisterConfirmationMailService(userEmail_ string,emailType_ strin
 	mail := gomail.NewMessage()
 	mail.SetHeader("From", "gignox.us@gmail.com")
 	mail.SetHeader("To", userEmail_)
-	mail.SetHeader("Subject", Translate(lang_,"User_Register_Mail_Subject"))//bu da dinamik olacak
+	mail.SetHeader("Subject", Translate(lang_,"user_register_mail_subject"))//bu da dinamik olacak
 	mail.SetBody("text/html", result)
 	// mail.Attach(mailTypePath)
 	
@@ -104,7 +104,7 @@ func  SendUserRegisterConfirmationMailService(userEmail_ string,emailType_ strin
 	if err := dial.DialAndSend(mail); err != nil {
 		return nil,status.Errorf(
 			codes.Aborted,
-			fmt.Sprintf(Translate(lang_,"Email_Send_Error")+":%v",err.Error()),
+			fmt.Sprintf(Translate(lang_,"email_send_error")+":%v",err.Error()),
 		)
 	}
 	return &gigxRR.SendEmailResponse{
@@ -140,7 +140,7 @@ func  SendUserForgotPasswordVerificationMailService(userEmail_ string,emailType_
 		if dbErr := userTemporaryInformationOp.Update(); dbErr != nil {
 			return nil,status.Errorf(
 				codes.Aborted,
-				fmt.Sprintf(Translate(lang_,"Resent_Forgot_Password_Email_Update_Database_Error")+":%v",dbErr.Error()),
+				fmt.Sprintf(Translate(lang_,"resent_forgot_password_email_update_database_error")+":%v",dbErr.Error()),
 			)
 		}
 
@@ -151,17 +151,17 @@ func  SendUserForgotPasswordVerificationMailService(userEmail_ string,emailType_
 	if err != nil {
 		return nil,status.Errorf(
 			codes.Aborted,
-			fmt.Sprintf(Translate(lang_,"Email_Template_Parse_Error")+":%v",err.Error()),
+			fmt.Sprintf(Translate(lang_,"email_template_parse_error")+":%v",err.Error()),
 		)
 	}
 	var resetPasswordLink = "http://localhost:3000/password_reset/" + verificationToken_;
 	wd := UserForgotPasswordData{
-        VerificationTokenTitle: Translate(lang_,"Password_reset_Token_Title"),
-        ReceivedPasswordChangeRequest: Translate(lang_,"Received_Password_Change_Request"),
-        ViaEmailAddress: Translate(lang_,"Via_Email_Address"),
-		DontShareVerificationToken: Translate(lang_,"Dont_Share_Verification_Token"),
-		YourVerificationToken: Translate(lang_,"Your_Password_Reset_Url"),
-        OneUseToken: Translate(lang_,"One_Use_Token"),
+        VerificationTokenTitle: Translate(lang_,"password_reset_token_title"),
+        ReceivedPasswordChangeRequest: Translate(lang_,"received_password_change_request"),
+        ViaEmailAddress: Translate(lang_,"via_email_address"),
+		DontShareVerificationToken: Translate(lang_,"dont_share_verification_token"),
+		YourVerificationToken: Translate(lang_,"your_password_reset_link"),
+        OneUseToken: Translate(lang_,"one_use_token"),
 		ResetPasswordLink: resetPasswordLink,
 		Email:userEmail_,
     }
@@ -170,7 +170,7 @@ func  SendUserForgotPasswordVerificationMailService(userEmail_ string,emailType_
 	if err := temp.Execute(&mailBytes, &wd); err != nil {
 		return nil,status.Errorf(
 			codes.Aborted,
-			fmt.Sprintf(Translate(lang_,"Email_Template_Execute_Error")+":%v",err.Error()),
+			fmt.Sprintf(Translate(lang_,"email_template_execute_error")+":%v",err.Error()),
 		)
 	}
 	userTemporaryInformation.IsTokenUsed=false
@@ -178,7 +178,7 @@ func  SendUserForgotPasswordVerificationMailService(userEmail_ string,emailType_
 	if dbResp := userTemporaryInformationOp.Insert(); dbResp != nil {
 		return nil,status.Errorf(
 			codes.Aborted,
-			fmt.Sprintf(Translate(lang_,"User_Temporary_Indormation_Insert_Error")+":%v",err.Error()),
+			fmt.Sprintf(Translate(lang_,"user_temporary_information_insert_error")+":%v",err.Error()),
 		)
 	}
 
@@ -186,7 +186,7 @@ func  SendUserForgotPasswordVerificationMailService(userEmail_ string,emailType_
 	mail := gomail.NewMessage()
 	mail.SetHeader("From", "gignox.us@gmail.com")
 	mail.SetHeader("To", userEmail_)
-	mail.SetHeader("Subject", Translate(lang_,"User_Forgot_Mail_Subject"))//bu da dinamik olacak
+	mail.SetHeader("Subject", Translate(lang_,"user_forgot_mail_subject"))//bu da dinamik olacak
 	mail.SetBody("text/html", result)
 	// mail.Attach(mailTypePath)
 	
@@ -196,7 +196,7 @@ func  SendUserForgotPasswordVerificationMailService(userEmail_ string,emailType_
 	if err := dial.DialAndSend(mail); err != nil {
 		return nil,status.Errorf(
 			codes.Aborted,
-			fmt.Sprintf(Translate(lang_,"Email_Send_Error")+":%v",err.Error()),
+			fmt.Sprintf(Translate(lang_,"email_send_error")+":%v",err.Error()),
 		)
 	}
 	return &gigxRR.SendEmailResponse{

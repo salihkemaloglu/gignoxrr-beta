@@ -42,7 +42,7 @@ func  RegisterController(ctx_ context.Context, req_ *gigxRR.RegisterUserRequest)
 	if err := userOp.CheckUser(); err ==nil  {
 		return nil,status.Errorf(
 			codes.AlreadyExists,
-			fmt.Sprintf(helper.Translate(lang,"Already_Created_Account")+user.Username),
+			fmt.Sprintf(helper.Translate(lang,"already_created_account")+user.Username),
 		)
 	}
 	if valResp := val.UserRegisterFieldValidation(user,lang); valResp != "ok" {
@@ -51,17 +51,21 @@ func  RegisterController(ctx_ context.Context, req_ *gigxRR.RegisterUserRequest)
 			fmt.Sprintf(valResp),
 		)
 	}
+
 	if dbResp := userOp.Insert(); dbResp != nil {
 		return nil,status.Errorf(
 			codes.Aborted,
-			fmt.Sprintf(helper.Translate(lang,"Account_Insert_Error")+" :%v",dbResp.Error()),
+			fmt.Sprintf(helper.Translate(lang,"account_insert_error")+" :%v",dbResp.Error()),
 		)
 	}
-	verificationCode,verErr:=helper.GenerateRandomStringURLService(128)
-	if verErr !=nil {
-		verificationCode = "134584"
+	token,tokenErr:=helper.CreateTokenEndpointService(user)
+	if tokenErr != nil{
+		return nil,status.Errorf(
+			codes.Unknown,
+			fmt.Sprintf(helper.Translate(lang,"token_create_error") +": %v",tokenErr.Error()),
+		)
 	}
-	_,err:=helper.SendUserRegisterConfirmationMailService(user.Email,"register",verificationCode,userLang);
+	_,err:=helper.SendUserRegisterConfirmationMailService(user.Email,"register",token,userLang);
 	if err != nil {
 		return nil,err
 	}

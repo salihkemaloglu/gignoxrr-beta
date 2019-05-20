@@ -36,30 +36,30 @@ func  SendEmailController(ctx_ context.Context, req_ *gigxRR.SendEmailRequest) (
 	if err := userOp.CheckUser(); err != nil {
 		return nil,status.Errorf(
 			codes.NotFound,
-			fmt.Sprintf(helper.Translate(lang,"User_Account_Not_Exist_Account")+user.Email),
+			fmt.Sprintf(helper.Translate(lang,"user_account_not_exist_account")+user.Email),
 		)
 	}
 
 
-	verificationCode,verErr:=helper.GenerateRandomStringURLService(128)
+	verificationToken,verErr:=helper.GenerateRandomStringURLService(128)
 	if verErr !=nil {
 		return nil,status.Errorf(
 			codes.Aborted,
-			fmt.Sprintf(helper.Translate(lang,"Generate_Password_Verification_Token_Error")+verErr.Error()),
+			fmt.Sprintf(helper.Translate(lang,"generate_password_verification_token_error")+verErr.Error()),
 		)
 	}
 
 
 	if mailData.GetEmailType() == "register" {
-		return helper.SendUserRegisterConfirmationMailService(mailData.GetEmailAddress(),mailData.GetEmailType(),verificationCode,userLang)
+		return helper.SendUserRegisterConfirmationMailService(mailData.GetEmailAddress(),mailData.GetEmailType(),verificationToken,userLang)
 		
 	} else if mailData.GetEmailType() == "forgot" {
-	  return	helper.SendUserForgotPasswordVerificationMailService(mailData.GetEmailAddress(),mailData.GetEmailType(),verificationCode,userLang)
+	  return	helper.SendUserForgotPasswordVerificationMailService(mailData.GetEmailAddress(),mailData.GetEmailType(),verificationToken,userLang)
 		
 	} else {
 		return nil,status.Errorf(
 			codes.InvalidArgument,
-			fmt.Sprintf(helper.Translate(lang,"Unknown_Email_type")),
+			fmt.Sprintf(helper.Translate(lang,"unknown_email_type")),
 		)
 	} 
 

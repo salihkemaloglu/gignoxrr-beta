@@ -29,7 +29,7 @@ func CheckUserToRegisterController(ctx_ context.Context, req_ *gigxRR.CheckUserT
 	if err := userOp.CheckUser(); err ==nil  {
 		return nil,status.Errorf(
 			codes.AlreadyExists,
-			fmt.Sprintf(helper.Translate(lang,"Already_Created_Account")+user.Username),
+			fmt.Sprintf(helper.Translate(lang,"already_created_account")+user.Username),
 		)
 	}
 

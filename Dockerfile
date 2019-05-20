@@ -15,6 +15,7 @@ RUN go get github.com/dgrijalva/jwt-go
 RUN go get golang.org/x/crypto/acme/autocert
 RUN go get gopkg.in/gomail.v2
 RUN go get github.com/patrickmn/go-cache
+RUN go get github.com/nbutton23/zxcvbn-go
 # set environment path
 ENV PATH /go/bin:$PATH
 

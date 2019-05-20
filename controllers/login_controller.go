@@ -48,7 +48,7 @@ func LoginController(ctx_ context.Context, req_ *gigxRR.LoginUserRequest,c *cach
 		if loginAttemptCount >= 20 {
 			return nil,status.Errorf(
 				codes.Aborted,
-				fmt.Sprintf(helper.Translate(lang,"User_Login_attemps")),
+				fmt.Sprintf(helper.Translate(lang,"user_login_attemps")),
 			)
 		}
 	}
@@ -66,14 +66,14 @@ func LoginController(ctx_ context.Context, req_ *gigxRR.LoginUserRequest,c *cach
 		}
 		return nil,status.Errorf(
 			codes.Unauthenticated,
-			fmt.Sprintf(helper.Translate(lang,"Invalid_User_Information")),
+			fmt.Sprintf(helper.Translate(lang,"invalid_user_information")),
 		)
 	}
 	tokenRes,tokenErr:=helper.CreateTokenEndpointService(user)
 	if tokenErr != nil{
 		return nil,status.Errorf(
 			codes.Unknown,
-			fmt.Sprintf(helper.Translate(lang,"Token_Create_Error") +": %v",tokenErr.Error()),
+			fmt.Sprintf(helper.Translate(lang,"token_create_error") +": %v",tokenErr.Error()),
 		)
 	}
 

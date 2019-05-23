@@ -20,7 +20,7 @@ const (
 func  RegisterController(ctx_ context.Context, req_ *gigxRR.RegisterUserRequest) (*gigxRR.RegisterUserResponse, error) {
 	userLang :="en"
 	if headers, ok := metadata.FromIncomingContext(ctx_); ok {
-		userLang = headers["language"][0]
+		userLang = headers["languagecode"][0]
 	}
 	lang := helper.DetectLanguage(userLang)
 
@@ -51,7 +51,7 @@ func  RegisterController(ctx_ context.Context, req_ *gigxRR.RegisterUserRequest)
 			fmt.Sprintf(valResp),
 		)
 	}
-
+    user.Password = helper.EncryptePassword(user.Password)
 	if dbResp := userOp.Insert(); dbResp != nil {
 		return nil,status.Errorf(
 			codes.Aborted,
@@ -59,22 +59,31 @@ func  RegisterController(ctx_ context.Context, req_ *gigxRR.RegisterUserRequest)
 		)
 	}
 	token,tokenErr:=helper.CreateTokenEndpointService(user)
+	isTokenSuccess:=true
 	if tokenErr != nil{
-		return nil,status.Errorf(
-			codes.Unknown,
-			fmt.Sprintf(helper.Translate(lang,"token_create_error") +": %v",tokenErr.Error()),
-		)
+    	isTokenSuccess=false
+		token=tokenErr.Error()
 	}
+	
 	_,err:=helper.SendUserRegisterConfirmationMailService(user.Email,"register",token,userLang);
 	if err != nil {
-		return nil,err
+		return &gigxRR.RegisterUserResponse{
+			GeneralResponse:&gigxRR.GeneralResponse{
+				Message:fmt.Sprintf(helper.Translate(lang,"email_send_error")+" :%v",err.Error()),
+				Token:token,
+				IsEmailSuccess:false,
+				IsOperationSuccess:false,
+				IsTokenSuccess:isTokenSuccess,
+			},
+		}, nil
 	}
-
 	return &gigxRR.RegisterUserResponse{
 		GeneralResponse:&gigxRR.GeneralResponse{
 			Message:"register",
+			Token:token,
 			IsEmailSuccess:true,
 			IsOperationSuccess:true,
+			IsTokenSuccess:isTokenSuccess,
 		},
 	}, nil
 }

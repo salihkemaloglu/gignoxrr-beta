@@ -59,14 +59,14 @@ func (s *server) SendEmail(ctx context.Context, req *gigxRR.SendEmailRequest) (*
 	fmt.Printf("RR service is working for SendMail...Received rpc from client.\n")
 	return cont.SendEmailController(ctx,req)		
 }
-func (s *server) CheckVerificationToken(ctx context.Context, req *gigxRR.CheckVerificationTokenRequest) (*gigxRR.CheckVerificationTokenResponse, error) {
+func (s *server) CheckVerificationLink(ctx context.Context, req *gigxRR.CheckVerificationLinkRequest) (*gigxRR.CheckVerificationLinkResponse, error) {
 
-	fmt.Printf("RR service is working for CheckVerificationToken...Received rpc from client.\n")
-	return cont.CheckVerificationTokenController(ctx,req)	
+	fmt.Printf("RR service is working for CheckVerificationLink...Received rpc from client.\n")
+	return cont.CheckVerificationLinkController(ctx,req)	
 }
 func (s *server) ResetUserPassword(ctx context.Context, req *gigxRR.ResetUserPasswordRequest) (*gigxRR.ResetUserPasswordResponse, error) {
 
-	fmt.Printf("RR service is working for CheckVerificationToken...Received rpc from client.\n")
+	fmt.Printf("RR service is working for ResetUserPassword...Received rpc from client.\n")
 	return cont.ResetUserPasswordController(ctx,req)	
 }
 func (s *server) UpdateUser(ctx context.Context, req *gigxRR.UpdateUserRequest) (*gigxRR.UpdateUserResponse, error) {
@@ -97,7 +97,7 @@ func main(){
 	}
 
 	fmt.Println("RR Service is Starting...")
-	// init language folder path
+	// init languagecode folder path
 	err := helper.InitLocales("app_root/languages")
 	if err != nil {
 		fmt.Println("Error happened when langs file loaded", err.Error())

@@ -10,10 +10,12 @@
     "invalid_user_information": "Geçersiz kullanıcı bilgisi,kullanıcı adı ya da şifre yalnış",
     "welcome_to_gignox": "Gignox'a hoşgeldiniz",
     "thanks_for_signup": "Gignox'a kayıt olduğunuz için teşekkür ederiz",
-    "must_enter_verification_token": "Hesabınızı etkinleştirmek için profilinize doğrulama kodunu girmeniz gerekir.",
+    "click_verification_link": "Gignox üyeliğinizi tamamlamak için e-posta adresinizi doğrulamamız gerekiyor:",
+    "once_verified_user_account": "Doğrulandıktan sonra, dosyaları yüklemek ve paylaşmak için Gignox'un tüm özelliklerini kullanmaya başlayabilirsiniz.",
+    "verified_user_account_information": "Son zamanlarda yeni bir Gignox hesabı oluşturduğunuz için bu e-postayı alıyorsunuz. Bu siz değilseniz, lütfen bu e-postayı dikkate almayın.",
     "your_verification_link": "Gignox doğrulama linkiniz:",
     "your_password_reset_link": "Gignox şifre değiştirme linkiniz:",
-    "one_use_token": "Bu link bir kerelik kullanım içindir ve iki saat sonra zaman aşımına uğrayacaktır.",
+    "one_use_link": "Bu link bir kerelik kullanım içindir ve iki saat sonra zaman aşımına uğrayacaktır.",
     "user_register_mail_subject": "Gignox'ta hesabınızı onaylayın",
     "user_forgot_mail_subject": "Gignox şifre değiştime isteği",
     "password_reset_token_title": "Gignox şifre değiştirme",
@@ -50,5 +52,6 @@
     "forgot_password_reset_new_password_database_update_error": "Yeni şifre kullanıcı güncellenirken hata oluştu: ",
     "unknown_service_error": "Bilinmeyen service hatası: ",
     "password_and_confirm_not_match": "Şifre onayı şifre ile uyuşmuyor: ",
-    "register_password_strenght_validation_info": "Sağladığınız yeni şifre zayıf ve kolayca tahmin edilebilir. Şifreniz kaydedilmedi. Lütfen daha güçlü bir şifre seçin"
+    "password_reset_strenght_validation_information": "Sağladığınız yeni şifre zayıf ve kolayca tahmin edilebilir. Şifreniz kaydedilmedi. Lütfen daha güçlü bir şifre seçin",
+    "register_password_strenght_validation_information": "Sağladığınız  şifre zayıf ve kolayca tahmin edilebilir.Hesabınız oluşturulmadı. Lütfen daha güçlü bir şifre seçin"
 }

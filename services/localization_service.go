@@ -35,7 +35,7 @@ func Translate(locale_ string, trKey_ string) string {
 	return trKey_
 }
 
-// DetectLanguage - parse to find the most preferable language
+// DetectLanguage - parse to find the most preferable languagecode
 func DetectLanguage(acceptLanguage_ string) string {
 
 	langStrs := strings.Split(acceptLanguage_, ",")

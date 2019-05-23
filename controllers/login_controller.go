@@ -17,7 +17,7 @@ func LoginController(ctx_ context.Context, req_ *gigxRR.LoginUserRequest,c *cach
 
 	userLang :="en"
 	if headers, ok := metadata.FromIncomingContext(ctx_); ok {
-		userLang = headers["language"][0]
+		userLang = headers["languagecode"][0]
 	}
 	lang := helper.DetectLanguage(userLang)
 
@@ -52,6 +52,7 @@ func LoginController(ctx_ context.Context, req_ *gigxRR.LoginUserRequest,c *cach
 			)
 		}
 	}
+	user.Password=helper.EncryptePassword(user.Password)
 	var op inter.IUserRepository=user
 	userResp,err:= op.Login();
 	if err != nil {

@@ -15,18 +15,21 @@ import (
 type UserRegisterData struct {
     WelcomeToGignax string
     ThanksForSigup string
-    MustEnterVerrificationToken string
-	VerificationToken string
-	YourVerificationToken string
-	OneUseToken string
+    ClickVerrificationLink string
+	VerificationLink string
+	YourVerificationLink string
+	OnceVerifiedAccount string
+	UserVerifiedAccountInformation string
+	OneUseLink string
+	Email string
 }
 type UserForgotPasswordData struct {
     VerificationTokenTitle string
     ReceivedPasswordChangeRequest string
     ViaEmailAddress string
-	DontShareVerificationToken string
+	DontShareVerificationLink string
 	ResetPasswordLink string
-	YourVerificationToken string 
+	YourVerificationLink string 
 	OneUseToken string
 	Email string
 }
@@ -66,13 +69,15 @@ func  SendUserRegisterConfirmationMailService(userEmail_ string,emailType_ strin
 			fmt.Sprintf(Translate(lang_,"email_template_parse_error")+":%v",err.Error()),
 		)
 	}
-	wd := UserRegisterData{
+	wd := UserRegisterData {
         WelcomeToGignax: Translate(lang_,"welcome_to_gignox"),
         ThanksForSigup: Translate(lang_,"thanks_for_signup"),
-        MustEnterVerrificationToken: Translate(lang_,"must_enter_verification_token"),
-        YourVerificationToken: Translate(lang_,"your_verification_link"),
-        OneUseToken: Translate(lang_,"one_use_token"),
-        VerificationToken: verificationToken_,
+        ClickVerrificationLink: Translate(lang_,"click_verification_link"),
+        YourVerificationLink: Translate(lang_,"your_verification_link"),
+        OnceVerifiedAccount: Translate(lang_,"once_verified_user_account"),
+        UserVerifiedAccountInformation: Translate(lang_,"verified_user_account_information"),
+		VerificationLink: verificationToken_,
+		Email:userEmail_,		
     }
 
 	var mailBytes bytes.Buffer
@@ -159,9 +164,9 @@ func  SendUserForgotPasswordVerificationMailService(userEmail_ string,emailType_
         VerificationTokenTitle: Translate(lang_,"password_reset_token_title"),
         ReceivedPasswordChangeRequest: Translate(lang_,"received_password_change_request"),
         ViaEmailAddress: Translate(lang_,"via_email_address"),
-		DontShareVerificationToken: Translate(lang_,"dont_share_verification_token"),
-		YourVerificationToken: Translate(lang_,"your_password_reset_link"),
-        OneUseToken: Translate(lang_,"one_use_token"),
+		DontShareVerificationLink: Translate(lang_,"dont_share_verification_token"),
+		YourVerificationLink: Translate(lang_,"your_password_reset_link"),
+        OneUseToken: Translate(lang_,"one_use_link"),
 		ResetPasswordLink: resetPasswordLink,
 		Email:userEmail_,
     }

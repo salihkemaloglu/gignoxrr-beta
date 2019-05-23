@@ -16,7 +16,7 @@ import (
 func  SendEmailController(ctx_ context.Context, req_ *gigxRR.SendEmailRequest) (*gigxRR.SendEmailResponse, error) {
 	userLang :="en"
 	if headers, ok := metadata.FromIncomingContext(ctx_); ok {
-		userLang = headers["language"][0]
+		userLang = headers["languagecode"][0]
 	}
 	lang := helper.DetectLanguage(userLang)
 

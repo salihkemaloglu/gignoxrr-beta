@@ -12,10 +12,10 @@ import (
 	helper "github.com/salihkemaloglu/gignox-rr-beta-001/services"
 )
 
-func CheckVerificationTokenController(ctx_ context.Context, req_ *gigxRR.CheckVerificationTokenRequest) (*gigxRR.CheckVerificationTokenResponse, error) {
+func CheckVerificationLinkController(ctx_ context.Context, req_ *gigxRR.CheckVerificationLinkRequest) (*gigxRR.CheckVerificationLinkResponse, error) {
 	userLang :="en"
 	if headers, ok := metadata.FromIncomingContext(ctx_); ok {
-		userLang = headers["language"][0]
+		userLang = headers["languagecode"][0]
 	}
 	lang := helper.DetectLanguage(userLang)
 	emailData := req_.GetGeneralRequest();
@@ -32,6 +32,6 @@ func CheckVerificationTokenController(ctx_ context.Context, req_ *gigxRR.CheckVe
 		)
 	}
 
-	return helper.CheckVerificationTokenService(&userTemporaryInformation,lang)
+	return helper.CheckVerificationLinkService(&userTemporaryInformation,lang)
 
 }

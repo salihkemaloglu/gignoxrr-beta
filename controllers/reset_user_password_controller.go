@@ -16,7 +16,7 @@ import (
 func ResetUserPasswordController(ctx_ context.Context, req_ *gigxRR.ResetUserPasswordRequest) (*gigxRR.ResetUserPasswordResponse, error) {
 	userLang :="en"
 	if headers, ok := metadata.FromIncomingContext(ctx_); ok {
-		userLang = headers["language"][0]
+		userLang = headers["languagecode"][0]
 	}
 	lang := helper.DetectLanguage(userLang)
 	generalRequest := req_.GetGeneralRequest();
@@ -33,7 +33,7 @@ func ResetUserPasswordController(ctx_ context.Context, req_ *gigxRR.ResetUserPas
 		)
 	}
 
-	resp,err:=helper.CheckVerificationTokenService(&userTemporaryInformation,lang)
+	resp,err:=helper.CheckVerificationLinkService(&userTemporaryInformation,lang)
 	if err != nil {
 		return nil,err
 	}
@@ -51,7 +51,7 @@ func ResetUserPasswordController(ctx_ context.Context, req_ *gigxRR.ResetUserPas
 			)
 		}
 
-		userResp.Password=generalRequest.GetPassword()
+		userResp.Password=helper.EncryptePassword(generalRequest.GetPassword())
 		var userUpdateOp inter.IUserRepository = userResp
 		userErr=userUpdateOp.UpdateUserPassword()
 		if userErr != nil {

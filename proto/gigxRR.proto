@@ -84,8 +84,10 @@ message GeneralRequest {
 
 message GeneralResponse {
     string message=1;
+    string token=2;
     bool is_email_success=3;
-    bool is_operation_success=4;
+    bool is_token_success=4;
+    bool is_operation_success=5;
 }
 
 message IpInformation {
@@ -171,10 +173,10 @@ message SendEmailRequest {
 message SendEmailResponse {
     GeneralResponse general_response =1;
 }
-message CheckVerificationTokenRequest {
+message CheckVerificationLinkRequest {
     GeneralRequest generalRequest=1;
 }
-message CheckVerificationTokenResponse {
+message CheckVerificationLinkResponse {
     GeneralResponse general_response=1;
 }
 message GetIpInformationRequest {
@@ -202,7 +204,7 @@ service GigxRRService{
     //Services
     rpc SendEmail                   (SendEmailRequest) returns (SendEmailResponse);
     rpc GetIpInformation            (GetIpInformationRequest) returns (GetIpInformationResponse);
-    rpc CheckVerificationToken      (CheckVerificationTokenRequest) returns (CheckVerificationTokenResponse);
+    rpc CheckVerificationLink      (CheckVerificationLinkRequest) returns (CheckVerificationLinkResponse);
     //File methods
     rpc GetFile                     (GetFileRequest) returns (GetFileResponse);
     rpc GetAllFiles                 (GetAllFilesRequest) returns (stream GetAllFilesResponse);

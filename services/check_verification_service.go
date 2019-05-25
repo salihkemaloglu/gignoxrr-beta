@@ -44,7 +44,7 @@ func CheckVerificationLinkService(userTemporaryInformation_ *repo.UserTemporaryI
 					fmt.Sprintf(Translate(lang_,"register_verification_token_user_not_exist")),
 				)
 			}
-			userGet.IsUserVerificated=true
+			userGet.IsAccountConfirm=true
 			var userUpdateOp inter.IUserRepository=userGet
 			if updateErr := userUpdateOp.Update(); updateErr != nil {
 				return nil,status.Errorf(

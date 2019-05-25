@@ -49,6 +49,7 @@
     "user_account_not_exist_account": "Bu e-posta için kullanıcı hesabı eşleşmesi yok: ",
     "generate_password_verification_token_error": "Parola doğrulama kodu üretme hatası: ",
     "forgot_password_invalid_user": "Bu e-posta için kullanıcı yok: ",
+    "get_user_invalid_user": "Bu kullanıcı adı için kullanıcı yok: ",
     "forgot_password_reset_new_password_database_update_error": "Yeni şifre kullanıcı güncellenirken hata oluştu: ",
     "unknown_service_error": "Bilinmeyen service hatası: ",
     "password_and_confirm_not_match": "Şifre onayı şifre ile uyuşmuyor: ",

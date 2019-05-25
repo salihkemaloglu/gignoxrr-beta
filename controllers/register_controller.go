@@ -38,7 +38,7 @@ func  RegisterController(ctx_ context.Context, req_ *gigxRR.RegisterUserRequest)
 		LanguageCode: userLang,
 	}
 	
-	var userOp inter.IUserRepository=user
+	var userOp inter.IUserRepository=&user
 	if err := userOp.CheckUser(); err ==nil  {
 		return nil,status.Errorf(
 			codes.AlreadyExists,
@@ -65,7 +65,7 @@ func  RegisterController(ctx_ context.Context, req_ *gigxRR.RegisterUserRequest)
 		token=tokenErr.Error()
 	}
 	
-	_,err:=helper.SendUserRegisterConfirmationMailService(user.Email,"register",token,userLang);
+	_,err:=helper.SendUserRegisterConfirmationMailService(user.Email,user.Username,"register",token,userLang);
 	if err != nil {
 		return &gigxRR.RegisterUserResponse{
 			GeneralResponse:&gigxRR.GeneralResponse{

@@ -15,9 +15,9 @@ type User struct {
 	CreatedDate  	 string        `bson:"createddate" json:"createddate"`
 	UpdatedDate  	 string        `bson:"updateddate" json:"updateddate"`
 	ImagePath 		 string        `bson:"imagepath" json:"imagepath"`
-	TotalSpace  	 int           `bson:"totalspace" json:"totalspace"`
+	TotalSpace  	 int32           `bson:"totalspace" json:"totalspace"`
 	LanguageCode 	 string        `bson:"languagecode" json:"languagecode"`
-	IsUserVerificated 	 bool      `bson:"isuserverificated" json:"isuserverificated"`
+	IsAccountConfirm 	 bool      `bson:"isuserverificated" json:"isuserverificated"`
 }
 
 // Crud operaions for User
@@ -38,6 +38,13 @@ func (r User) GetUser() (*User, error) {
 }
 func (r User) GetUserByEmail() (*User, error) {
 	err := db.C("User").Find(bson.M{"email":r.Email}).One(&r)
+	if err != nil {
+		return nil, err
+	}
+	return &r, err
+}
+func (r User) GetUserByUsername() (*User, error) {
+	err := db.C("User").Find(bson.M{"username":r.Username}).One(&r)
 	if err != nil {
 		return nil, err
 	}

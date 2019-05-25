@@ -7,12 +7,18 @@ import (
 	helper "github.com/salihkemaloglu/gignox-rr-beta-001/services"
 )
 
-func SendMailFieldValidation(email_ string,mailType_ string,lang_ string) string{
+func SendMailFieldValidation(email_ string,username_ string,mailType_ string,lang_ string) string{
 
 	if strings.TrimSpace(email_) == "" {
 		return helper.Translate(lang_,"email_field_empty_validation")
 	} else if strings.TrimSpace(mailType_) == "" {
 		return helper.Translate(lang_,"email_type_field_empty_validation")
+	}  else if mailType_ == "register" {
+		if strings.TrimSpace(username_) == "" {
+			return helper.Translate(lang_,"username_field_empty_validation")
+		} else {
+			return "ok"			
+		}
 	} else {
 		return "ok"
 	}

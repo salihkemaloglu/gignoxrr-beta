@@ -46,7 +46,7 @@ func ResetUserPasswordController(ctx_ context.Context, req_ *gigxRR.ResetUserPas
 		userResp,userErr := userOp.GetUserByEmail()
 		if userErr != nil {
 			return nil,status.Errorf(
-				codes.Aborted,
+				codes.InvalidArgument,
 				fmt.Sprintf(helper.Translate(lang,"forgot_password_invalid_user")+userErr.Error()),
 			)
 		}
@@ -57,7 +57,7 @@ func ResetUserPasswordController(ctx_ context.Context, req_ *gigxRR.ResetUserPas
 		if userErr != nil {
 			return nil,status.Errorf(
 				codes.Aborted,
-				fmt.Sprintf(helper.Translate(lang,"forgot_password_invalid_user")+userErr.Error()),
+				fmt.Sprintf(helper.Translate(lang,"forgot_password_reset_new_password_database_update_error")+userErr.Error()),
 			)
 		}
 		userTemporaryInformation.IsTokenUsed=true

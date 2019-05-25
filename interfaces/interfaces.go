@@ -8,6 +8,7 @@ type IUserRepository interface {
 	Login() (*repo.User,error)
 	GetUser()(*repo.User,error)
 	GetUserByEmail()(*repo.User,error)
+	GetUserByUsername()(*repo.User,error)
 	CheckUser() error
 	UpdateUserPassword() error
 	Insert() error

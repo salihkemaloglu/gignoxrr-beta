@@ -33,7 +33,7 @@ type UserForgotPasswordData struct {
 	OneUseToken string
 	Email string
 }
-func  SendUserRegisterConfirmationMailService(userEmail_ string,emailType_ string,verificationToken_ string,lang_ string) (*gigxRR.SendEmailResponse, error) {
+func  SendUserRegisterConfirmationMailService(userEmail_ string,username_ string,emailType_ string,verificationToken_ string,lang_ string) (*gigxRR.SendEmailResponse, error) {
 	
 	t := time.Now().UTC()
 	userTemporaryInformation := repo.UserTemporaryInformation {
@@ -69,6 +69,7 @@ func  SendUserRegisterConfirmationMailService(userEmail_ string,emailType_ strin
 			fmt.Sprintf(Translate(lang_,"email_template_parse_error")+":%v",err.Error()),
 		)
 	}
+	var verificationLink = "https://gignox.com/"+username_+"/" + verificationToken_;
 	wd := UserRegisterData {
         WelcomeToGignax: Translate(lang_,"welcome_to_gignox"),
         ThanksForSigup: Translate(lang_,"thanks_for_signup"),
@@ -76,7 +77,7 @@ func  SendUserRegisterConfirmationMailService(userEmail_ string,emailType_ strin
         YourVerificationLink: Translate(lang_,"your_verification_link"),
         OnceVerifiedAccount: Translate(lang_,"once_verified_user_account"),
         UserVerifiedAccountInformation: Translate(lang_,"verified_user_account_information"),
-		VerificationLink: verificationToken_,
+		VerificationLink: verificationLink,
 		Email:userEmail_,		
     }
 
@@ -159,7 +160,7 @@ func  SendUserForgotPasswordVerificationMailService(userEmail_ string,emailType_
 			fmt.Sprintf(Translate(lang_,"email_template_parse_error")+":%v",err.Error()),
 		)
 	}
-	var resetPasswordLink = "http://localhost:3000/password_reset/" + verificationToken_;
+	var resetPasswordLink = "https://gignox.com/password_reset/" + verificationToken_;
 	wd := UserForgotPasswordData{
         VerificationTokenTitle: Translate(lang_,"password_reset_token_title"),
         ReceivedPasswordChangeRequest: Translate(lang_,"received_password_change_request"),

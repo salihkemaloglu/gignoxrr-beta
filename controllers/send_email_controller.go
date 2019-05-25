@@ -25,7 +25,7 @@ func  SendEmailController(ctx_ context.Context, req_ *gigxRR.SendEmailRequest) (
 		Email: mailData.GetEmailAddress(),
 	}
 
-	if valResp := val.SendMailFieldValidation(mailData.GetEmailAddress(),mailData.GetEmailType(),lang); valResp != "ok" {
+	if valResp := val.SendMailFieldValidation(mailData.GetEmailAddress(),mailData.GetUsername(),mailData.GetEmailType(),lang); valResp != "ok" {
 		return nil,status.Errorf(
 			codes.FailedPrecondition,
 			fmt.Sprintf(valResp),
@@ -51,7 +51,7 @@ func  SendEmailController(ctx_ context.Context, req_ *gigxRR.SendEmailRequest) (
 
 
 	if mailData.GetEmailType() == "register" {
-		return helper.SendUserRegisterConfirmationMailService(mailData.GetEmailAddress(),mailData.GetEmailType(),verificationToken,userLang)
+		return helper.SendUserRegisterConfirmationMailService(mailData.GetEmailAddress(),mailData.GetUsername(),mailData.GetEmailType(),verificationToken,userLang)
 		
 	} else if mailData.GetEmailType() == "forgot" {
 	  return	helper.SendUserForgotPasswordVerificationMailService(mailData.GetEmailAddress(),mailData.GetEmailType(),verificationToken,userLang)

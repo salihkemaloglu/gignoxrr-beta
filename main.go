@@ -69,6 +69,11 @@ func (s *server) ResetUserPassword(ctx context.Context, req *gigxRR.ResetUserPas
 	fmt.Printf("RR service is working for ResetUserPassword...Received rpc from client.\n")
 	return cont.ResetUserPasswordController(ctx,req)	
 }
+func (s *server) GetUser(ctx context.Context, req *gigxRR.GetUserRequest) (*gigxRR.GetUserResponse, error) {
+
+	fmt.Printf("RR service is working for GetUser...Received rpc from client.\n")
+	return cont.GetUserController(ctx,req)	
+}
 func (s *server) UpdateUser(ctx context.Context, req *gigxRR.UpdateUserRequest) (*gigxRR.UpdateUserResponse, error) {
 	return nil,nil
 }

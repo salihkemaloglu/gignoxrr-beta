@@ -2,7 +2,7 @@
 echo "Deleting empty folders..."
 docker rmi $(docker images -f "dangling=true" -q) -f
 echo "Git reset commits..."
-git hard --reset
+git reset --hard
 echo "Git pull current repository..."
 git pull
 echo "Building api project..."

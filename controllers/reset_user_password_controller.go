@@ -16,7 +16,9 @@ import (
 func ResetUserPasswordController(ctx_ context.Context, req_ *gigxRR.ResetUserPasswordRequest) (*gigxRR.ResetUserPasswordResponse, error) {
 	userLang :="en"
 	if headers, ok := metadata.FromIncomingContext(ctx_); ok {
-		userLang = headers["languagecode"][0]
+		if headers["languagecode"] != nil {
+			userLang = headers["languagecode"][0]
+		}
 	}
 	lang := helper.DetectLanguage(userLang)
 	generalRequest := req_.GetGeneralRequest();

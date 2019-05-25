@@ -20,7 +20,9 @@ const (
 func  RegisterController(ctx_ context.Context, req_ *gigxRR.RegisterUserRequest) (*gigxRR.RegisterUserResponse, error) {
 	userLang :="en"
 	if headers, ok := metadata.FromIncomingContext(ctx_); ok {
-		userLang = headers["languagecode"][0]
+		if headers["languagecode"] != nil {
+			userLang = headers["languagecode"][0]
+		}
 	}
 	lang := helper.DetectLanguage(userLang)
 

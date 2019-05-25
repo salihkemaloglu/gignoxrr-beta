@@ -17,7 +17,9 @@ func LoginController(ctx_ context.Context, req_ *gigxRR.LoginUserRequest,c *cach
 
 	userLang :="en"
 	if headers, ok := metadata.FromIncomingContext(ctx_); ok {
-		userLang = headers["languagecode"][0]
+		// if headers["languageCode"] != nil {
+			userLang = headers["languageCode"][0]
+		// }
 	}
 	lang := helper.DetectLanguage(userLang)
 

@@ -17,9 +17,9 @@ func LoginController(ctx_ context.Context, req_ *gigxRR.LoginUserRequest,c *cach
 
 	userLang :="en"
 	if headers, ok := metadata.FromIncomingContext(ctx_); ok {
-		// if headers["languageCode"] != nil {
-			userLang = headers["languageCode"][0]
-		// }
+		if headers["languagecode"] != nil {
+			userLang = headers["languagecode"][0]
+		}
 	}
 	lang := helper.DetectLanguage(userLang)
 
@@ -58,14 +58,14 @@ func LoginController(ctx_ context.Context, req_ *gigxRR.LoginUserRequest,c *cach
 	var op inter.IUserRepository=user
 	userResp,err:= op.Login();
 	if err != nil {
-	    if x, found := c.Get(user.Username); found {
+	    if x, found := c.Get(userIpInformation.IpAddress); found {
 			loginAttemptCount = x.(int)
 			if loginAttemptCount < 20 {
 				loginAttemptCount=loginAttemptCount+1
-				c.Set(user.Username, loginAttemptCount, cache.DefaultExpiration)
+				c.Set(userIpInformation.IpAddress, loginAttemptCount, cache.DefaultExpiration)
 			}
 	    } else {
-			c.Set(user.Username, 1, cache.DefaultExpiration)
+			c.Set(userIpInformation.IpAddress, 1, cache.DefaultExpiration)
 		}
 		return nil,status.Errorf(
 			codes.Unauthenticated,

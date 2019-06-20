@@ -1,8 +1,9 @@
 version: '3'
 services: 
   api:
-    image: api:latest
-    container_name: api
+    image: gignox_rr:latest
+    container_name: gignox_rr
     ports:
-      - 8901:8901    
+      - 8901:8901
+    restart: always      
 

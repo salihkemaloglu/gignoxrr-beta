@@ -13,7 +13,7 @@ func CreateTokenEndpointService(user_ repo.User) (string,error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS512, jwt.MapClaims{
 		"username": user_.Username,
 		"password": user_.Password,
-		"exp":      time.Now().Add(time.Hour * 24).Unix(),
+		"exp":      time.Now().Add(time.Hour * 571).Unix(),
 	})
 	tokenString, err := token.SignedString([]byte("secret"))
 	if err != nil {

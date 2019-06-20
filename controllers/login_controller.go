@@ -72,6 +72,7 @@ func LoginController(ctx_ context.Context, req_ *gigxRR.LoginUserRequest,c *cach
 			fmt.Sprintf(helper.Translate(lang,"invalid_user_information")),
 		)
 	}
+	c.Delete(userIpInformation.IpAddress)
 	tokenRes,tokenErr:=helper.CreateTokenEndpointService(user)
 	if tokenErr != nil{
 		return nil,status.Errorf(

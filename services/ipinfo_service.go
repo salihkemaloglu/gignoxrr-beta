@@ -1,18 +1,21 @@
 package service
 
 import (
-	"net"
-	"fmt"
 	"context"
-	"io/ioutil"
-	"net/http"
 	"encoding/json"
-	"google.golang.org/grpc/peer"
+	"fmt"
+	"io/ioutil"
+	"net"
+	"net/http"
+
+	gigxRR "github.com/salihkemaloglu/gignoxrr-beta-001/proto"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/peer"
 	"google.golang.org/grpc/status"
-	"github.com/salihkemaloglu/gignox-rr-beta-001/proto"
 )
-type IpStacInformation struct {
+
+// IPStacInformation ...
+type IPStacInformation struct {
 	IP            string  `json:"ip"`
 	Type          string  `json:"type"`
 	ContinentCode string  `json:"continent_code"`
@@ -40,11 +43,13 @@ type IpStacInformation struct {
 		IsEu                    bool   `json:"is_eu"`
 	} `json:"location"`
 }
+
+// GeonameInformation ...
 type GeonameInformation struct {
 	Sunrise     string  `json:"sunrise"`
 	Lng         float64 `json:"lng"`
 	CountryCode string  `json:"countryCode"`
-	GmtOffset   int32     `json:"gmtOffset"`
+	GmtOffset   int32   `json:"gmtOffset"`
 	RawOffset   int     `json:"rawOffset"`
 	Sunset      string  `json:"sunset"`
 	TimezoneID  string  `json:"timezoneId"`
@@ -53,99 +58,103 @@ type GeonameInformation struct {
 	Time        string  `json:"time"`
 	Lat         float64 `json:"lat"`
 }
-func GetIpInformation(ctx_ context.Context,requestType_ bool) (*gigxRR.GetIpInformationResponse, error) {
-	
-	pr, ok := peer.FromContext(ctx_)
+
+//GetIPInformation ...
+func GetIPInformation(ctx context.Context, requestType bool) (*gigxRR.GetIPInformationResponse, error) {
+
+	pr, ok := peer.FromContext(ctx)
 	if !ok {
-		return nil,status.Errorf(
+		return nil, status.Errorf(
 			codes.Unimplemented,
 			fmt.Sprintf("getClinetIP, invoke FromContext() failed"),
 		)
 	}
 	if pr.Addr == net.Addr(nil) {
-		return nil,status.Errorf(
+		return nil, status.Errorf(
 			codes.Unimplemented,
 			fmt.Sprintf("getClientIP, peer.Addr is nil"),
 		)
 	}
 
-	subIpAddress:="85.108.130.101"
+	subIPAddress := "85.108.130.101"
 	if len(pr.Addr.String()) > 15 {
-		subIpAddress= pr.Addr.String()[0:len(pr.Addr.String())-6]
+		subIPAddress = pr.Addr.String()[0 : len(pr.Addr.String())-6]
 	}
 
-	if requestType_ {
-		ipstack,ipstackError:=getIpInformationFromIpstack(subIpAddress)
+	if requestType {
+		ipstack, ipstackError := getIPInformationFromIpstack(subIPAddress)
 		if ipstackError != "ok" {
-			return nil,status.Errorf(
+			return nil, status.Errorf(
 				codes.Unimplemented,
 				fmt.Sprintf(ipstackError),
 			)
 		}
-		geoname,geonameError:=getLocationFromGeoname(ipstack.Latitude,ipstack.Longitude)
+		geoname, geonameError := getLocationFromGeoname(ipstack.Latitude, ipstack.Longitude)
 		if geonameError != "ok" {
-			return nil,status.Errorf(
+			return nil, status.Errorf(
 				codes.Unimplemented,
 				fmt.Sprintf(geonameError),
 			)
 		}
-		return &gigxRR.GetIpInformationResponse{
-			IpInformation:&gigxRR.IpInformation {
-				IpAddress:	subIpAddress,
+		return &gigxRR.GetIPInformationResponse{
+			IpInformation: &gigxRR.IPInformation{
+				IpAddress:    subIPAddress,
 				LanguageCode: ipstack.Location.Languages[0].Code,
-				CountryFlag: ipstack.Location.CountryFlag,
-				CountryCode: ipstack.CountryCode,
-				CountryName: ipstack.CountryName,
-				GmtOffSet : geoname.GmtOffset,
+				CountryFlag:  ipstack.Location.CountryFlag,
+				CountryCode:  ipstack.CountryCode,
+				CountryName:  ipstack.CountryName,
+				GmtOffSet:    geoname.GmtOffset,
 			},
 		}, nil
 	}
-	return &gigxRR.GetIpInformationResponse{
-		IpInformation:&gigxRR.IpInformation {
-			IpAddress:	subIpAddress,
+	return &gigxRR.GetIPInformationResponse{
+		IpInformation: &gigxRR.IPInformation{
+			IpAddress: subIPAddress,
 		},
 	}, nil
-	
+
 }
 
-func getIpInformationFromIpstack(ipAddress_ string) (*IpStacInformation,string) {
+//getIPInformationFromIpstack ...
+func getIPInformationFromIpstack(ipAddress string) (*IPStacInformation, string) {
 
-	var url = "http://api.ipstack.com/" + ipAddress_ + "?access_key=373987625c97d99d00d294ea56da82d4";
+	var url = "http://api.ipstack.com/" + ipAddress + "?access_key=373987625c97d99d00d294ea56da82d4"
 	response, err := http.Get(url)
-    if err != nil {
-			return	nil,fmt.Sprintf("ipstack ip request error: %v",err.Error())
-    } else {
-        defer response.Body.Close()
-        contents, err := ioutil.ReadAll(response.Body)
-        if err != nil {
-			return	nil,fmt.Sprintf("ipstack response body error: %v",err.Error())
-		}
-		var info IpStacInformation
-		errMarshal := json.Unmarshal(contents, &info)
-		if errMarshal != nil {
-			return	nil,fmt.Sprintf("ipstack Unmarshal error: %v",errMarshal.Error())
-		}
-		return 	&info,"ok"
+	if err != nil {
+		return nil, fmt.Sprintf("ipstack ip request error: %v", err.Error())
 	}
+	defer response.Body.Close()
+	contents, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return nil, fmt.Sprintf("ipstack response body error: %v", err.Error())
+	}
+	var info IPStacInformation
+	errMarshal := json.Unmarshal(contents, &info)
+	if errMarshal != nil {
+		return nil, fmt.Sprintf("ipstack Unmarshal error: %v", errMarshal.Error())
+	}
+	return &info, "ok"
+
 }
 
-func getLocationFromGeoname(latitude_ float64,longitude_ float64) (*GeonameInformation,string)  {
+//getLocationFromGeoname ...
+func getLocationFromGeoname(latitude float64, longitude float64) (*GeonameInformation, string) {
 
-    var url = "http://api.geonames.org/timezoneJSON?lat="+fmt.Sprintf("%f", latitude_)+"&lng="+fmt.Sprintf("%f", longitude_)+"&username=gignox";
+	var url = "http://api.geonames.org/timezoneJSON?lat=" + fmt.Sprintf("%f", latitude) + "&lng=" + fmt.Sprintf("%f", longitude) + "&username=gignox"
 	response, err := http.Get(url)
-    if err != nil {
-		return	nil,fmt.Sprintf("geoname ip request error: %v",err.Error())
-    } else {
-        defer response.Body.Close()
-        contents, err := ioutil.ReadAll(response.Body)
-        if err != nil {
-			return	nil,fmt.Sprintf("ipstack response body error: %v",err.Error())
-		}
-		var info GeonameInformation
-		errMarshal := json.Unmarshal(contents, &info)
-		if errMarshal != nil {
-			return	nil,fmt.Sprintf("ipstack Unmarshal error: %v",errMarshal.Error())
-		}
-		return &info,"ok"
+	if err != nil {
+		return nil, fmt.Sprintf("geoname ip request error: %v", err.Error())
 	}
+	defer response.Body.Close()
+	contents, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		return nil, fmt.Sprintf("ipstack response body error: %v", err.Error())
+	}
+	var info GeonameInformation
+	errMarshal := json.Unmarshal(contents, &info)
+	if errMarshal != nil {
+		return nil, fmt.Sprintf("ipstack Unmarshal error: %v", errMarshal.Error())
+	}
+	return &info, "ok"
+
 }

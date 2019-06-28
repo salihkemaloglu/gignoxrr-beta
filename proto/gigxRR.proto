@@ -91,7 +91,7 @@ message GeneralResponse {
     bool is_operation_success=5;
 }
 
-message IpInformation {
+message IPInformation {
     string ip_address=1;
     string language_code=2;
     string country_flag=3;
@@ -180,11 +180,11 @@ message CheckVerificationLinkRequest {
 message CheckVerificationLinkResponse {
     GeneralResponse general_response=1;
 }
-message GetIpInformationRequest {
+message GetIPInformationRequest {
     string message=1;
 }
-message GetIpInformationResponse {
-    IpInformation ip_information=1;
+message GetIPInformationResponse {
+    IPInformation ip_information=1;
 }
 message ResetUserPasswordRequest {
     GeneralRequest generalRequest=1;
@@ -218,7 +218,7 @@ service GigxRRService{
     rpc DeleteUser                  (DeleteUserRequest) returns (DeleteUserResponse);
     //Services
     rpc SendEmail                   (SendEmailRequest) returns (SendEmailResponse);
-    rpc GetIpInformation            (GetIpInformationRequest) returns (GetIpInformationResponse);
+    rpc GetIPInformation            (GetIPInformationRequest) returns (GetIPInformationResponse);
     rpc CheckVerificationLink      (CheckVerificationLinkRequest) returns (CheckVerificationLinkResponse);
     //File methods
     rpc GetFile                     (GetFileRequest) returns (GetFileResponse);

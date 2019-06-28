@@ -3,8 +3,8 @@ package validation
 import (
 	"strings"
 
-	repo "github.com/salihkemaloglu/gignox-rr-beta-001/repositories"
-	helper "github.com/salihkemaloglu/gignox-rr-beta-001/services"
+	repo "github.com/salihkemaloglu/gignoxrr-beta-001/repositories"
+	helper "github.com/salihkemaloglu/gignoxrr-beta-001/services"
 	zxcvbn "github.com/nbutton23/zxcvbn-go"
 )
 

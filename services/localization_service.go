@@ -17,28 +17,28 @@ type translation struct {
 var trans *translation
 
 // InitLocales - initiate locales from the folder
-func InitLocales(trPath_ string) error {
+func InitLocales(trPath string) error {
 	trans = &translation{translations: make(map[string]map[string]string)}
-	return loadTranslations(trPath_)
+	return loadTranslations(trPath)
 }
 
-// Tr - translate for current locale
-func Translate(locale_ string, trKey_ string) string {
-	trValue, ok := trans.translations[locale_][trKey_]
+// Translate - translate for current locale
+func Translate(locale string, trKey string) string {
+	trValue, ok := trans.translations[locale][trKey]
 	if ok {
 		return trValue
 	}
-	trValue, ok = trans.translations["en"][trKey_]
+	trValue, ok = trans.translations["en"][trKey]
 	if ok {
 		return trValue
 	}
-	return trKey_
+	return trKey
 }
 
 // DetectLanguage - parse to find the most preferable languagecode
-func DetectLanguage(acceptLanguage_ string) string {
+func DetectLanguage(acceptLanguage string) string {
 
-	langStrs := strings.Split(acceptLanguage_, ",")
+	langStrs := strings.Split(acceptLanguage, ",")
 	for _, langStr := range langStrs {
 		lang := strings.Split(strings.Trim(langStr, " "), ";")
 		if checkLocale(lang[0]) {
@@ -50,8 +50,8 @@ func DetectLanguage(acceptLanguage_ string) string {
 }
 
 // LoadTranslations - load translations files from the folder
-func loadTranslations(trPath_ string) error {
-	files, err := filepath.Glob(trPath_ + "/*.json")
+func loadTranslations(trPath string) error {
+	files, err := filepath.Glob(trPath + "/*.json")
 	if err != nil {
 		return err
 	}
@@ -69,12 +69,13 @@ func loadTranslations(trPath_ string) error {
 	return nil
 }
 
-func loadFileToMap(filename_ string) error {
+//loadFileToMap ...
+func loadFileToMap(filename string) error {
 	var objmap map[string]string
 
-	localName := strings.Replace(filepath.Base(filename_), ".json", "", 1)
+	localName := strings.Replace(filepath.Base(filename), ".json", "", 1)
 
-	content, err := ioutil.ReadFile(filename_)
+	content, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return err
 	}
@@ -88,9 +89,10 @@ func loadFileToMap(filename_ string) error {
 	return nil
 }
 
-func checkLocale(localeName_ string) bool {
+//localeName ...
+func checkLocale(localeName string) bool {
 	for _, locale := range trans.locales {
-		if locale == localeName_ {
+		if locale == localeName {
 			return true
 		}
 	}

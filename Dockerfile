@@ -20,7 +20,7 @@ RUN go get github.com/nbutton23/zxcvbn-go
 ENV PATH /go/bin:$PATH
 
 # cd into the api code directory
-WORKDIR /go/src/github.com/salihkemaloglu/gignox-rr-beta-001
+WORKDIR /go/src/github.com/salihkemaloglu/gignoxrr-beta-001
 
 # create ssh directory
 RUN mkdir ~/.ssh
@@ -31,10 +31,10 @@ RUN ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 RUN git config --global url."https://e4d5159cc774d99744024453431f00ddbb8d7b1d:x-oauth-basic@github.com/".insteadOf "https://github.com/"
 
 # copy the local package files to the container's workspace
-ADD . /go/src/github.com/salihkemaloglu/gignox-rr-beta-001
+ADD . /go/src/github.com/salihkemaloglu/gignoxrr-beta-001
 
 # install the program
-RUN go install github.com/salihkemaloglu/gignox-rr-beta-001
+RUN go install github.com/salihkemaloglu/gignoxrr-beta-001
 
 # expose default port
 EXPOSE 80 443

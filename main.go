@@ -8,10 +8,10 @@ import (
 
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	"github.com/patrickmn/go-cache"
-	cont "github.com/salihkemaloglu/gignox-rr-beta-001/controllers"
-	gigxRR "github.com/salihkemaloglu/gignox-rr-beta-001/proto"
-	repo "github.com/salihkemaloglu/gignox-rr-beta-001/repositories"
-	helper "github.com/salihkemaloglu/gignox-rr-beta-001/services"
+	cont "github.com/salihkemaloglu/gignoxrr-beta-001/controllers"
+	gigxRR "github.com/salihkemaloglu/gignoxrr-beta-001/proto"
+	repo "github.com/salihkemaloglu/gignoxrr-beta-001/repositories"
+	helper "github.com/salihkemaloglu/gignoxrr-beta-001/services"
 	"github.com/spf13/pflag"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/grpclog"
@@ -23,7 +23,7 @@ type server struct {
 var (
 	c *cache.Cache
 	// useWebsockets = pflag.Bool("use_websockets", false, "whether to use beta websocket transport layer")
-	enableTls       = pflag.Bool("enable_tls", false, "Use TLS - required for HTTP2.") // false is for local development
+	enableTLS       = pflag.Bool("enable_tls", false, "Use TLS - required for HTTP2.") // false is for local development
 	tlsCertFilePath = pflag.String("tls_cert_file", "app_root/ssl/fullchain.pem", "Path to the CRT/PEM file.")
 	tlsKeyFilePath  = pflag.String("tls_key_file", "app_root/ssl/privkey.pem", "Path to the private key file.")
 	// flagHttpMaxWriteTimeout = pflag.Duration("server_http_max_write_timeout", 10*time.Second, "HTTP server config, max write duration.")
@@ -35,10 +35,10 @@ func (s *server) SayHello(ctx context.Context, req *gigxRR.HelloRequest) (*gigxR
 	fmt.Printf("RR service is working for SayHello...Received rpc from client, message=%s\n", req.GetMessage())
 	return &gigxRR.HelloResponse{Message: "Hello RR service is working..."}, nil
 }
-func (s *server) GetIpInformation(ctx context.Context, req *gigxRR.GetIpInformationRequest) (*gigxRR.GetIpInformationResponse, error) {
+func (s *server) GetIPInformation(ctx context.Context, req *gigxRR.GetIPInformationRequest) (*gigxRR.GetIPInformationResponse, error) {
 
 	fmt.Printf("RR service is working for GetIpAddess...Received rpc from client")
-	return cont.GetIpInformationController(ctx)
+	return cont.GetIPInformationController(ctx)
 }
 func (s *server) Login(ctx context.Context, req *gigxRR.LoginUserRequest) (*gigxRR.LoginUserResponse, error) {
 
@@ -102,7 +102,9 @@ func main() {
 	pflag.Parse()
 
 	port := 8900
-	if *enableTls {
+	configFile := "dev"
+	if *enableTLS {
+		configFile = "prod"
 		port = 8901
 	}
 
@@ -121,7 +123,7 @@ func main() {
 	gigxRR.RegisterGigxRRServiceServer(grpcServer, &server{})
 
 	fmt.Println("Mongodb Service Started")
-	if confErr := repo.LoadConfiguration("dev"); confErr != "ok" {
+	if confErr := repo.LoadConfiguration(configFile); confErr != "ok" {
 		fmt.Println(confErr)
 	}
 
@@ -129,7 +131,7 @@ func main() {
 
 	options := []grpcweb.Option{
 		grpcweb.WithCorsForRegisteredEndpointsOnly(false),
-		grpcweb.WithOriginFunc(helper.MakeHttpOriginFunc(allowedOrigins)),
+		grpcweb.WithOriginFunc(helper.MakeHTTPOriginFunc(allowedOrigins)),
 	}
 
 	wrappedGrpc := grpcweb.WrapServer(grpcServer, options...)
@@ -142,9 +144,9 @@ func main() {
 		Handler: http.HandlerFunc(handler),
 	}
 
-	grpclog.Printf("Starting server. http port: %d, with TLS: %v", port, *enableTls)
+	grpclog.Printf("Starting server. http port: %d, with TLS: %v", port, *enableTLS)
 
-	if *enableTls {
+	if *enableTLS {
 		fmt.Printf("server started as  https and listen to port: %v \n", port)
 		if err := httpServer.ListenAndServeTLS(*tlsCertFilePath, *tlsKeyFilePath); err != nil {
 			grpclog.Fatalf("failed starting http2 server: %v", err)

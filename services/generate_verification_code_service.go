@@ -36,7 +36,7 @@ func GenerateRandomString(n int) (string, error) {
 	return string(bytes), nil
 }
 
-// GenerateRandomStringURLSafe returns a URL-safe, base64 encoded
+// GenerateRandomStringURLService returns a URL-safe, base64 encoded
 // securely generated random string.
 // It will return an error if the system's secure random
 // number generator fails to function correctly, in which

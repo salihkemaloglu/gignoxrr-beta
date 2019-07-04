@@ -8,10 +8,10 @@ import (
 
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	"github.com/patrickmn/go-cache"
-	cont "github.com/salihkemaloglu/gignoxrr-beta-001/controllers"
+	helper "github.com/salihkemaloglu/gignoxrr-beta-001/helpers"
 	gigxRR "github.com/salihkemaloglu/gignoxrr-beta-001/proto"
 	repo "github.com/salihkemaloglu/gignoxrr-beta-001/repositories"
-	helper "github.com/salihkemaloglu/gignoxrr-beta-001/services"
+	serv "github.com/salihkemaloglu/gignoxrr-beta-001/services"
 	"github.com/spf13/pflag"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/grpclog"
@@ -38,42 +38,42 @@ func (s *server) SayHello(ctx context.Context, req *gigxRR.HelloRequest) (*gigxR
 func (s *server) GetIPInformation(ctx context.Context, req *gigxRR.GetIPInformationRequest) (*gigxRR.GetIPInformationResponse, error) {
 
 	fmt.Printf("RR service is working for GetIpAddess...Received rpc from client")
-	return cont.GetIPInformationController(ctx)
+	return serv.GetIPInformationService(ctx)
 }
 func (s *server) Login(ctx context.Context, req *gigxRR.LoginUserRequest) (*gigxRR.LoginUserResponse, error) {
 
 	fmt.Printf("RR service is working for Login...Received rpc from client.\n")
-	return cont.LoginController(ctx, req, c)
+	return serv.LoginService(ctx, req, c)
 }
 func (s *server) Register(ctx context.Context, req *gigxRR.RegisterUserRequest) (*gigxRR.RegisterUserResponse, error) {
 
 	fmt.Printf("RR service is working for Register...Received rpc from client.\n")
-	return cont.RegisterController(ctx, req)
+	return serv.RegisterService(ctx, req)
 }
 func (s *server) CheckUserToRegister(ctx context.Context, req *gigxRR.CheckUserToRegisterRequest) (*gigxRR.CheckUserToRegisterResponse, error) {
 
 	fmt.Printf("RR service is working for CheckUserToRegister...Received rpc from client.\n")
-	return cont.CheckUserToRegisterController(ctx, req)
+	return serv.CheckUserToRegisterService(ctx, req)
 }
 func (s *server) SendEmail(ctx context.Context, req *gigxRR.SendEmailRequest) (*gigxRR.SendEmailResponse, error) {
 
 	fmt.Printf("RR service is working for SendMail...Received rpc from client.\n")
-	return cont.SendEmailController(ctx, req)
+	return serv.SendEmailService(ctx, req)
 }
 func (s *server) CheckVerificationLink(ctx context.Context, req *gigxRR.CheckVerificationLinkRequest) (*gigxRR.CheckVerificationLinkResponse, error) {
 
 	fmt.Printf("RR service is working for CheckVerificationLink...Received rpc from client.\n")
-	return cont.CheckVerificationLinkController(ctx, req)
+	return serv.CheckVerificationLinkService(ctx, req)
 }
 func (s *server) ResetUserPassword(ctx context.Context, req *gigxRR.ResetUserPasswordRequest) (*gigxRR.ResetUserPasswordResponse, error) {
 
 	fmt.Printf("RR service is working for ResetUserPassword...Received rpc from client.\n")
-	return cont.ResetUserPasswordController(ctx, req)
+	return serv.ResetUserPasswordService(ctx, req)
 }
 func (s *server) GetUser(ctx context.Context, req *gigxRR.GetUserRequest) (*gigxRR.GetUserResponse, error) {
 
 	fmt.Printf("RR service is working for GetUser...Received rpc from client.\n")
-	return cont.GetUserController(ctx, req)
+	return serv.GetUserService(ctx, req)
 }
 func (s *server) UpdateUser(ctx context.Context, req *gigxRR.UpdateUserRequest) (*gigxRR.UpdateUserResponse, error) {
 	return nil, nil
@@ -95,7 +95,7 @@ func (s *server) DeleteFile(ctx context.Context, req *gigxRR.DeleteFileRequest) 
 }
 func (s *server) UploadFile(stream gigxRR.GigxRRService_UploadFileServer) error {
 	fmt.Printf("RR service is working for UploadFile...Received rpc from client.\n")
-	return cont.UploadFileController(stream)
+	return serv.UploadFileService(stream)
 }
 
 func main() {

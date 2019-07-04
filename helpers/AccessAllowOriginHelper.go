@@ -1,4 +1,4 @@
-package service
+package helper
 
 import (
 	"github.com/spf13/pflag"

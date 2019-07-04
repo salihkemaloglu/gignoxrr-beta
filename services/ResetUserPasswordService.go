@@ -1,21 +1,21 @@
-package controller
+package service
 
 import (
 	"context"
 	"fmt"
 
+	helper "github.com/salihkemaloglu/gignoxrr-beta-001/helpers"
 	inter "github.com/salihkemaloglu/gignoxrr-beta-001/interfaces"
 	gigxRR "github.com/salihkemaloglu/gignoxrr-beta-001/proto"
 	repo "github.com/salihkemaloglu/gignoxrr-beta-001/repositories"
-	helper "github.com/salihkemaloglu/gignoxrr-beta-001/services"
 	val "github.com/salihkemaloglu/gignoxrr-beta-001/validations"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 )
 
-//ResetUserPasswordController ...
-func ResetUserPasswordController(ctx context.Context, req *gigxRR.ResetUserPasswordRequest) (*gigxRR.ResetUserPasswordResponse, error) {
+//ResetUserPasswordService ...
+func ResetUserPasswordService(ctx context.Context, req *gigxRR.ResetUserPasswordRequest) (*gigxRR.ResetUserPasswordResponse, error) {
 	userLang := "en"
 	if headers, ok := metadata.FromIncomingContext(ctx); ok {
 		if headers["languagecode"] != nil {
@@ -30,7 +30,7 @@ func ResetUserPasswordController(ctx context.Context, req *gigxRR.ResetUserPassw
 		ForgotPasswordVerificationToken: generalRequest.GetForgotPasswordVerificationToken(),
 		EmailType:                       generalRequest.GetEmailType(),
 	}
-	if valResp := val.ResetUserPasswordValidation(&userTemporaryInformation, generalRequest.GetPassword(), generalRequest.GetPasswordConfirm(), lang); valResp != "ok" {
+	if valResp := val.ResetUserPasswordFieldValidation(&userTemporaryInformation, generalRequest.GetPassword(), generalRequest.GetPasswordConfirm(), lang); valResp != "ok" {
 		return nil, status.Errorf(
 			codes.FailedPrecondition,
 			fmt.Sprintf(valResp),

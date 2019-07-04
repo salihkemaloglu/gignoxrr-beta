@@ -1,4 +1,4 @@
-package controller
+package service
 
 import (
 	"bytes"
@@ -11,8 +11,8 @@ import (
 	gigxRR "github.com/salihkemaloglu/gignoxrr-beta-001/proto"
 )
 
-//UploadFileController ...
-func UploadFileController(stream gigxRR.GigxRRService_UploadFileServer) error {
+//UploadFileService ...
+func UploadFileService(stream gigxRR.GigxRRService_UploadFileServer) error {
 	for {
 		req, err := stream.Recv()
 		if err == io.EOF {

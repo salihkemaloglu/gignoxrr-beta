@@ -1,14 +1,14 @@
-package controller
+package service
 
 import (
 	"context"
 	"fmt"
 	"time"
 
+	helper "github.com/salihkemaloglu/gignoxrr-beta-001/helpers"
 	inter "github.com/salihkemaloglu/gignoxrr-beta-001/interfaces"
 	gigxRR "github.com/salihkemaloglu/gignoxrr-beta-001/proto"
 	repo "github.com/salihkemaloglu/gignoxrr-beta-001/repositories"
-	helper "github.com/salihkemaloglu/gignoxrr-beta-001/services"
 	val "github.com/salihkemaloglu/gignoxrr-beta-001/validations"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
@@ -19,8 +19,8 @@ const (
 	timeFormat = "2006-01-02 15:04:05"
 )
 
-//RegisterController ...
-func RegisterController(ctx context.Context, req *gigxRR.RegisterUserRequest) (*gigxRR.RegisterUserResponse, error) {
+//RegisterService ...
+func RegisterService(ctx context.Context, req *gigxRR.RegisterUserRequest) (*gigxRR.RegisterUserResponse, error) {
 	userLang := "en"
 	if headers, ok := metadata.FromIncomingContext(ctx); ok {
 		if headers["languagecode"] != nil {

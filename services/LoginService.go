@@ -1,22 +1,22 @@
-package controller
+package service
 
 import (
 	"context"
 	"fmt"
 
 	"github.com/patrickmn/go-cache"
+	helper "github.com/salihkemaloglu/gignoxrr-beta-001/helpers"
 	inter "github.com/salihkemaloglu/gignoxrr-beta-001/interfaces"
 	gigxRR "github.com/salihkemaloglu/gignoxrr-beta-001/proto"
 	repo "github.com/salihkemaloglu/gignoxrr-beta-001/repositories"
-	helper "github.com/salihkemaloglu/gignoxrr-beta-001/services"
 	val "github.com/salihkemaloglu/gignoxrr-beta-001/validations"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 )
 
-//LoginController ...
-func LoginController(ctx context.Context, req *gigxRR.LoginUserRequest, c *cache.Cache) (*gigxRR.LoginUserResponse, error) {
+//LoginService ...
+func LoginService(ctx context.Context, req *gigxRR.LoginUserRequest, c *cache.Cache) (*gigxRR.LoginUserResponse, error) {
 
 	userLang := "en"
 	if headers, ok := metadata.FromIncomingContext(ctx); ok {

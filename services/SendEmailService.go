@@ -1,21 +1,21 @@
-package controller
+package service
 
 import (
 	"context"
 	"fmt"
 
+	helper "github.com/salihkemaloglu/gignoxrr-beta-001/helpers"
 	inter "github.com/salihkemaloglu/gignoxrr-beta-001/interfaces"
 	gigxRR "github.com/salihkemaloglu/gignoxrr-beta-001/proto"
 	repo "github.com/salihkemaloglu/gignoxrr-beta-001/repositories"
-	helper "github.com/salihkemaloglu/gignoxrr-beta-001/services"
 	val "github.com/salihkemaloglu/gignoxrr-beta-001/validations"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 )
 
-//SendEmailController ...
-func SendEmailController(ctx context.Context, req *gigxRR.SendEmailRequest) (*gigxRR.SendEmailResponse, error) {
+//SendEmailService ...
+func SendEmailService(ctx context.Context, req *gigxRR.SendEmailRequest) (*gigxRR.SendEmailResponse, error) {
 	userLang := "en"
 	if headers, ok := metadata.FromIncomingContext(ctx); ok {
 		if headers["languagecode"] != nil {

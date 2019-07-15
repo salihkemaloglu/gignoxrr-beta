@@ -84,11 +84,21 @@ func LoginService(ctx context.Context, req *gigxRR.LoginUserRequest, c *cache.Ca
 		)
 	}
 
+	tokenQC, errQC := helper.GetUserToken(user)
+
+	if errQC != nil {
+		return nil, status.Errorf(
+			codes.Unknown,
+			fmt.Sprintf(helper.Translate(lang, "token_create_error")+": %v", tokenErr.Error()),
+		)
+	}
+
 	return &gigxRR.LoginUserResponse{
 		User: &gigxRR.UserLogin{
 			Username:     userResp.Username,
 			LanguageCode: userResp.LanguageCode,
-			Token:        tokenRes,
+			TokenRR:      tokenRes,
+			TokenQC:      tokenQC,
 		},
 	}, nil
 

@@ -101,13 +101,6 @@ func (s *server) UploadFile(stream gigxRR.GigxRRService_UploadFileServer) error 
 func main() {
 	pflag.Parse()
 
-	port := 8900
-	configFile := "dev"
-	if *enableTLS {
-		configFile = "prod"
-		port = 8901
-	}
-
 	fmt.Println("RR Service is Starting...")
 	// init languagecode folder path
 	err := helper.InitLocales("app_root/languages")
@@ -118,12 +111,12 @@ func main() {
 	c = cache.New(5*time.Minute, 10*time.Minute)
 
 	opts := []grpc.ServerOption{}
-	opts = append(opts, grpc.MaxRecvMsgSize(1024*1024*1024))
+	// opts = append(opts, grpc.MaxRecvMsgSize(1024*1024*1024))
 	grpcServer := grpc.NewServer(opts...)
 	gigxRR.RegisterGigxRRServiceServer(grpcServer, &server{})
 
 	fmt.Println("Mongodb Service Started")
-	if confErr := repo.LoadConfiguration(configFile); confErr != "ok" {
+	if confErr := repo.LoadConfiguration("dev"); confErr != "ok" {
 		fmt.Println(confErr)
 	}
 
@@ -140,21 +133,13 @@ func main() {
 	}
 
 	httpServer := http.Server{
-		Addr:    fmt.Sprintf(":%v", port),
+		Addr:    fmt.Sprintf(":%v", 8901),
 		Handler: http.HandlerFunc(handler),
 	}
 
-	grpclog.Printf("Starting server. http port: %d, with TLS: %v", port, *enableTLS)
-
-	if *enableTLS {
-		fmt.Printf("server started as  https and listen to port: %v \n", port)
-		if err := httpServer.ListenAndServeTLS(*tlsCertFilePath, *tlsKeyFilePath); err != nil {
-			grpclog.Fatalf("failed starting http2 server: %v", err)
-		}
-	} else {
-		fmt.Printf("server started as http and listen to port: %v \n", port)
-		if err := httpServer.ListenAndServe(); err != nil {
-			grpclog.Fatalf("failed starting http server: %v", err)
-		}
+	fmt.Printf("server started as http and listen to port: %v \n", 8901)
+	if err := httpServer.ListenAndServe(); err != nil {
+		grpclog.Fatalf("failed starting http server: %v", err)
 	}
+
 }

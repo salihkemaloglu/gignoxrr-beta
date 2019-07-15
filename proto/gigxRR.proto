@@ -70,7 +70,8 @@ message UserLogin {
     string language_code=3;
     string country_flag=4;
     int32  gmt_off_set=5;
-    string token=6;
+    string token_rR=6;
+    string token_qC=7;
 }
 
 message GeneralRequest {
@@ -205,6 +206,7 @@ message UploadFileRequest {
 message UploadFileResponse {
     string result = 1;
 }
+
 service GigxRRService{
     //Say Hello 
     rpc SayHello (HelloRequest) returns (HelloResponse);

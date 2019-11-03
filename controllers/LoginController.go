@@ -15,5 +15,10 @@ var c *cache.Cache
 func (s *Server) Login(ctx context.Context, req *gigxRR.LoginUserRequest) (*gigxRR.LoginUserResponse, error) {
 
 	fmt.Printf("RR service is working for Login...Received rpc from client.\n")
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println("There's something wrong:", err)
+		}
+	}()
 	return serv.LoginService(ctx, req, c)
 }

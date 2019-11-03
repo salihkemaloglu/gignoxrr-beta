@@ -29,10 +29,10 @@ func CheckVerificationLinkService(ctx context.Context, req *gigxRR.CheckVerifica
 		ForgotPasswordVerificationToken: emailData.GetForgotPasswordVerificationToken(),
 		EmailType:                       emailData.GetEmailType(),
 	}
-	if valResp := val.CheckVerificationTokenValidation(&userTemporaryInformation, lang); valResp != "ok" {
+	if resp := val.CheckVerificationTokenValidation(&userTemporaryInformation, lang); resp != "ok" {
 		return nil, status.Errorf(
 			codes.FailedPrecondition,
-			fmt.Sprintf(valResp),
+			fmt.Sprintf(resp),
 		)
 	}
 

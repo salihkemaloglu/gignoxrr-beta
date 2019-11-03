@@ -200,12 +200,6 @@ message GetUserResponse {
     User user=1;
     File file=2;
 }
-message UploadFileRequest {
-    bytes file=1;
-}
-message UploadFileResponse {
-    string result = 1;
-}
 
 service GigxRRService{
     //Say Hello 
@@ -227,5 +221,4 @@ service GigxRRService{
     rpc GetAllFiles                 (GetAllFilesRequest) returns (stream GetAllFilesResponse);
     rpc UpdateFile                  (UpdateFileRequest) returns (UpdateFileResponse);
     rpc DeleteFile                  (DeleteFileRequest) returns (DeleteFileResponse);
-    rpc UploadFile                  (stream UploadFileRequest) returns (stream UploadFileResponse) {};
 }

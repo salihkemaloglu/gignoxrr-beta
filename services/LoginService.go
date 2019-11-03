@@ -89,7 +89,7 @@ func LoginService(ctx context.Context, req *gigxRR.LoginUserRequest, c *cache.Ca
 	if errQC != nil {
 		return nil, status.Errorf(
 			codes.Unknown,
-			fmt.Sprintf(helper.Translate(lang, "token_create_error")+": %v", tokenErr.Error()),
+			fmt.Sprintf(helper.Translate(lang, "token_create_error")+": %v", errQC.Error()),
 		)
 	}
 

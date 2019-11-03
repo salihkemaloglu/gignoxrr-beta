@@ -17,7 +17,7 @@ type Item struct {
 
 //GetUserToken ...
 func GetUserToken(user repo.User) (string, error) {
-	url := "http://localhost:8902/login"
+	url := "https://devqc.gignox.com/login"
 
 	userJSON, err := json.Marshal(user)
 	if err != nil {

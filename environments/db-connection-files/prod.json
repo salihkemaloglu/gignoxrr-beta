@@ -1,6 +1,6 @@
 {
 
-    "connectionUrl": "localhost:27017",
+    "connectionUrl": "35.194.5.92:27017",
     "databaseUsername":"welat",
     "databasePassword":"xanik-*-gigx*?",
     "databaseName":"GignoxTestDB"
